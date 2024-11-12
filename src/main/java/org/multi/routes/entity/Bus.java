@@ -1,19 +1,27 @@
 package org.multi.routes.entity;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
-public class Bus implements Callable {
-    private final int number;
-    private BusRoute route;
-    private final int maximumPassengerCapacity;
-    private List<Passenger> passengers;
 
+public class Bus implements Callable<String> {
+    private final Logger logger = LogManager.getLogger(this);
+    private final int number;
+    private final int maximumPassengerCapacity;
+
+    private BusRoute route;
+    private List<Passenger> passengers;
     private BusStop currentStop;
     private BusStop destination;
+    private int indexOfCurrentStop = 0;
+
 
     public BusStop getCurrentStop() {
         return currentStop;
@@ -39,28 +47,31 @@ public class Bus implements Callable {
     }
 
     public void ride() {
-        System.out.println(this + " going from " + currentStop + " to " + destination);
+        logger.log(Level.INFO, this + " going from " + currentStop + " to " + destination);
+        currentStop.sendBus(this);
         currentStop = null;
+        indexOfCurrentStop++;
+    }
 
+    public void stop() {
+        List<BusStop> stops = route.getRoute();
+        currentStop = stops.get(indexOfCurrentStop);
+        currentStop.takeBus(this);
+        logger.log(Level.INFO, "The bus " + this + " stopped at " + currentStop);
     }
 
     @Override
-    public Object call() throws Exception {
-
-        List<BusStop> stops = route.getRoute();
-        int startndex = 0;
-
-        this.currentStop = stops.getFirst();
-        this.destination = stops.getLast();
-
-        while (currentStop != destination) {
-            ride();
-            TimeUnit.SECONDS.sleep(10);
-            startndex++;
-            this.currentStop = stops.get(startndex);
-
+    public String call() throws Exception {
+        while (indexOfCurrentStop < route.getRoute().size()) {
+            try {
+                stop();
+                TimeUnit.SECONDS.sleep(4);
+                ride();
+            } catch (InterruptedException e) {
+                logger.log(Level.ERROR, e.getMessage());
+            }
         }
-        return true;
+        return "Bus " + this + " has completed its route";
     }
 
     @Override
@@ -81,6 +92,6 @@ public class Bus implements Callable {
 
     @Override
     public String toString() {
-        return "Bus #" + number + "\npassengers: " + passengers + "\nmaximum passengers :" + maximumPassengerCapacity;
+        return "Bus #" + number;
     }
 }
