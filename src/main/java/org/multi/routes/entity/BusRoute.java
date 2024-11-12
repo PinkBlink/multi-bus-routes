@@ -11,7 +11,7 @@ public class BusRoute {
         this.route = route;
     }
 
-    public List<BusStop> getRoute() {
+    public List<BusStop> getStops() {
         return route;
     }
 }

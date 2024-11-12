@@ -12,6 +12,10 @@ public class Passenger {
         this.destination = destination;
     }
 
+    public BusStop getDestination() {
+        return destination;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
