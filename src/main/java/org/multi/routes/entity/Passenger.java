@@ -5,15 +5,35 @@ import java.util.Objects;
 public class Passenger {
     private final String name;
     private final BusStop destination;
+
+    private BusStop currentStop;
     private Bus currentBus;
 
-    public Passenger(String name, BusStop destination) {
+    public Passenger(String name, BusStop destination, BusStop currentStop) {
         this.name = name;
         this.destination = destination;
+        this.currentStop = currentStop;
+        currentStop.addPassengerToLine(this);
     }
 
     public BusStop getDestination() {
         return destination;
+    }
+
+    public BusStop getCurrentStop() {
+        return currentStop;
+    }
+
+    public void setCurrentStop(BusStop currentStop) {
+        this.currentStop = currentStop;
+    }
+
+    public Bus getCurrentBus() {
+        return currentBus;
+    }
+
+    public void setCurrentBus(Bus currentBus) {
+        this.currentBus = currentBus;
     }
 
     @Override
@@ -34,9 +54,6 @@ public class Passenger {
 
     @Override
     public String toString() {
-        return "Passenger:" +
-                "name: " + name +
-                "\ncurrentBus: " + currentBus +
-                "\ndestination: " + destination;
+        return "Passenger:" + name;
     }
 }

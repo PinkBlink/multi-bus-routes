@@ -7,6 +7,7 @@ import org.multi.routes.action.BusThread;
 import org.multi.routes.entity.Bus;
 import org.multi.routes.entity.BusRoute;
 import org.multi.routes.entity.BusStop;
+import org.multi.routes.entity.Passenger;
 
 import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
@@ -26,15 +27,23 @@ public class App {
         BusStop stop5 = new BusStop("5", 1);
         BusStop stop6 = new BusStop("6", 2);
 
+        Passenger passenger1 = new Passenger("passenger 1", stop6, stop1);
+        Passenger passenger2 = new Passenger("passenger 2", stop6, stop1);
+        Passenger passenger3 = new Passenger("passenger 3", stop6, stop2);
+        Passenger passenger4 = new Passenger("passenger 4", stop6, stop2);
+        Passenger passenger5 = new Passenger("passenger 5", stop6, stop3);
+        Passenger passenger6 = new Passenger("passenger 6", stop6, stop3);
+        Passenger passenger7 = new Passenger("passenger 7", stop6, stop1);
+
 
         BusRoute route1 = new BusRoute(1, Arrays.asList(stop1, stop2, stop3, stop4, stop5, stop6));
 
-        Bus bus1 = new Bus(1, route1, 2);
-        Bus bus2 = new Bus(2, route1, 2);
-        Bus bus3 = new Bus(3, route1, 3);
-        Bus bus4 = new Bus(4, route1, 3);
-        Bus bus5 = new Bus(5, route1, 3);
-        Bus bus6 = new Bus(6, route1, 3);
+        Bus bus1 = new Bus(1, route1, 2, stop1);
+        Bus bus2 = new Bus(2, route1, 2, stop1);
+        Bus bus3 = new Bus(3, route1, 1, stop1);
+        Bus bus4 = new Bus(4, route1, 1, stop1);
+        Bus bus5 = new Bus(5, route1, 1, stop1);
+        Bus bus6 = new Bus(6, route1, 3, stop1);
 
         BusThread busThread1 = new BusThread(bus1);
         BusThread busThread2 = new BusThread(bus2);

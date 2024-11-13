@@ -43,6 +43,17 @@ public class BusStop {
         stoppedBuses.remove(bus);
     }
 
+    public void addPassengerToLine(Passenger passenger) {
+        passengerLine.add(passenger);
+    }
+
+    public void removePassengerFromLine(Passenger passenger) {
+        passengerLine.remove(passenger);
+    }
+    public List<Passenger> getPassengerLine(){
+        return passengerLine;
+    }
+
     public int getMaxBussesCapacity() {
         return maxBussesCapacity;
     }

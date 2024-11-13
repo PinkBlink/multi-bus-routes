@@ -18,6 +18,20 @@ public class Validator {
         return false;
     }
 
+    public static int getTheIndexOfTheDesiredBus(Passenger passenger, List<Bus> buses) {
+        for (int i = 0; i < buses.size(); i++) {
+            Bus currentBus = buses.get(i);
+            if (willGetDestination(passenger, currentBus)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static boolean isBusFull(Bus bus) {
+        return bus.getPassengers().size() == bus.getMaximumPassengerCapacity();
+    }
+
     public static boolean isStopFull(BusStop busStop) {
         int amountStoppedBusses = busStop.getStoppedBuses().size();
         int maxBussesCapacity = busStop.getMaxBussesCapacity();
