@@ -30,10 +30,10 @@ public class BusStopManager {
                 condition.await();
             }
             busStop.addBusToStop(bus);
+            condition.signalAll();
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());
         } finally {
-            condition.signalAll();
             lock.unlock();
         }
     }
@@ -45,8 +45,8 @@ public class BusStopManager {
 
         try {
             busStop.removeBusFromStop(bus);
-        } finally {
             condition.signalAll();
+        } finally {
             lock.unlock();
         }
     }

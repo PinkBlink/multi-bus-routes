@@ -23,22 +23,23 @@ public class PassengerManager {
     public void enterInBus() {
         BusStop currentStop = passenger.getCurrentStop();
 
-
         Lock lockBusStop = currentStop.getLock();
         Condition conditionBusStop = currentStop.getCondition();
 
         lockBusStop.lock();
+        try {
+            List<Bus> stoppedBusses = passenger.getCurrentStop().getStoppedBuses();
 
-        List<Bus> stoppedBusses = passenger.getCurrentStop().getStoppedBuses();
+            int desireBusIndex = Validator.getTheIndexOfTheDesiredBus(passenger, stoppedBusses);
 
-        int desireBusIndex = Validator.getTheIndexOfTheDesiredBus(passenger, stoppedBusses);
-
-        if (desireBusIndex != -1
-                && !Validator.isBusFull(stoppedBusses.get(desireBusIndex))) {
-            transferPassengerToBus(stoppedBusses, desireBusIndex);
+            if (desireBusIndex != -1
+                    && !Validator.isBusFull(stoppedBusses.get(desireBusIndex))) {
+                transferPassengerToBus(stoppedBusses, desireBusIndex);
+            }
+            conditionBusStop.signalAll();
+        } finally {
+            lockBusStop.unlock();
         }
-        lockBusStop.unlock();
-        conditionBusStop.signalAll();
     }
 
     public void enterInBusStop() {

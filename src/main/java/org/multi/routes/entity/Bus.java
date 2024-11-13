@@ -79,7 +79,8 @@ public class Bus {
         if (!(o instanceof Bus bus)) {
             return false;
         }
-        return number == bus.number && maximumPassengerCapacity == bus.maximumPassengerCapacity;
+        return number == bus.number
+                && maximumPassengerCapacity == bus.maximumPassengerCapacity;
     }
 
     @Override

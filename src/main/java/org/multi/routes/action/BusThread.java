@@ -7,6 +7,7 @@ import org.multi.routes.entity.Bus;
 import org.multi.routes.entity.BusStop;
 import org.multi.routes.entity.Passenger;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -32,7 +33,7 @@ public class BusThread implements Callable<String> {
     public void ride() {
         currentStop = stops.get(indexOfCurrentStop);
         currentStopManager.setBusStop(currentStop);
-        bus.setCurrentStop(currentStop);
+        bus.setCurrentStop(currentStop);//зачем?
         logger.log(Level.INFO, bus + " going from " + currentStop);
         bus.setStop(false);
         currentStopManager.sendBus(bus);
@@ -52,7 +53,7 @@ public class BusThread implements Callable<String> {
         if (bus.getPassengers().isEmpty()) {
             logger.log(Level.INFO, bus + " is empty.");
         } else {
-            List<Passenger> passengers = bus.getPassengers();
+            List<Passenger> passengers = new ArrayList<>(bus.getPassengers());
             for (Passenger passenger : passengers) {
                 passengerManager.setPassenger(passenger);
                 passengerManager.enterInBusStop();
@@ -64,7 +65,7 @@ public class BusThread implements Callable<String> {
         if (currentStop.getPassengerLine().isEmpty()) {
             logger.log(Level.INFO, currentStop + " is empty.");
         } else {
-            List<Passenger> passengers = currentStop.getPassengerLine();
+            List<Passenger> passengers = new ArrayList<>(currentStop.getPassengerLine());
             for (Passenger passenger : passengers) {
                 passengerManager.setPassenger(passenger);
                 passengerManager.enterInBus();
@@ -77,7 +78,7 @@ public class BusThread implements Callable<String> {
         while (indexOfCurrentStop < stops.size()) {
             try {
                 stop();
-                disembarkPassengers();
+                disembarkPassengers();// после высадки если это финальная поездка убирать пассажиров вообще
                 TimeUnit.SECONDS.sleep(2);
                 boardingPassengers();
                 TimeUnit.SECONDS.sleep(2);

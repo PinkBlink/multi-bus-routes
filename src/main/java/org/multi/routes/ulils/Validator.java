@@ -26,7 +26,7 @@ public class Validator {
             }
         }
         return -1;
-    }
+    }// на его основе сделать булеан а не наоборот
 
     public static boolean isBusFull(Bus bus) {
         return bus.getPassengers().size() == bus.getMaximumPassengerCapacity();
