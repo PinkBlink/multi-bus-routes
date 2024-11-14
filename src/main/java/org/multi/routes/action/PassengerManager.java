@@ -24,9 +24,9 @@ public class PassengerManager {
         BusStop currentStop = passenger.getCurrentStop();
 
         Lock lockBusStop = currentStop.getLock();
+        lockBusStop.lock();
         Condition conditionBusStop = currentStop.getCondition();
 
-        lockBusStop.lock();
         try {
             List<Bus> stoppedBusses = passenger.getCurrentStop().getStoppedBuses();
 
@@ -35,7 +35,28 @@ public class PassengerManager {
             if (desireBusIndex != -1
                     && !Validator.isBusFull(stoppedBusses.get(desireBusIndex))
                     && !passenger.isArrivedAtDestination()) {
-                transferPassengerToBus(stoppedBusses, desireBusIndex);
+
+                Bus desireBus = stoppedBusses.get(desireBusIndex);
+                Lock lockBus = desireBus.getLock();
+                lockBus.lock();
+                try {
+                    Condition conditionBus = desireBus.getCondition();
+                    currentStop.removePassengerFromLine(passenger);
+                    logger.log(Level.INFO, passenger + " was removed from :" + currentStop);
+                    logger.log(Level.INFO, "List of passengers:" + currentStop.getPassengerLine());
+
+                    if(desireBus.getPassengers().contains(passenger)){
+                        logger.log(Level.ERROR, passenger + " already in bus ");
+                        logger.log(Level.ERROR, desireBus.getPassengers());
+                        logger.log(Level.ERROR, Thread.currentThread().getName());
+                    }
+                    desireBus.addPassengerToBus(passenger);
+
+                    passenger.setCurrentBus(desireBus);
+                    conditionBus.signalAll();
+                } finally {
+                    lockBus.unlock();
+                }
             }
             conditionBusStop.signalAll();
         } finally {
@@ -49,31 +70,8 @@ public class PassengerManager {
 
         if (currentStop.equals(passenger.getDestination())) {
             transferPassengerToStop();
-            logger.log(Level.INFO,passenger+" ARRIVAL TO DESTINATION!");
+            logger.log(Level.INFO, passenger + " ARRIVAL TO DESTINATION!");
 
-        }
-    }
-
-    private void transferPassengerToBus(List<Bus> stoppedBusses, int desireBusIndex) {
-
-        BusStop currentStop = passenger.getCurrentStop();
-        Bus desireBus = stoppedBusses.get(desireBusIndex);
-
-        Lock lockBus = desireBus.getLock();
-        Condition conditionBus = desireBus.getCondition();
-
-        lockBus.lock();
-        try {
-            desireBus.addPassengerToBus(passenger);
-            currentStop.removePassengerFromLine(passenger);
-            passenger.setCurrentBus(desireBus);
-//            passenger.setCurrentStop(null);
-
-            logger.log(Level.INFO, passenger + " got on the bus " + desireBus);
-
-            conditionBus.signalAll();
-        } finally {
-            lockBus.unlock();
         }
     }
 
@@ -93,7 +91,6 @@ public class PassengerManager {
             currentBus.removePassenger(passenger);
             currentStop.addPassengerToLine(passenger);
             passenger.setCurrentStop(currentStop);
-//            passenger.setCurrentBus(null);
             passenger.setArrivedAtDestination(true);
             logger.log(Level.INFO, passenger + " got off at the bus stop " + currentStop);
 
