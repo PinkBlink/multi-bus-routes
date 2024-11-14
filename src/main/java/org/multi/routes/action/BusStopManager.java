@@ -41,7 +41,6 @@ public class BusStopManager {
         Lock lock = busStop.getLock();
         Condition condition = busStop.getCondition();
         lock.lock();
-
         try {
             busStop.removeBusFromStop(bus);
             condition.signalAll();

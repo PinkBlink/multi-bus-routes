@@ -50,7 +50,8 @@ public class BusStop {
     public void removePassengerFromLine(Passenger passenger) {
         passengerLine.remove(passenger);
     }
-    public List<Passenger> getPassengerLine(){
+
+    public List<Passenger> getPassengerLine() {
         return passengerLine;
     }
 

@@ -35,7 +35,6 @@ public class PassengerManager {
             if (desireBusIndex != -1
                     && !Validator.isBusFull(stoppedBusses.get(desireBusIndex))
                     && !passenger.isArrivedAtDestination()) {
-
                 Bus desireBus = stoppedBusses.get(desireBusIndex);
                 Lock lockBus = desireBus.getLock();
                 lockBus.lock();
@@ -44,14 +43,14 @@ public class PassengerManager {
                     currentStop.removePassengerFromLine(passenger);
                     logger.log(Level.INFO, passenger + " was removed from :" + currentStop);
                     logger.log(Level.INFO, "List of passengers:" + currentStop.getPassengerLine());
+                    if (!desireBus.getPassengers().contains(passenger)) {
+                        desireBus.addPassengerToBus(passenger);
 
-                    if(desireBus.getPassengers().contains(passenger)){
+                    } else {
                         logger.log(Level.ERROR, passenger + " already in bus ");
                         logger.log(Level.ERROR, desireBus.getPassengers());
                         logger.log(Level.ERROR, Thread.currentThread().getName());
                     }
-                    desireBus.addPassengerToBus(passenger);
-
                     passenger.setCurrentBus(desireBus);
                     conditionBus.signalAll();
                 } finally {
