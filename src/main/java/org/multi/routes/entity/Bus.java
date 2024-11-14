@@ -14,10 +14,9 @@ public class Bus {
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
     private final BusRoute route;
-    private List<Passenger> passengers;
+    private final List<Passenger> passengers;
 
     private BusStop currentStop;
-    private boolean isStop;
 
     public Bus(int number, BusRoute route, int maximumPassengerCapacity , BusStop currentStop) {
         this.number = number;
@@ -54,15 +53,6 @@ public class Bus {
     public List<Passenger> getPassengers() {
         return passengers;
     }
-
-    public boolean isStop() {
-        return isStop;
-    }
-
-    public void setStop(boolean stop) {
-        isStop = stop;
-    }
-
     public void addPassengerToBus(Passenger passenger) {
         passengers.add(passenger);
     }

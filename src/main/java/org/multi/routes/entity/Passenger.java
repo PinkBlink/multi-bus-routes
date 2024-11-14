@@ -8,6 +8,7 @@ public class Passenger {
 
     private BusStop currentStop;
     private Bus currentBus;
+    private boolean isArrivedAtDestination;
 
     public Passenger(String name, BusStop destination, BusStop currentStop) {
         this.name = name;
@@ -22,6 +23,14 @@ public class Passenger {
 
     public BusStop getCurrentStop() {
         return currentStop;
+    }
+
+    public boolean isArrivedAtDestination() {
+        return isArrivedAtDestination;
+    }
+
+    public void setArrivedAtDestination(boolean arrivedAtDestination) {
+        isArrivedAtDestination = arrivedAtDestination;
     }
 
     public void setCurrentStop(BusStop currentStop) {

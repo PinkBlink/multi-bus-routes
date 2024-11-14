@@ -33,7 +33,8 @@ public class PassengerManager {
             int desireBusIndex = Validator.getTheIndexOfTheDesiredBus(passenger, stoppedBusses);
 
             if (desireBusIndex != -1
-                    && !Validator.isBusFull(stoppedBusses.get(desireBusIndex))) {
+                    && !Validator.isBusFull(stoppedBusses.get(desireBusIndex))
+                    && !passenger.isArrivedAtDestination()) {
                 transferPassengerToBus(stoppedBusses, desireBusIndex);
             }
             conditionBusStop.signalAll();
@@ -48,6 +49,8 @@ public class PassengerManager {
 
         if (currentStop.equals(passenger.getDestination())) {
             transferPassengerToStop();
+            logger.log(Level.INFO,passenger+" ARRIVAL TO DESTINATION!");
+
         }
     }
 
@@ -64,7 +67,7 @@ public class PassengerManager {
             desireBus.addPassengerToBus(passenger);
             currentStop.removePassengerFromLine(passenger);
             passenger.setCurrentBus(desireBus);
-            passenger.setCurrentStop(null);
+//            passenger.setCurrentStop(null);
 
             logger.log(Level.INFO, passenger + " got on the bus " + desireBus);
 
@@ -90,8 +93,8 @@ public class PassengerManager {
             currentBus.removePassenger(passenger);
             currentStop.addPassengerToLine(passenger);
             passenger.setCurrentStop(currentStop);
-            passenger.setCurrentBus(null);
-
+//            passenger.setCurrentBus(null);
+            passenger.setArrivedAtDestination(true);
             logger.log(Level.INFO, passenger + " got off at the bus stop " + currentStop);
 
             conditionBusStop.signalAll();

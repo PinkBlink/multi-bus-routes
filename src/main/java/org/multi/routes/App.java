@@ -60,14 +60,16 @@ public class App {
             Future<String> busString5 = executorService.submit(busThread5);
             Future<String> busString6 = executorService.submit(busThread6);
 
-            logger.log(Level.INFO, busString1.get());
-            logger.log(Level.INFO, busString2.get());
-            logger.log(Level.INFO, busString3.get());
-            logger.log(Level.INFO, busString4.get());
-            logger.log(Level.INFO, busString5.get());
-            logger.log(Level.INFO, busString6.get());
+            logger.log(Level.INFO, busString1.get().toUpperCase());
+            logger.log(Level.INFO, busString2.get().toUpperCase());
+            logger.log(Level.INFO, busString3.get().toUpperCase());
+            logger.log(Level.INFO, busString4.get().toUpperCase());
+            logger.log(Level.INFO, busString5.get().toUpperCase());
+            logger.log(Level.INFO, busString6.get().toUpperCase());
+
+            logger.log(Level.INFO,stop6);
         } catch (Exception e) {
-            logger.log(Level.ERROR, e.getMessage());
+            logger.log(Level.ERROR, e.getMessage(),e.getCause());
         } finally {
             executorService.shutdown();
         }

@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.multi.routes.entity.Bus;
 import org.multi.routes.entity.BusStop;
-import org.multi.routes.entity.Passenger;
 import org.multi.routes.ulils.Validator;
 
 import java.util.concurrent.locks.Condition;
@@ -26,7 +25,7 @@ public class BusStopManager {
         lock.lock();
         try {
             while (Validator.isStopFull(busStop)) {
-                logger.log(Level.INFO, "There is not enough space for the bus," + bus + " the departure of those already stopped is awaiting");
+                logger.log(Level.INFO, busStop + " not enough space for the bus," + bus + " the departure of those already stopped is awaiting");
                 condition.await();
             }
             busStop.addBusToStop(bus);
@@ -49,12 +48,5 @@ public class BusStopManager {
         } finally {
             lock.unlock();
         }
-    }
-
-    public void addPassengerToLine(Passenger passenger) {
-        busStop.getLock().lock();
-        busStop.addPassengerToLine(passenger);
-        busStop.getCondition().signalAll();
-        busStop.getLock().unlock();
     }
 }

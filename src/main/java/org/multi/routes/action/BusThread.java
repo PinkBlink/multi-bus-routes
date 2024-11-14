@@ -10,7 +10,6 @@ import org.multi.routes.entity.Passenger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 
 public class BusThread implements Callable<String> {
     private final Logger logger;
@@ -33,9 +32,8 @@ public class BusThread implements Callable<String> {
     public void ride() {
         currentStop = stops.get(indexOfCurrentStop);
         currentStopManager.setBusStop(currentStop);
-        bus.setCurrentStop(currentStop);//зачем?
+        bus.setCurrentStop(currentStop);
         logger.log(Level.INFO, bus + " going from " + currentStop);
-        bus.setStop(false);
         currentStopManager.sendBus(bus);
         indexOfCurrentStop++;
     }
@@ -45,48 +43,40 @@ public class BusThread implements Callable<String> {
         currentStopManager.setBusStop(currentStop);
         bus.setCurrentStop(currentStop);
         currentStopManager.takeBus(bus);
-        bus.setStop(true);
         logger.log(Level.INFO, "The bus " + bus + " stopped at " + currentStop);
     }
 
     public void disembarkPassengers() {
-        if (bus.getPassengers().isEmpty()) {
-            logger.log(Level.INFO, bus + " is empty.");
-        } else {
-            List<Passenger> passengers = new ArrayList<>(bus.getPassengers());
-            for (Passenger passenger : passengers) {
-                passengerManager.setPassenger(passenger);
-                passengerManager.enterInBusStop();
-            }
+        List<Passenger> passengers = new ArrayList<>(bus.getPassengers());
+        for (Passenger passenger : passengers) {
+            passengerManager.setPassenger(passenger);
+            passengerManager.enterInBusStop();
         }
+
     }
 
     public void boardingPassengers() {
-        if (currentStop.getPassengerLine().isEmpty()) {
-            logger.log(Level.INFO, currentStop + " is empty.");
-        } else {
-            List<Passenger> passengers = new ArrayList<>(currentStop.getPassengerLine());
-            for (Passenger passenger : passengers) {
-                passengerManager.setPassenger(passenger);
-                passengerManager.enterInBus();
-            }
+        List<Passenger> passengers = new ArrayList<>(currentStop.getPassengerLine());
+        for (Passenger passenger : passengers) {
+            passengerManager.setPassenger(passenger);
+            passengerManager.enterInBus();
         }
     }
 
     @Override
     public String call() {
         while (indexOfCurrentStop < stops.size()) {
-            try {
-                stop();
-                disembarkPassengers();// после высадки если это финальная поездка убирать пассажиров вообще
-                TimeUnit.SECONDS.sleep(2);
-                boardingPassengers();
-                TimeUnit.SECONDS.sleep(2);
-                ride();
-            } catch (InterruptedException e) {
-                logger.log(Level.ERROR, e.getMessage());
-            }
+//            try {
+            stop();
+            disembarkPassengers();
+//                TimeUnit.SECONDS.sleep(2);
+            boardingPassengers();
+//                TimeUnit.SECONDS.sleep(2);
+            ride();
+//            } catch (InterruptedException e) {
+//                logger.log(Level.ERROR, e.getMessage());
+//            }
         }
-        return "Bus " + bus + " has completed its route";
+        return "\n------\n" + bus + " HAS COMPLETED" + "\n------\n" + bus.getPassengers() + "\n" + bus.getCurrentStop() + "\n------\n";
     }
 }
