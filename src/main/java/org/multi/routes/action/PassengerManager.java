@@ -35,27 +35,7 @@ public class PassengerManager {
             if (desireBusIndex != -1
                     && !Validator.isBusFull(stoppedBusses.get(desireBusIndex))
                     && !passenger.isArrivedAtDestination()) {
-                Bus desireBus = stoppedBusses.get(desireBusIndex);
-                Lock lockBus = desireBus.getLock();
-                lockBus.lock();
-                try {
-                    Condition conditionBus = desireBus.getCondition();
-                    currentStop.removePassengerFromLine(passenger);
-                    logger.log(Level.INFO, passenger + " was removed from :" + currentStop);
-                    logger.log(Level.INFO, "List of passengers:" + currentStop.getPassengerLine());
-                    if (!desireBus.getPassengers().contains(passenger)) {
-                        desireBus.addPassengerToBus(passenger);
-
-                    } else {
-                        logger.log(Level.ERROR, passenger + " already in bus ");
-                        logger.log(Level.ERROR, desireBus.getPassengers());
-                        logger.log(Level.ERROR, Thread.currentThread().getName());
-                    }
-                    passenger.setCurrentBus(desireBus);
-                    conditionBus.signalAll();
-                } finally {
-                    lockBus.unlock();
-                }
+                transferPassengerToBus(desireBusIndex, stoppedBusses);
             }
             conditionBusStop.signalAll();
         } finally {
@@ -73,6 +53,32 @@ public class PassengerManager {
 
         }
     }
+
+    private void transferPassengerToBus(int desireBusIndex, List<Bus> stoppedBusses) {
+        BusStop currentStop = passenger.getCurrentStop();
+        Bus desireBus = stoppedBusses.get(desireBusIndex);
+        Lock lockBus = desireBus.getLock();
+        lockBus.lock();
+        try {
+            Condition conditionBus = desireBus.getCondition();
+            currentStop.removePassengerFromLine(passenger);
+            logger.log(Level.INFO, passenger + " was removed from :" + currentStop);
+            logger.log(Level.INFO, "List of passengers:" + currentStop.getPassengerLine());
+            if (!desireBus.getPassengers().contains(passenger)) {
+                desireBus.addPassengerToBus(passenger);
+
+            } else {
+                logger.log(Level.ERROR, passenger + " already in bus ");
+                logger.log(Level.ERROR, desireBus.getPassengers());
+                logger.log(Level.ERROR, Thread.currentThread().getName());
+            }
+            passenger.setCurrentBus(desireBus);
+            conditionBus.signalAll();
+        } finally {
+            lockBus.unlock();
+        }
+    }
+
 
     private void transferPassengerToStop() {
         Bus currentBus = passenger.getCurrentBus();

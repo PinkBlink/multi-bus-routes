@@ -10,10 +10,10 @@ public class Passenger {
     private Bus currentBus;
     private boolean isArrivedAtDestination;
 
-    public Passenger(String name, BusStop destination, BusStop currentStop) {
+    public Passenger(String name, BusStop currentStop, BusStop destination) {
         this.name = name;
-        this.destination = destination;
         this.currentStop = currentStop;
+        this.destination = destination;
         currentStop.addPassengerToLine(this);
     }
 

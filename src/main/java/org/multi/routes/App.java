@@ -28,12 +28,12 @@ public class App {
         BusStop stop6 = new BusStop("6", 2);
 
         Passenger passenger1 = new Passenger("passenger 1", stop2, stop1);
-//        Passenger passenger2 = new Passenger("passenger 2", stop3, stop2);
-//        Passenger passenger3 = new Passenger("passenger 3", stop6, stop2);
-//        Passenger passenger4 = new Passenger("passenger 4", stop6, stop2);
-//        Passenger passenger5 = new Passenger("passenger 5", stop6, stop3);
-//        Passenger passenger6 = new Passenger("passenger 6", stop6, stop3);
-//        Passenger passenger7 = new Passenger("passenger 7", stop6, stop1);
+        Passenger passenger2 = new Passenger("passenger 2", stop3, stop2);
+        Passenger passenger3 = new Passenger("passenger 3", stop6, stop2);
+        Passenger passenger4 = new Passenger("passenger 4", stop6, stop2);
+        Passenger passenger5 = new Passenger("passenger 5", stop6, stop3);
+        Passenger passenger6 = new Passenger("passenger 6", stop6, stop3);
+        Passenger passenger7 = new Passenger("passenger 7", stop6, stop1);
 
 
         BusRoute route1 = new BusRoute(1, Arrays.asList(stop1, stop2, stop3, stop4, stop5, stop6));
