@@ -68,6 +68,7 @@ public class PassengerManager {
                 desireBus.addPassengerToBus(passenger);
 
             } else {
+                currentStop.removePassengerFromLine(passenger);
                 logger.log(Level.ERROR, passenger + " already in bus ");
                 logger.log(Level.ERROR, desireBus.getPassengers());
                 logger.log(Level.ERROR, Thread.currentThread().getName());

@@ -79,6 +79,12 @@ public class BusThreadTests {
         List<Passenger> expectedPassengersStop5 = Collections.singletonList(passenger5);
         List<Passenger> expectedPassengersStop6 = Collections.singletonList(passenger6);
 
+        logger.log(Level.INFO, "stop1--> " + stop1.getPassengerLine());
+        logger.log(Level.INFO, "stop2--> " + stop2.getPassengerLine());
+        logger.log(Level.INFO, "stop3--> " + stop3.getPassengerLine());
+        logger.log(Level.INFO, "stop4--> " + stop4.getPassengerLine());
+        logger.log(Level.INFO, "stop5--> " + stop5.getPassengerLine());
+        logger.log(Level.INFO, "stop6--> " + stop6.getPassengerLine());
         Assert.assertEquals(stop1.getPassengerLine(), expectedPassengersStop1);
         Assert.assertEquals(stop2.getPassengerLine(), expectedPassengersStop2);
         Assert.assertEquals(stop3.getPassengerLine(), expectedPassengersStop3);
