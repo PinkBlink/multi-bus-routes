@@ -10,6 +10,11 @@ import org.multi.routes.entity.Passenger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+
+import static org.apache.logging.log4j.Level.INFO;
 
 public class BusThread implements Callable<String> {
     private final Logger logger;
@@ -33,7 +38,7 @@ public class BusThread implements Callable<String> {
         currentStop = stops.get(indexOfCurrentStop);
         currentStopManager.setBusStop(currentStop);
         bus.setCurrentStop(currentStop);
-        logger.log(Level.INFO, bus + " going from " + currentStop);
+        logger.log(INFO, bus + " going from " + currentStop + " passengers -> " + bus.getPassengers());
         currentStopManager.sendBus(bus);
         indexOfCurrentStop++;
     }
@@ -43,7 +48,7 @@ public class BusThread implements Callable<String> {
         currentStopManager.setBusStop(currentStop);
         bus.setCurrentStop(currentStop);
         currentStopManager.takeBus(bus);
-        logger.log(Level.INFO, "The bus " + bus + " stopped at " + currentStop);
+        logger.log(INFO, "The bus " + bus + " stopped at " + currentStop + " passengers -> " + bus.getPassengers());
     }
 
     public void disembarkPassengers() {
@@ -57,6 +62,8 @@ public class BusThread implements Callable<String> {
 
     public void boardingPassengers() {
         List<Passenger> passengers = new ArrayList<>(currentStop.getPassengerLine());
+        logger.log(INFO, bus + " start to boarding passengers from " + currentStop);
+        logger.log(INFO, passengers);
         for (Passenger passenger : passengers) {
             passengerManager.setPassenger(passenger);
             passengerManager.enterInBus();
@@ -66,16 +73,28 @@ public class BusThread implements Callable<String> {
     @Override
     public String call() {
         while (indexOfCurrentStop < stops.size()) {
-//            try {
-            stop();
-            disembarkPassengers();
-//                TimeUnit.SECONDS.sleep(2);
-            boardingPassengers();
-//                TimeUnit.SECONDS.sleep(2);
-            ride();
-//            } catch (InterruptedException e) {
-//                logger.log(Level.ERROR, e.getMessage());
-//            }
+            Lock lockCurrentStop = currentStop.getLock();
+            Condition conditionCurrentStop = currentStop.getCondition();
+
+            lockCurrentStop.lock();
+            try {
+                while (currentStopManager.isLoading()) {
+                    conditionCurrentStop.await();
+                }
+                currentStopManager.setLoading(true);
+                stop();
+                disembarkPassengers();
+                TimeUnit.MICROSECONDS.sleep(13);
+                boardingPassengers();
+                TimeUnit.MICROSECONDS.sleep(13);
+                ride();
+                currentStopManager.setLoading(false);
+                conditionCurrentStop.signalAll();
+            } catch (InterruptedException e) {
+                logger.log(Level.ERROR, e.getMessage());
+            }finally {
+                lockCurrentStop.unlock();
+            }
         }
         return "\n------\n" + bus + " HAS COMPLETED" + "\n------\n" + bus.getPassengers() + "\n" + bus.getCurrentStop() + "\n------\n";
     }

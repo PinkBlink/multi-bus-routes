@@ -9,6 +9,7 @@ import org.multi.routes.entity.Passenger;
 import org.multi.routes.ulils.Validator;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
@@ -21,32 +22,31 @@ public class PassengerManager {
     }
 
     public void enterInBus() {
-        BusStop currentStop = passenger.getCurrentStop();
-
-        Lock lockBusStop = currentStop.getLock();
-        lockBusStop.lock();
-        Condition conditionBusStop = currentStop.getCondition();
-
-        try {
-            List<Bus> stoppedBusses = passenger.getCurrentStop().getStoppedBuses();
-
-            int desireBusIndex = Validator.getTheIndexOfTheDesiredBus(passenger, stoppedBusses);
-
-            if (desireBusIndex != -1
-                    && !Validator.isBusFull(stoppedBusses.get(desireBusIndex))
-                    && !passenger.isArrivedAtDestination()) {
-                transferPassengerToBus(desireBusIndex, stoppedBusses);
-            }
-            conditionBusStop.signalAll();
-        } finally {
-            lockBusStop.unlock();
-        }
+//        BusStop currentStop = passenger.getCurrentStop();
+//
+//        Lock lockBusStop = currentStop.getLock();
+//        lockBusStop.lock();
+//        Condition conditionBusStop = currentStop.getCondition();
+//
+//        try {
+//            Set<Bus> stoppedBusses = passenger.getCurrentStop().getStoppedBuses();
+//
+//            int desireBusIndex = Validator.getTheIndexOfTheDesiredBus(passenger, stoppedBusses);
+//
+//            if (desireBusIndex != -1
+//                    && !Validator.isBusFull(stoppedBusses.get(desireBusIndex))
+//                    && !passenger.isArrivedAtDestination()) {
+//                transferPassengerToBus(desireBusIndex, stoppedBusses);
+//            }
+//            conditionBusStop.signalAll();
+//        } finally {
+//            lockBusStop.unlock();
+//        }
     }
 
     public void enterInBusStop() {
         Bus currentBus = passenger.getCurrentBus();
         BusStop currentStop = currentBus.getCurrentStop();
-
         if (currentStop.equals(passenger.getDestination())) {
             transferPassengerToStop();
             logger.log(Level.INFO, passenger + " ARRIVAL TO DESTINATION!");

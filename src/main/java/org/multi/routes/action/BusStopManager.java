@@ -10,9 +10,21 @@ import org.multi.routes.ulils.Validator;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 
+import static org.apache.logging.log4j.Level.INFO;
+
 public class BusStopManager {
     private Logger logger;
     private BusStop busStop;
+
+    private boolean isLoading;
+
+    public boolean isLoading() {
+        return isLoading;
+    }
+
+    public void setLoading(boolean loading) {
+        isLoading = loading;
+    }
 
     public void setBusStop(BusStop busStop) {
         this.busStop = busStop;
@@ -25,10 +37,12 @@ public class BusStopManager {
         lock.lock();
         try {
             while (Validator.isStopFull(busStop)) {
-                logger.log(Level.INFO, busStop + " not enough space for the bus," + bus + " the departure of those already stopped is awaiting");
+                logger.log(INFO, busStop + " not enough space for the bus," + bus + " the departure of those already stopped is awaiting");
                 condition.await();
             }
             busStop.addBusToStop(bus);
+            logger.log(INFO, bus + " added to " + busStop);
+            logger.log(INFO, "stopped busses: " + busStop.getStoppedBuses());
             condition.signalAll();
         } catch (InterruptedException e) {
             System.out.println(e.getMessage());

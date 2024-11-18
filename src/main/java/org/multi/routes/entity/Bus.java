@@ -1,29 +1,39 @@
 package org.multi.routes.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.multi.routes.ulils.Validator;
+
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static org.apache.logging.log4j.Level.ERROR;
+import static org.apache.logging.log4j.Level.INFO;
 
-public class Bus {
+
+public class Bus implements Callable<String> {
+    private final Logger logger = LogManager.getLogger(this);
     private final int number;
     private final int maximumPassengerCapacity;
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
     private final BusRoute route;
-    private final List<Passenger> passengers;
-
+    private final Set<Passenger> passengers;
     private BusStop currentStop;
 
-    public Bus(int number, BusRoute route, int maximumPassengerCapacity , BusStop currentStop) {
+    private int startIndex;
+
+    public Bus(int number, BusRoute route, int maximumPassengerCapacity, BusStop currentStop) {
         this.number = number;
         this.route = route;
         this.currentStop = currentStop;
         this.maximumPassengerCapacity = maximumPassengerCapacity;
-        passengers = new ArrayList<>(maximumPassengerCapacity);
+        passengers = new HashSet<>(maximumPassengerCapacity);
+        startIndex = route.getStops().indexOf(currentStop);
     }
 
     public int getMaximumPassengerCapacity() {
@@ -50,15 +60,101 @@ public class Bus {
         return route;
     }
 
-    public List<Passenger> getPassengers() {
+    public Set<Passenger> getPassengers() {
         return passengers;
     }
+
     public void addPassengerToBus(Passenger passenger) {
-        passengers.add(passenger);
+        if (!Validator.isBusFull(this)) {
+            passengers.add(passenger);
+        } else {
+            logger.log(INFO, this + " is full. Passengers :" + passengers);
+        }
     }
 
     public void removePassenger(Passenger passenger) {
         passengers.remove(passenger);
+    }
+
+    public void ride() {
+        currentStop.removeBusFromStop(this);
+        logger.log(INFO, this + " going from " + currentStop);
+        startIndex++;
+    }
+
+    public void stop() {
+        currentStop = route.getStops().get(startIndex);
+        currentStop.addBusToStop(this);
+    }
+
+    public void disembarkationPassengers() {
+        lock.lock();
+        try {
+            logger.log(INFO, this + " began disembarking passengers;");
+            Set<Passenger> passengerCopy = new HashSet<>(passengers);
+            for (Passenger passenger : passengerCopy) {
+                if (passenger.getDestination().equals(currentStop)) {
+                    passengers.remove(passenger);
+                    logger.log(INFO, passenger + " removed from " + this + " to " + currentStop);
+                    currentStop.addPassengerToLine(passenger);
+                    if (currentStop.equals(passenger.getDestination())) {
+                        passenger.setArrivedAtDestination(true);
+                    }
+                }
+            }
+            condition.signalAll();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void boardingPassengers() {
+        logger.log(INFO, this + " began boarding passengers;");
+        Set<Passenger> passengersInLineCopy;
+        currentStop.getLock().lock();
+        try {
+            passengersInLineCopy = new HashSet<>(currentStop.getPassengerLine());
+        } finally {
+            currentStop.getLock().unlock();
+        }
+
+        lock.lock();
+        try {
+            for (Passenger passenger : passengersInLineCopy) {
+                if (!Validator.isBusFull(this)
+                        && Validator.willGetDestination(passenger, this)
+                        && !passenger.isArrivedAtDestination()) {
+                    currentStop.getLock().lock();
+                    try {
+                        currentStop.removePassengerFromLine(passenger);
+                    } finally {
+                        currentStop.getLock().unlock();
+                    }
+                    passengers.add(passenger);
+                    logger.log(INFO, passenger + " added to " + this);
+                }
+            }
+            condition.signalAll();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+
+    @Override
+    public String call() {
+        while (startIndex < route.getStops().size()) {
+            stop();
+            disembarkationPassengers();
+            boardingPassengers();
+            ride();
+//            try {
+//                TimeUnit.SECONDS.sleep(2);
+//            } catch (InterruptedException e) {
+//                logger.log(ERROR, e.getMessage());
+//            }
+        }
+        return this + " FINISHED THE ROUTE (LAST STATION WAS : " + currentStop + ")";
     }
 
     @Override
@@ -80,6 +176,6 @@ public class Bus {
 
     @Override
     public String toString() {
-        return "Bus #" + number;
+        return "[BUS #" + number + " passengers in bus: " + passengers + "]";
     }
 }

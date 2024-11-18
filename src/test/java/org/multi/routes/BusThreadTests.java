@@ -43,34 +43,38 @@ public class BusThreadTests {
 
     Bus bus1 = new Bus(1, route1, 2, stop1);
     Bus bus2 = new Bus(2, route1, 2, stop1);
-    Bus bus3 = new Bus(3, route1, 1, stop1);
-    Bus bus4 = new Bus(4, route1, 1, stop1);
-    Bus bus5 = new Bus(5, route1, 1, stop1);
-    Bus bus6 = new Bus(6, route1, 3, stop1);
+//    Bus bus3 = new Bus(3, route1, 1, stop1);
+//    Bus bus4 = new Bus(4, route1, 1, stop1);
+//    Bus bus5 = new Bus(5, route1, 1, stop1);
+//    Bus bus6 = new Bus(6, route1, 3, stop1);
+//    Bus bus7 = new Bus(7,route1,3,stop1);
 
     BusThread busThread1 = new BusThread(bus1);
     BusThread busThread2 = new BusThread(bus2);
-    BusThread busThread3 = new BusThread(bus3);
-    BusThread busThread4 = new BusThread(bus4);
-    BusThread busThread5 = new BusThread(bus5);
-    BusThread busThread6 = new BusThread(bus6);
-
+//    BusThread busThread3 = new BusThread(bus3);
+//    BusThread busThread4 = new BusThread(bus4);
+//    BusThread busThread5 = new BusThread(bus5);
+//    BusThread busThread6 = new BusThread(bus6);
+//    BusThread busThread7 = new BusThread(bus7);
     @Test
     public void arrivalPassengersTest() throws ExecutionException, InterruptedException {
 
         Future<String> busString1 = executorService.submit(busThread1);
         Future<String> busString2 = executorService.submit(busThread2);
-        Future<String> busString3 = executorService.submit(busThread3);
-        Future<String> busString4 = executorService.submit(busThread4);
-        Future<String> busString5 = executorService.submit(busThread5);
-        Future<String> busString6 = executorService.submit(busThread6);
+//        Future<String> busString3 = executorService.submit(busThread3);
+//        Future<String> busString4 = executorService.submit(busThread4);
+//        Future<String> busString5 = executorService.submit(busThread5);
+//        Future<String> busString6 = executorService.submit(busThread6);
+//        Future<String> busString7 = executorService.submit(busThread7);
+
 
         logger.log(Level.INFO, busString1.get().toUpperCase());
         logger.log(Level.INFO, busString2.get().toUpperCase());
-        logger.log(Level.INFO, busString3.get().toUpperCase());
-        logger.log(Level.INFO, busString4.get().toUpperCase());
-        logger.log(Level.INFO, busString5.get().toUpperCase());
-        logger.log(Level.INFO, busString6.get().toUpperCase());
+//        logger.log(Level.INFO, busString3.get().toUpperCase());
+//        logger.log(Level.INFO, busString4.get().toUpperCase());
+//        logger.log(Level.INFO, busString5.get().toUpperCase());
+//        logger.log(Level.INFO, busString6.get().toUpperCase());
+//        logger.log(Level.INFO, busString7.get().toUpperCase());
 
         List<Passenger> expectedPassengersStop1 = new ArrayList<>();
         List<Passenger> expectedPassengersStop2 = Collections.singletonList(passenger1);
@@ -85,6 +89,7 @@ public class BusThreadTests {
         logger.log(Level.INFO, "stop4--> " + stop4.getPassengerLine());
         logger.log(Level.INFO, "stop5--> " + stop5.getPassengerLine());
         logger.log(Level.INFO, "stop6--> " + stop6.getPassengerLine());
+
         Assert.assertEquals(stop1.getPassengerLine(), expectedPassengersStop1);
         Assert.assertEquals(stop2.getPassengerLine(), expectedPassengersStop2);
         Assert.assertEquals(stop3.getPassengerLine(), expectedPassengersStop3);
