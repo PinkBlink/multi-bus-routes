@@ -121,12 +121,14 @@ public class Bus implements Callable<String> {
                         && !passenger.isArrivedAtDestination()) {
                     currentStop.getLock().lock();
                     try {
-                        currentStop.removePassengerFromLine(passenger);
+                        if (currentStop.getPassengerLine().contains(passenger)) {
+                            currentStop.removePassengerFromLine(passenger);
+                            addPassengerToBus(passenger);
+                            logger.log(INFO, passenger + " added to " + this);
+                        }
                     } finally {
                         currentStop.getLock().unlock();
                     }
-                    addPassengerToBus(passenger);
-                    logger.log(INFO, passenger + " added to " + this);
                 }
             }
         } finally {
