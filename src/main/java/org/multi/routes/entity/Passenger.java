@@ -4,17 +4,15 @@ import java.util.Objects;
 
 public class Passenger {
     private final String name;
-    private final BusStop destination;
+    private BusStop destination;
     private BusStop currentStop;
     private Bus currentBus;
     private boolean isArrivedAtDestination;
 
-    public Passenger(String name, BusStop currentStop, BusStop destination) {
+    public Passenger(String name) {
         this.name = name;
-        this.currentStop = currentStop;
-        this.destination = destination;
-        currentStop.addPassengerToLine(this);
     }
+
 
     public BusStop getDestination() {
         return destination;
@@ -35,6 +33,9 @@ public class Passenger {
     public void setCurrentStop(BusStop currentStop) {
         this.currentStop = currentStop;
         isArrivedAtDestination = currentStop.equals(destination);
+    }
+    public void setDestination(BusStop destination){
+        this.destination = destination;
     }
 
     public Bus getCurrentBus() {

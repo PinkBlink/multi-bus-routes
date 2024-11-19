@@ -92,7 +92,7 @@ public class Bus implements Callable<String> {
             Set<Passenger> passengerCopy = new HashSet<>(passengers);
             for (Passenger passenger : passengerCopy) {
                 if (passenger.getDestination().equals(currentStop)) {
-                    passengers.remove(passenger);
+                    removePassenger(passenger);
                     logger.log(INFO, passenger + " removed from " + this + " to " + currentStop);
                     currentStop.addPassengerToLine(passenger);
                     passenger.setCurrentStop(currentStop);
@@ -125,7 +125,7 @@ public class Bus implements Callable<String> {
                     } finally {
                         currentStop.getLock().unlock();
                     }
-                    passengers.add(passenger);
+                    addPassengerToBus(passenger);
                     logger.log(INFO, passenger + " added to " + this);
                 }
             }
@@ -133,7 +133,6 @@ public class Bus implements Callable<String> {
             lock.unlock();
         }
     }
-
 
     @Override
     public String call() {

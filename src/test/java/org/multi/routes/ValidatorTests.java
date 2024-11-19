@@ -41,8 +41,12 @@ public class ValidatorTests {
         BusRoute busRoute = new BusRoute(1, Arrays.asList(stop1, stop2, stop3));
         emptyBus = new Bus(1, busRoute, 2, stop1);
         fullBus = new Bus(1, busRoute, 1, stop1);
-        passenger1 = new Passenger("1", stop1, stop3);
-        passenger2 = new Passenger("2", stop1, stop4);
+        passenger1 = new Passenger("1");
+        passenger1.setCurrentStop(stop1);
+        passenger1.setDestination(stop3);
+        passenger2 = new Passenger("2");
+        passenger1.setCurrentStop(stop1);
+        passenger2.setDestination(stop4);
         fullBus.addPassengerToBus(passenger1);
         fullBus.addPassengerToBus(passenger2);
     }

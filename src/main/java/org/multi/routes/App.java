@@ -20,22 +20,40 @@ public class App {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(2);
-        BusStop busStop1 = new BusStop("stop1", 1);
+        BusStop busStop1 = new BusStop("stop1", 2);
         BusStop busStop2 = new BusStop("stop2", 2);
-        BusStop busStop3 = new BusStop("stop3", 1);
+        BusStop busStop3 = new BusStop("stop3", 3);
         BusStop busStop4 = new BusStop("stop4", 2);
 
 
-        Passenger passenger1 = new Passenger("passenger1", busStop1, busStop2);
-        Passenger passenger2 = new Passenger("passenger2", busStop1, busStop3);
-        Passenger passenger3 = new Passenger("passenger3", busStop1, busStop2);
-        Passenger passenger4 = new Passenger("passenger4", busStop1, busStop4);
+        Passenger passenger1 = new Passenger("passenger1");
+        passenger1.setCurrentStop(busStop1);
+        passenger1.setDestination(busStop2);
+        busStop1.addPassengerToLine(passenger1);
+
+        Passenger passenger2 = new Passenger("passenger2");
+        passenger2.setCurrentStop(busStop1);
+        passenger2.setDestination(busStop3);
+        busStop1.addPassengerToLine(passenger2);
+
+
+        Passenger passenger3 = new Passenger("passenger3");
+        passenger3.setCurrentStop(busStop1);
+        passenger3.setDestination(busStop4);
+        busStop1.addPassengerToLine(passenger3);
+
+
+        Passenger passenger4 = new Passenger("passenger4");
+        passenger4.setCurrentStop(busStop1);
+        passenger4.setDestination(busStop4);
+        busStop1.addPassengerToLine(passenger4);
+
 
 
         BusRoute route = new BusRoute(1, Arrays.asList(busStop1, busStop2, busStop3, busStop4));
 
-        Bus bus1 = new Bus(1, route, 1, busStop1);
-        Bus bus2 = new Bus(2, route, 1, busStop1);
+        Bus bus1 = new Bus(1, route, 2, busStop1);
+        Bus bus2 = new Bus(2, route, 2, busStop1);
         Bus bus3 = new Bus(3, route, 2, busStop1);
 
         Future<String> stringFuture1 = executorService.submit(bus1);
@@ -45,13 +63,14 @@ public class App {
         logger.log(INFO, stringFuture1.get());
         logger.log(INFO, stringFuture2.get());
         logger.log(INFO, stringFuture3.get());
-        logger.log(INFO, bus1.getCurrentStop()+"<-- bus1 current stop");
-        logger.log(INFO, bus1.getCurrentStop()+"<-- bus2 current stop");
-        logger.log(INFO, bus1.getCurrentStop()+"<-- bus3 current stop");
-        logger.log(INFO,"stop 1 busses/passengers : " + busStop1.getPassengerLine() + " / "+ busStop1.getStoppedBuses());
-        logger.log(INFO,"stop 2 busses/passengers : " + busStop2.getPassengerLine() + " / "+ busStop2.getStoppedBuses());
-        logger.log(INFO,"stop 3 busses/passengers : " + busStop3.getPassengerLine() + " / "+ busStop3.getStoppedBuses());
-        logger.log(INFO,"stop 4 busses/passengers : " + busStop4.getPassengerLine() + " / "+ busStop4.getStoppedBuses());
+        logger.log(INFO, bus1.getCurrentStop() + "<-- bus1 current stop");
+        logger.log(INFO, bus1.getCurrentStop() + "<-- bus2 current stop");
+        logger.log(INFO, bus1.getCurrentStop() + "<-- bus3 current stop");
+        logger.log(INFO, "stop 1 busses/passengers : " + busStop1.getPassengerLine() + " / " + busStop1.getStoppedBuses());
+        logger.log(INFO, "stop 2 busses/passengers : " + busStop2.getPassengerLine() + " / " + busStop2.getStoppedBuses());
+        logger.log(INFO, "stop 3 busses/passengers : " + busStop3.getPassengerLine() + " / " + busStop3.getStoppedBuses());
+        logger.log(INFO, "stop 4 busses/passengers : " + busStop4.getPassengerLine() + " / " + busStop4.getStoppedBuses());
+
         executorService.shutdown();
     }
 }

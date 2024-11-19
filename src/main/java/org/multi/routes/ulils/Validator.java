@@ -28,16 +28,18 @@ public class Validator {
             }
         }
         return -1;
-    }// на его основе сделать булеан а не наоборот
+    }//mb delete
 
-    public static boolean isValidBusInput(String input){
-        return Pattern.matches(TextConstants.BUS_REGEX,input);
+    public static boolean isValidBusInput(String input) {
+        return Pattern.matches(TextConstants.BUS_REGEX, input);
     }
-    public static boolean isValidBusStopInput(String input){
-        return Pattern.matches(TextConstants.BUS_STOP_REGEX,input);
+
+    public static boolean isValidBusStopInput(String input) {
+        return Pattern.matches(TextConstants.BUS_STOP_REGEX, input);
     }
-    public static boolean isValidPassengerInput(String input){
-        return Pattern.matches(TextConstants.PASSENGER_REGEX,input);
+
+    public static boolean isValidPassengerInput(String input) {
+        return Pattern.matches(TextConstants.PASSENGER_REGEX, input);
     }
 
     public static boolean isBusFull(Bus bus) {
@@ -48,5 +50,15 @@ public class Validator {
         int amountStoppedBuses = busStop.getStoppedBuses().size();
         int maxBusesCapacity = busStop.getMaxBusesCapacity();
         return amountStoppedBuses == maxBusesCapacity;
+    }
+
+    public static boolean isValidNumberString(String string) {
+        for (int i = 0; i < string.length(); i++) {
+            char currentChar = string.charAt(i);
+            if (!Character.isDigit(currentChar)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
