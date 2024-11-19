@@ -25,11 +25,11 @@ public class DataFileReader {
         }
     }
 
-    public static List<String> getBussesList() throws NoFileException {
+    public static List<String> getBusesList() throws NoFileException {
         try {
-            return readFromFile(PathConstants.PATH_TO_BUSSES);
+            return readFromFile(PathConstants.PATH_TO_BUSES);
         } catch (IOException e) {
-            String errorMessage = ERROR_MESSAGE + PathConstants.PATH_TO_BUSSES;
+            String errorMessage = ERROR_MESSAGE + PathConstants.PATH_TO_BUSES;
             logger.log(Level.ERROR, errorMessage);
             throw new NoFileException(errorMessage);
         }

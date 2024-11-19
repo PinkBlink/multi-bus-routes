@@ -17,15 +17,15 @@ public class BusStop {
     private final Condition condition = lock.newCondition();
 
     private final String stopName;
-    private final int maxBussesCapacity;
+    private final int maxBusesCapacity;
     private final Set<Bus> stoppedBuses;
 
     private final Set<Passenger> passengerLine = new HashSet<>();
 
-    public BusStop(String stopName, int maxBussesCapacity) {
+    public BusStop(String stopName, int maxBusesCapacity) {
         this.stopName = stopName;
-        this.maxBussesCapacity = maxBussesCapacity;
-        this.stoppedBuses = new HashSet<>(maxBussesCapacity);
+        this.maxBusesCapacity = maxBusesCapacity;
+        this.stoppedBuses = new HashSet<>(maxBusesCapacity);
     }
 
     public Lock getLock() {
@@ -43,12 +43,12 @@ public class BusStop {
     public void addBusToStop(Bus bus) {
         lock.lock();
         try {
-            while (stoppedBuses.size() == maxBussesCapacity) {
+            while (stoppedBuses.size() == maxBusesCapacity) {
                 condition.await();
             }
             stoppedBuses.add(bus);
             logger.log(INFO, bus + " arrived at the stop " + this);
-            logger.log(INFO, this + " stopped busses : " + stoppedBuses);
+            logger.log(INFO, this + " stopped buses : " + stoppedBuses);
             condition.signalAll();
         } catch (InterruptedException e) {
             logger.log(ERROR, e.getMessage());
@@ -62,7 +62,7 @@ public class BusStop {
         try {
             stoppedBuses.remove(bus);
             logger.log(INFO, bus + " was removed from " + this);
-            logger.log(INFO, this + " stopped busses : " + stoppedBuses);
+            logger.log(INFO, this + " stopped buses : " + stoppedBuses);
             condition.signalAll();
         } finally {
             lock.unlock();
@@ -93,8 +93,8 @@ public class BusStop {
         return passengerLine;
     }
 
-    public int getMaxBussesCapacity() {
-        return maxBussesCapacity;
+    public int getMaxBusesCapacity() {
+        return maxBusesCapacity;
     }
 
     @Override
@@ -105,13 +105,13 @@ public class BusStop {
         if (!(o instanceof BusStop busStop)) {
             return false;
         }
-        return maxBussesCapacity == busStop.maxBussesCapacity
+        return maxBusesCapacity == busStop.maxBusesCapacity
                 && Objects.equals(stopName, busStop.stopName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(stopName, maxBussesCapacity);
+        return Objects.hash(stopName, maxBusesCapacity);
     }
 
     @Override

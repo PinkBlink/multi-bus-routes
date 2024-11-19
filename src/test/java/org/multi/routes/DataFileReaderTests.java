@@ -15,7 +15,7 @@ import java.util.List;
 
 public class DataFileReaderTests {
     private List<String> expectedPassengersList;
-    private List<String> expectedBussesList;
+    private List<String> expectedBusesList;
 
     private List<String> expectedBusStopsList;
 
@@ -24,7 +24,7 @@ public class DataFileReaderTests {
     @BeforeTest
     public void setUp() {
         expectedPassengersList = Arrays.asList("passenger: 1", "passenger: 2", "passenger: 3");
-        expectedBussesList = Arrays.asList("number: 1", "number: 2", "number: 3");
+        expectedBusesList = Arrays.asList("number: 1", "number: 2", "number: 3");
         expectedBusStopsList = Arrays.asList("stop: 1", "stop: 2", "stop: 3");
     }
 
@@ -39,10 +39,10 @@ public class DataFileReaderTests {
     }
 
     @Test
-    public void getBussesListTest() {
+    public void getBusesListTest() {
         try {
-            List<String> actual = DataFileReader.getBussesList();
-            Assert.assertEquals(actual, expectedBussesList);
+            List<String> actual = DataFileReader.getBusesList();
+            Assert.assertEquals(actual, expectedBusesList);
         } catch (NoFileException e) {
             logger.log(Level.ERROR, e.getMessage());
         }

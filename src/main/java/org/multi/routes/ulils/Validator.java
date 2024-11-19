@@ -45,8 +45,8 @@ public class Validator {
     }
 
     public static boolean isStopFull(BusStop busStop) {
-        int amountStoppedBusses = busStop.getStoppedBuses().size();
-        int maxBussesCapacity = busStop.getMaxBussesCapacity();
-        return amountStoppedBusses == maxBussesCapacity;
+        int amountStoppedBuses = busStop.getStoppedBuses().size();
+        int maxBusesCapacity = busStop.getMaxBusesCapacity();
+        return amountStoppedBuses == maxBusesCapacity;
     }
 }
