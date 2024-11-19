@@ -1,9 +1,7 @@
 package org.multi.routes;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.multi.routes.action.BusThread;
 import org.multi.routes.entity.Bus;
 import org.multi.routes.entity.BusRoute;
 import org.multi.routes.entity.BusStop;
@@ -27,9 +25,10 @@ public class App {
         BusStop busStop3 = new BusStop("stop3", 1);
         BusStop busStop4 = new BusStop("stop4", 2);
 
-        Passenger passenger1 = new Passenger("passenger1", busStop1, busStop4);
-        Passenger passenger2 = new Passenger("passenger2", busStop1, busStop4);
-        Passenger passenger3 = new Passenger("passenger3", busStop1, busStop4);
+
+        Passenger passenger1 = new Passenger("passenger1", busStop1, busStop2);
+        Passenger passenger2 = new Passenger("passenger2", busStop1, busStop3);
+        Passenger passenger3 = new Passenger("passenger3", busStop1, busStop2);
         Passenger passenger4 = new Passenger("passenger4", busStop1, busStop4);
 
 
@@ -53,5 +52,6 @@ public class App {
         logger.log(INFO,"stop 2 busses/passengers : " + busStop2.getPassengerLine() + " / "+ busStop2.getStoppedBuses());
         logger.log(INFO,"stop 3 busses/passengers : " + busStop3.getPassengerLine() + " / "+ busStop3.getStoppedBuses());
         logger.log(INFO,"stop 4 busses/passengers : " + busStop4.getPassengerLine() + " / "+ busStop4.getStoppedBuses());
+        executorService.shutdown();
     }
 }

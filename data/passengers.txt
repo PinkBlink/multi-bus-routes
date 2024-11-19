@@ -1,3 +1,10 @@
-passenger: 1
-passenger: 2
-passenger: 3
+passenger: James Anderson
+passenger: Emily Parker
+passenger: Michael Bennett
+passenger: Sophia Harris
+passenger: William Carter
+passenger: Olivia Morgan
+passenger: Alexander Scott
+passenger: Charlotte Thompson
+passenger: Benjamin Wright
+passenger: Amelia Collins

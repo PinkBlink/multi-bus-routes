@@ -1,6 +1,5 @@
 package org.multi.routes.entity;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +20,7 @@ public class BusStop {
     private final int maxBussesCapacity;
     private final Set<Bus> stoppedBuses;
 
-    private Set<Passenger> passengerLine = new HashSet<>();
+    private final Set<Passenger> passengerLine = new HashSet<>();
 
     public BusStop(String stopName, int maxBussesCapacity) {
         this.stopName = stopName;
@@ -56,7 +55,6 @@ public class BusStop {
         } finally {
             lock.unlock();
         }
-        stoppedBuses.add(bus);
     }
 
     public void removeBusFromStop(Bus bus) {

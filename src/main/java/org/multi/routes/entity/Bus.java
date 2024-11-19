@@ -6,12 +6,10 @@ import org.multi.routes.ulils.Validator;
 
 import java.util.*;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import static org.apache.logging.log4j.Level.ERROR;
 import static org.apache.logging.log4j.Level.INFO;
 
 
@@ -25,7 +23,7 @@ public class Bus implements Callable<String> {
     private final Set<Passenger> passengers;
     private BusStop currentStop;
 
-    private int startIndex;
+    private int index;
 
     public Bus(int number, BusRoute route, int maximumPassengerCapacity, BusStop currentStop) {
         this.number = number;
@@ -33,7 +31,7 @@ public class Bus implements Callable<String> {
         this.currentStop = currentStop;
         this.maximumPassengerCapacity = maximumPassengerCapacity;
         passengers = new HashSet<>(maximumPassengerCapacity);
-        startIndex = route.getStops().indexOf(currentStop);
+        index = route.getStops().indexOf(currentStop);
     }
 
     public int getMaximumPassengerCapacity() {
@@ -79,11 +77,11 @@ public class Bus implements Callable<String> {
     public void ride() {
         currentStop.removeBusFromStop(this);
         logger.log(INFO, this + " going from " + currentStop);
-        startIndex++;
+        index++;
     }
 
     public void stop() {
-        currentStop = route.getStops().get(startIndex);
+        currentStop = route.getStops().get(index);
         currentStop.addBusToStop(this);
     }
 
@@ -97,12 +95,9 @@ public class Bus implements Callable<String> {
                     passengers.remove(passenger);
                     logger.log(INFO, passenger + " removed from " + this + " to " + currentStop);
                     currentStop.addPassengerToLine(passenger);
-                    if (currentStop.equals(passenger.getDestination())) {
-                        passenger.setArrivedAtDestination(true);
-                    }
+                    passenger.setCurrentStop(currentStop);
                 }
             }
-            condition.signalAll();
         } finally {
             lock.unlock();
         }
@@ -134,7 +129,6 @@ public class Bus implements Callable<String> {
                     logger.log(INFO, passenger + " added to " + this);
                 }
             }
-            condition.signalAll();
         } finally {
             lock.unlock();
         }
@@ -143,16 +137,11 @@ public class Bus implements Callable<String> {
 
     @Override
     public String call() {
-        while (startIndex < route.getStops().size()) {
+        while (index < route.getStops().size()) {
             stop();
             disembarkationPassengers();
             boardingPassengers();
             ride();
-//            try {
-//                TimeUnit.SECONDS.sleep(2);
-//            } catch (InterruptedException e) {
-//                logger.log(ERROR, e.getMessage());
-//            }
         }
         return this + " FINISHED THE ROUTE (LAST STATION WAS : " + currentStop + ")";
     }

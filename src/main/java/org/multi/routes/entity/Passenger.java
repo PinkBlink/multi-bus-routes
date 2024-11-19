@@ -5,7 +5,6 @@ import java.util.Objects;
 public class Passenger {
     private final String name;
     private final BusStop destination;
-
     private BusStop currentStop;
     private Bus currentBus;
     private boolean isArrivedAtDestination;
@@ -35,6 +34,7 @@ public class Passenger {
 
     public void setCurrentStop(BusStop currentStop) {
         this.currentStop = currentStop;
+        isArrivedAtDestination = currentStop.equals(destination);
     }
 
     public Bus getCurrentBus() {
