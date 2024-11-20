@@ -52,9 +52,12 @@ public class App {
 
         BusRoute route = new BusRoute(1, Arrays.asList(busStop1, busStop2, busStop3, busStop4));
 
-        Bus bus1 = new Bus(1, route, 2, busStop1);
-        Bus bus2 = new Bus(2, route, 2, busStop1);
-        Bus bus3 = new Bus(3, route, 2, busStop1);
+        Bus bus1 = new Bus(1, 2);
+        Bus bus2 = new Bus(2, 2);
+        Bus bus3 = new Bus(3, 2);
+        bus1.setRoute(route);
+        bus2.setRoute(route);
+        bus3.setRoute(route);
 
         Future<String> stringFuture1 = executorService.submit(bus1);
         Future<String> stringFuture2 = executorService.submit(bus2);

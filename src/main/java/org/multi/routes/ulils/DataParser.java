@@ -23,15 +23,8 @@ public class DataParser {
         try {
             List<String> busStopStringFromData = DataFileReader.getBusStopsList();
             for (String busStopString : busStopStringFromData) {
-                String[] separatedBusStop = getCleanString(busStopString, BUS_STOP_STRING, MAX_BUSES_CAPACITY_STRING)
-                        .split(SEPARATOR);
-                String busStopName = separatedBusStop[0];
-                if (Validator.isValidNumberString(separatedBusStop[1])) {
-                    int maxBusesCapacity = Integer.parseInt(separatedBusStop[1]);
-                    busStops.add(new BusStop(busStopName, maxBusesCapacity));
-                } else {
-                    throw new IllegalStringException(separatedBusStop[1] + " is not a number");
-                }
+                BusStop busStop = getBusStopFromString(busStopString);
+                busStops.add(busStop);
             }
         } catch (NoFileException e) {
             logger.log(Level.ERROR, e.getMessage());
@@ -40,7 +33,17 @@ public class DataParser {
     }
 
     public static List<Bus> getBusesFromData() {
-        return null;
+        List<Bus> busesList = new ArrayList<>();
+        try {
+            List<String> busesStringList = DataFileReader.getBusesList();
+            for (String busString : busesStringList) {
+                Bus bus = getBusFromString(busString);
+                busesList.add(bus);
+            }
+        } catch (NoFileException e) {
+            logger.log(Level.ERROR, e.getMessage());
+        }
+        return busesList;
     }
 
     public static List<Passenger> getPassengersFromData() {
@@ -48,7 +51,6 @@ public class DataParser {
         try {
             List<String> passengerStringList = DataFileReader.getPassengersList();
             for (String passenger : passengerStringList) {
-
                 passengerList.add(getPassengerFromString(passenger));
             }
         } catch (NoFileException e) {
@@ -65,16 +67,45 @@ public class DataParser {
         return string.replace(regexFirst, "").replace(regexSecond, SEPARATOR);
     }
 
-    private static Passenger getPassengerFromString(String passenger) {
-        if (Validator.isValidPassengerInput(passenger)) {
-            String name = getCleanString(passenger, PASSENGER_BEGIN_STRING);
+    private static Passenger getPassengerFromString(String passengerString) {
+        if (Validator.isValidPassengerInput(passengerString)) {
+            String name = getCleanString(passengerString, PASSENGER_BEGIN_STRING);
             return new Passenger(name);
         } else {
-            throw new IllegalStringException("Wrong string :" + passenger);
+            throw new IllegalStringException("Wrong string :" + passengerString);
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(getPassengersFromData());
+    private static Bus getBusFromString(String busString) {
+        if (!Validator.isValidBusInput(busString)) {
+            throw new IllegalStringException(busString + "string does not match Bus;");
+        }
+        String[] separatedBusString = getCleanString(busString, BUS_NUMBER_STRING, MAX_PASSENGERS_CAPACITY_STRING)
+                .split(SEPARATOR);
+        if (Validator.isValidNumberString(separatedBusString[0])
+                && Validator.isValidNumberString(separatedBusString[1])) {
+            int number = Integer.parseInt(separatedBusString[0]);
+            int maxPassengerCapacity = Integer.parseInt(separatedBusString[1]);
+            return new Bus(number, maxPassengerCapacity);
+        } else {
+            throw new IllegalStringException(separatedBusString[0] + " or "
+                    + separatedBusString[1] + "not a valid number");
+        }
+    }
+
+    private static BusStop getBusStopFromString(String busStopString) {
+        if (!Validator.isValidBusStopInput(busStopString)) {
+            throw new IllegalStringException(busStopString + " does not much BusStop;");
+        }
+        String[] separatedBusStopString = getCleanString(busStopString, BUS_STOP_STRING, MAX_BUSES_CAPACITY_STRING)
+                .split(SEPARATOR);
+        String busStopName = separatedBusStopString[0];
+        if (Validator.isValidNumberString(separatedBusStopString[1])) {
+            int maxBusesCapacity = Integer.parseInt(separatedBusStopString[1]);
+            return new BusStop(busStopName, maxBusesCapacity);
+        } else {
+            throw new IllegalStringException(separatedBusStopString[1] + " is not a number");
+        }
+
     }
 }

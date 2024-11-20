@@ -19,19 +19,20 @@ public class Bus implements Callable<String> {
     private final int maximumPassengerCapacity;
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
-    private final BusRoute route;
+    private BusRoute route;
     private final Set<Passenger> passengers;
     private BusStop currentStop;
 
     private int index;
 
-    public Bus(int number, BusRoute route, int maximumPassengerCapacity, BusStop currentStop) {
+    public Bus(int number, int maximumPassengerCapacity) {
         this.number = number;
-        this.route = route;
-        this.currentStop = currentStop;
         this.maximumPassengerCapacity = maximumPassengerCapacity;
         passengers = new HashSet<>(maximumPassengerCapacity);
-        index = route.getStops().indexOf(currentStop);
+    }
+
+    public Lock getLock() {
+        return lock;
     }
 
     public int getMaximumPassengerCapacity() {
@@ -46,10 +47,6 @@ public class Bus implements Callable<String> {
         this.currentStop = currentStop;
     }
 
-    public Lock getLock() {
-        return lock;
-    }
-
     public Condition getCondition() {
         return condition;
     }
@@ -60,6 +57,12 @@ public class Bus implements Callable<String> {
 
     public Set<Passenger> getPassengers() {
         return passengers;
+    }
+
+    public void setRoute(BusRoute route) {
+        this.route = route;
+        index = 0;
+        currentStop = route.getStops().get(index);
     }
 
     public void addPassengerToBus(Passenger passenger) {
