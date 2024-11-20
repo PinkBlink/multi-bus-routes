@@ -25,12 +25,33 @@ public class NavigateManager {
             return new ArrayList<>(Collections.singletonList(passenger.getDestination()));
         }
 
+        return null;
     }
 
-    private BusStop getCommonBusStop(BusRoute first, BusRoute second) {
+    private List<BusStop> getCommonBusStop(BusRoute first, BusRoute second) {
         List<BusStop> firstStops = first.getStops();
         List<BusStop> secondStops = second.getStops();
-        List<BusStop> result = Stream.of(firstStops, secondStops).filter((BusStop s1, BusStop s2) -> s1.equals(s2)).collect(Collectors.toList());
-        return result.getLast();
+        return firstStops.stream()
+                .filter(secondStops::contains)
+                .toList();
+    }
+
+    public static void main(String[] args) {
+        BusStop busStop1 = new BusStop("1", 2);
+        BusStop busStop2 = new BusStop("2", 2);
+        BusStop busStop3 = new BusStop("3", 2);
+        BusStop busStop4 = new BusStop("4", 2);
+
+        BusRoute route1 = new BusRoute(1, Arrays.asList(busStop1, busStop2, busStop3));
+        BusRoute route2 = new BusRoute(2, Arrays.asList( busStop4));
+        BusRoute route3 = new BusRoute(3, Arrays.asList(busStop2, busStop3));
+
+        Passenger passenger = new Passenger("pink");
+        passenger.setDestination(busStop3);
+        busStop1.addPassengerToLine(passenger);
+        passenger.setCurrentStop(busStop1);
+
+        NavigateManager navigateManager = new NavigateManager(Arrays.asList(route1, route2, route3));
+        System.out.println(navigateManager.getCommonBusStop(route1, route2));
     }
 }
