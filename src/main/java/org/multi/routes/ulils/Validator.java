@@ -1,7 +1,9 @@
 package org.multi.routes.ulils;
 
+import org.apache.logging.log4j.core.appender.routing.Routes;
 import org.multi.routes.constans.TextConstants;
 import org.multi.routes.entity.Bus;
+import org.multi.routes.entity.BusRoute;
 import org.multi.routes.entity.BusStop;
 import org.multi.routes.entity.Passenger;
 
@@ -60,5 +62,17 @@ public class Validator {
             }
         }
         return true;
+    }
+
+    public static boolean isCurrentStopOnOneRouteWithDestination(Passenger passenger, List<BusRoute> busRoutes) {
+        BusStop current = passenger.getCurrentStop();
+        BusStop destination = passenger.getDestination();
+        for (BusRoute route : busRoutes) {
+            if (route.getStops().contains(current)
+                    && route.getStops().contains(destination)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
