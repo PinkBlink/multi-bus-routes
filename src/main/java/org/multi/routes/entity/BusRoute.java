@@ -14,4 +14,13 @@ public class BusRoute {
     public List<BusStop> getStops() {
         return route;
     }
+
+    public boolean contain(BusStop stop) {
+        return route.contains(stop);
+    }
+
+    @Override
+    public String toString() {
+        return "BusRoute:" + routeNumber + " stops: " + route;
+    }
 }

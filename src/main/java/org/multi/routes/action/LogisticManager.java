@@ -13,6 +13,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class LogisticManager {
     //singleton
+
     private static final Lock lock = new ReentrantLock();
     private static LogisticManager instance;
     private final List<BusRoute> routes = new ArrayList<>();
