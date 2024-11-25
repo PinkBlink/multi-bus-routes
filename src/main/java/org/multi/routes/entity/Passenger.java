@@ -1,5 +1,7 @@
 package org.multi.routes.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Passenger {
@@ -13,6 +15,15 @@ public class Passenger {
         this.name = name;
     }
 
+    private List<BusStop> transitStops = new ArrayList<>();
+
+    public List<BusStop> getTransitStops() {
+        return transitStops;
+    }
+
+    public void setTransitStops(List<BusStop> transitStops) {
+        this.transitStops = transitStops;
+    }
 
     public BusStop getDestination() {
         return destination;
@@ -32,6 +43,7 @@ public class Passenger {
 
     public void setCurrentStop(BusStop currentStop) {
         this.currentStop = currentStop;
+        transitStops.remove(currentStop);
         isArrivedAtDestination = currentStop.equals(destination);
     }
     public void setDestination(BusStop destination){

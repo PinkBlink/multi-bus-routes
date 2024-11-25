@@ -11,15 +11,26 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class Validator {
+    public static boolean hasTransitStops(Passenger passenger) {
+        return !passenger.getTransitStops().isEmpty();
+    }
+
     public static boolean willGetDestination(Passenger passenger, Bus bus) {
         BusStop passengerDestination = passenger.getDestination();
-        List<BusStop> stops = bus.getRoute().getStops();
-        for (BusStop stop : stops) {
-            if (passengerDestination.equals(stop)) {
-                return true;
-            }
+        return bus.getRoute().contain(passengerDestination);
+    }
+
+    public static boolean willGetToTransitStop(Passenger passenger, Bus bus) {
+        if(hasTransitStops(passenger)) {
+            BusStop stop = passenger.getTransitStops().getFirst();
+            return bus.getRoute().contain(stop);
         }
         return false;
+    }
+
+    public static boolean isDesireBus(Passenger passenger, Bus bus) {
+        return willGetToTransitStop(passenger, bus)
+                || willGetDestination(passenger, bus);
     }
 
     public static int getTheIndexOfTheDesiredBus(Passenger passenger, List<Bus> buses) {

@@ -6,6 +6,7 @@ import org.multi.routes.ulils.Validator;
 
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -16,6 +17,7 @@ import static org.apache.logging.log4j.Level.INFO;
 public class Bus implements Callable<String> {
     private final Logger logger = LogManager.getLogger(this);
     private final int number;
+    private int iterationCounter = 3;
     private final int maximumPassengerCapacity;
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
@@ -94,16 +96,24 @@ public class Bus implements Callable<String> {
             logger.log(INFO, this + " began disembarking passengers;");
             Set<Passenger> passengerCopy = new HashSet<>(passengers);
             for (Passenger passenger : passengerCopy) {
+                if (Validator.hasTransitStops(passenger)
+                 && passenger.getTransitStops().getFirst().equals(currentStop)) {
+                    movePassengerToStop(passenger);
+                }
                 if (passenger.getDestination().equals(currentStop)) {
-                    removePassenger(passenger);
-                    logger.log(INFO, passenger + " removed from " + this + " to " + currentStop);
-                    currentStop.addPassengerToLine(passenger);
-                    passenger.setCurrentStop(currentStop);
+                    movePassengerToStop(passenger);
                 }
             }
         } finally {
             lock.unlock();
         }
+    }
+
+    private void movePassengerToStop(Passenger passenger) {
+        removePassenger(passenger);
+        logger.log(INFO, passenger + " removed from " + this + " to " + currentStop);
+        currentStop.addPassengerToLine(passenger);
+        passenger.setCurrentStop(currentStop);
     }
 
     public void boardingPassengers() {
@@ -120,7 +130,7 @@ public class Bus implements Callable<String> {
         try {
             for (Passenger passenger : passengersInLineCopy) {
                 if (!Validator.isBusFull(this)
-                        && Validator.willGetDestination(passenger, this)
+                        && Validator.isDesireBus(passenger, this)
                         && !passenger.isArrivedAtDestination()) {
                     currentStop.getLock().lock();
                     try {
@@ -140,12 +150,18 @@ public class Bus implements Callable<String> {
     }
 
     @Override
-    public String call() {
-        while (index < route.getStops().size()) {
-            stop();
-            disembarkationPassengers();
-            boardingPassengers();
-            ride();
+    public String call() throws InterruptedException {
+        while (iterationCounter > 0) {
+            while (index < route.getStops().size()) {
+                stop();
+                disembarkationPassengers();
+                TimeUnit.SECONDS.sleep(2);
+                boardingPassengers();
+                TimeUnit.SECONDS.sleep(2);
+                ride();
+            }
+            iterationCounter--;
+            index = 0;
         }
         return this + " FINISHED THE ROUTE (LAST STATION WAS : " + currentStop + ")";
     }
