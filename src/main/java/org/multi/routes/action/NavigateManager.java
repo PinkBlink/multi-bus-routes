@@ -2,6 +2,7 @@ package org.multi.routes.action;
 
 import org.multi.routes.entity.BusRoute;
 import org.multi.routes.entity.BusStop;
+import org.multi.routes.entity.Passenger;
 
 import java.util.*;
 
@@ -11,6 +12,12 @@ public class NavigateManager {
     public NavigateManager(List<BusRoute> routes) {
         this.routes = routes;
         createMap();
+    }
+
+    public List<BusStop> getTransitStops(Passenger passenger) {
+        BusRoute desireRoute = getPotentialDesireRoutes(passenger.getDestination()).getFirst();
+        BusRoute passengerRoute = getCurrentPassengerRoute(passenger.getCurrentStop());
+        return getTransitionStops(passengerRoute, desireRoute);
     }
 
     private void createMap() {
@@ -82,7 +89,7 @@ public class NavigateManager {
         return routes.stream().filter(r -> r.containsStop(stop) && !r.getStops().getFirst().equals(stop)).toList();
     }
 
-    private BusRoute getCurrentPassengerRote(BusStop stop) {
+    private BusRoute getCurrentPassengerRoute(BusStop stop) {
         return routes.stream()
                 .filter(r -> r.containsStop(stop) && !r.getStops().getLast().equals(stop))
                 .toList().getLast();

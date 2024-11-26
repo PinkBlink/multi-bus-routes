@@ -29,21 +29,23 @@ public class LogisticManagerTests {
         BusStop stop8 = new BusStop("8", 4);
         BusStop stop9 = new BusStop("9", 2);
         BusStop stop10 = new BusStop("10", 2);
-        BusRoute route1 = new BusRoute(1, Arrays.asList(stop1, stop2, stop3, stop4, stop5, stop6));
-        BusRoute route2 = new BusRoute(2, Arrays.asList(stop7, stop3, stop4, stop8));
-        BusRoute route3 = new BusRoute(3, Arrays.asList(stop8, stop4, stop5, stop9, stop10));
+        BusRoute route1 = new BusRoute(1, Arrays.asList(stop1, stop2, stop3));
+        BusRoute route2 = new BusRoute(2, Arrays.asList(stop3, stop5));
+        BusRoute route3 = new BusRoute(3, Arrays.asList(stop4, stop5, stop6));
+        BusRoute route4 = new BusRoute(4, Arrays.asList(stop6, stop7, stop8));
+        BusRoute route5 = new BusRoute(5, Arrays.asList(stop6, stop9, stop10));
         Bus bus1 = new Bus(1, 2);
         Bus bus2 = new Bus(2, 4);
         Bus bus3 = new Bus(3, 1);
         Bus bus4 = new Bus(4, 1);
         Bus bus5 = new Bus(5, 2);
         bus1.setRoute(route1);
-        bus2.setRoute(route1);
-        bus3.setRoute(route2);
-        bus4.setRoute(route2);
-        bus4.setRoute(route3);
+        bus2.setRoute(route2);
+        bus3.setRoute(route3);
+        bus4.setRoute(route4);
+        bus4.setRoute(route5);
         expectedBuses.addAll(Arrays.asList(bus1, bus2, bus3, bus4, bus5));
-        expectedRoutes.addAll(Arrays.asList(route1, route2, route3));
+        expectedRoutes.addAll(Arrays.asList(route1, route2, route3, route4, route5));
     }
 
     @Test
