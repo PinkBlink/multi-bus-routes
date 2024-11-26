@@ -2,109 +2,89 @@ package org.multi.routes.action;
 
 import org.multi.routes.entity.BusRoute;
 import org.multi.routes.entity.BusStop;
-import org.multi.routes.entity.Passenger;
 
 import java.util.*;
 
 public class NavigateManager {
-    private HashMap<BusStop,List<BusRoute>> allPossibleTransitStopsToRoutes = new HashMap<>();
-    private List<BusRoute> routes;
+    private final List<BusRoute> routes;
 
     public NavigateManager(List<BusRoute> routes) {
         this.routes = routes;
+        createMap();
     }
 
-    private List<BusStop> getCommonBusStop(BusRoute first, BusRoute second) {
-        List<BusStop> firstStops = first.getStops();
-        List<BusStop> secondStops = second.getStops();
-        return firstStops.stream()
-                .filter(secondStops::contains)
-                .toList();
-    }
-
-    private void fillPossibleTransitStopsToRoutes(){
-        List<BusStop> transitStops = getAllPossibleTransitStops();
-        for(BusStop stop: transitStops){
-            List<BusRoute> routesWithTransitStop = getAllRoutesWithStop(stop);
-            allPossibleTransitStopsToRoutes.put(stop,routesWithTransitStop);
+    private void createMap() {
+        for (int i = 0; i < routes.size(); i++) {
+            BusRoute currentRoute = routes.get(i);
+            for (int j = 0; j < routes.size(); j++) {
+                if (i == j) {
+                    continue;
+                }
+                BusRoute nextRoute = routes.get(j);
+                List<BusStop> possibleTransitStops = getTransitStopForNextRoute(currentRoute, nextRoute);
+                if (!possibleTransitStops.isEmpty()) {
+                    currentRoute.addNextRoute(nextRoute, possibleTransitStops.getFirst());
+                }
+            }
         }
     }
 
-    private List<BusRoute> getAllRoutesWithStop(BusStop stop){
-        return routes.stream().filter(r-> r.contain(stop)).toList();
+    private List<BusStop> getTransitStopForNextRoute(BusRoute current, BusRoute next) {
+        List<BusStop> currentStops = current.getStops();
+        List<BusStop> nextStops = next.getStops();
+        return currentStops.stream()
+                .filter(s -> nextStops.contains(s)
+                        && !currentStops.getFirst().equals(s)
+                        && !nextStops.getLast().equals(s)).toList();
     }
 
+    private List<BusStop> getTransitionStops(BusRoute start, BusRoute destination) {
+        if (start.equals(destination)) {
+            return new ArrayList<>();
+        }
+        Queue<BusRoute> routeQueue = new ArrayDeque<>();
+        Queue<List<BusStop>> transitStops = new ArrayDeque<>();
+        Set<BusRoute> visited = new HashSet<>();
+
+        routeQueue.add(start);
+        transitStops.add(new ArrayList<>());
+        visited.add(start);
+
+        while (!routeQueue.isEmpty()) {
+            BusRoute currentRoute = routeQueue.poll();
+            List<BusStop> currentTransit = transitStops.poll();
+
+            for (Map.Entry<BusRoute, BusStop> next : currentRoute.getNextAccessibleRoutes().entrySet()) {
+                BusRoute nextRoute = next.getKey();
+                BusStop transitStop = next.getValue();
+
+                if (visited.contains(nextRoute)) {
+                    continue;
+                }
+
+                List<BusStop> newStops = new ArrayList<>(currentTransit);
+                newStops.add(transitStop);
+
+                if (nextRoute.equals(destination)) {
+                    return newStops;
+                }
+
+                routeQueue.add(nextRoute);
+                transitStops.add(newStops);
+
+                visited.add(nextRoute);
+            }
+        }
+        return new ArrayList<>();
+    }
 
     private List<BusRoute> getPotentialDesireRoutes(BusStop stop) {
-        return routes.stream().filter(r -> r.contain(stop) && !r.getStops().getFirst().equals(stop)).toList();
-    }
-
-
-    private void getTransitRoute(Passenger passenger) {
-        BusStop currentStop = passenger.getCurrentStop();
-        BusStop destination = passenger.getDestination();
-        BusRoute currentRoute = getCurrentPassengerRote(currentStop);
-        List<BusRoute> potentialDesireRoutes = getPotentialDesireRoutes(destination);
-
-        BusStop potentialPosition = passenger.getCurrentStop();
-        BusRoute potentialPositionRoute = getCurrentPassengerRote(potentialPosition);
-
-
-        List<BusStop> transitStops = new ArrayList<>();
-
-        while(!potentialDesireRoutes.contains(potentialPositionRoute)){
-
-        }
+        return routes.stream().filter(r -> r.containsStop(stop) && !r.getStops().getFirst().equals(stop)).toList();
     }
 
     private BusRoute getCurrentPassengerRote(BusStop stop) {
         return routes.stream()
-                .filter(r -> r.contain(stop) && !r.getStops().getLast().equals(stop))
+                .filter(r -> r.containsStop(stop) && !r.getStops().getLast().equals(stop))
                 .toList().getLast();
-    }
-
-    private List<BusStop> getAllPossibleTransitStops() {
-        List<BusStop> transits = new ArrayList<>();
-        for (int i = 0; i < routes.size() - 1; i++) {
-            BusRoute currentStops = routes.get(i);
-            BusRoute nextStops = routes.get(i + 1);
-            List<BusStop> commonStops = getCommonBusStop(currentStops, nextStops);
-            for (BusStop stop : commonStops) {
-                if (!transits.contains(stop)) {
-                    transits.add(stop);
-                }
-            }
-        }
-        return transits;
-    }
-
-    public static void main(String[] args) {
-        BusStop busStop1 = new BusStop("1", 2);
-        BusStop busStop2 = new BusStop("2", 2);
-        BusStop busStop3 = new BusStop("3", 2);
-        BusStop busStop4 = new BusStop("4", 2);
-        BusStop busStop5 = new BusStop("5", 2);
-        BusStop busStop6 = new BusStop("6", 2);
-        BusStop busStop7 = new BusStop("7", 2);
-        BusStop busStop8 = new BusStop("8", 2);
-        BusStop busStop9 = new BusStop("9", 2);
-        BusStop busStop10 = new BusStop("10", 2);
-
-        BusRoute route1 = new BusRoute(1, Arrays.asList(busStop1, busStop2, busStop3));
-        BusRoute route2 = new BusRoute(2, Arrays.asList(busStop3, busStop5));
-        BusRoute route3 = new BusRoute(3, Arrays.asList(busStop4, busStop5, busStop6));
-        BusRoute route4 = new BusRoute(4, Arrays.asList(busStop6, busStop7, busStop8));
-        BusRoute route5 = new BusRoute(5, Arrays.asList(busStop6, busStop9, busStop10));
-
-        Passenger passenger = new Passenger("pink");
-        passenger.setDestination(busStop3);
-        busStop1.addPassengerToLine(passenger);
-        passenger.setCurrentStop(busStop1);
-
-        NavigateManager navigateManager = new NavigateManager(Arrays.asList(route1, route2, route3, route4,
-                route5));
-//        System.out.println(navigateManager.getAllPossibleTransitStops());
-//        System.out.println("Should be : " + busStop3 + ", " + busStop5 + ", " + busStop6);
-        System.out.println(navigateManager.getCurrentPassengerRote(busStop3));
     }
 }

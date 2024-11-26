@@ -13,7 +13,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class LogisticManager {
     //singleton
-
     private static final Lock lock = new ReentrantLock();
     private static LogisticManager instance;
     private final List<BusRoute> routes = new ArrayList<>();
@@ -67,15 +66,10 @@ public class LogisticManager {
     }
 
     private void buildBuses() {
-        for (int i = 0; i < buses.size(); i++) {
-            Bus currentBus = buses.get(i);
-            if (i < 3) {
-                currentBus.setRoute(routes.get(0));
-            } else if (i < 6) {
-                currentBus.setRoute(routes.get(1));
-            } else {
-                currentBus.setRoute(routes.get(2));
-            }
-        }
+        buses.get(0).setRoute(routes.get(0));
+        buses.get(1).setRoute(routes.get(0));
+        buses.get(2).setRoute(routes.get(1));
+        buses.get(3).setRoute(routes.get(1));
+        buses.get(4).setRoute(routes.get(2));
     }
 }

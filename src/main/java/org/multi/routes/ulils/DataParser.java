@@ -106,6 +106,5 @@ public class DataParser {
         } else {
             throw new IllegalStringException(separatedBusStopString[1] + " is not a number");
         }
-
     }
 }

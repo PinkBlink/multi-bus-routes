@@ -118,8 +118,4 @@ public class BusStop {
     public String toString() {
         return "[BUS_STOP:" + stopName + " passengers: " + passengerLine + "]";
     }
-
-    public static void main(String[] args) {
-        System.out.println(new BusStop("1", 2).equals(new BusStop("1", 2)));
-    }
 }

@@ -1,13 +1,10 @@
 package org.multi.routes.ulils;
 
-import org.apache.logging.log4j.core.appender.routing.Routes;
 import org.multi.routes.constans.TextConstants;
 import org.multi.routes.entity.Bus;
-import org.multi.routes.entity.BusRoute;
 import org.multi.routes.entity.BusStop;
 import org.multi.routes.entity.Passenger;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class Validator {
@@ -17,13 +14,13 @@ public class Validator {
 
     public static boolean willGetDestination(Passenger passenger, Bus bus) {
         BusStop passengerDestination = passenger.getDestination();
-        return bus.getRoute().contain(passengerDestination);
+        return bus.getRoute().containsStop(passengerDestination);
     }
 
     public static boolean willGetToTransitStop(Passenger passenger, Bus bus) {
         if(hasTransitStops(passenger)) {
             BusStop stop = passenger.getTransitStops().getFirst();
-            return bus.getRoute().contain(stop);
+            return bus.getRoute().containsStop(stop);
         }
         return false;
     }
@@ -32,16 +29,6 @@ public class Validator {
         return willGetToTransitStop(passenger, bus)
                 || willGetDestination(passenger, bus);
     }
-
-    public static int getTheIndexOfTheDesiredBus(Passenger passenger, List<Bus> buses) {
-        for (int i = 0; i < buses.size(); i++) {
-            Bus currentBus = buses.get(i);
-            if (willGetDestination(passenger, currentBus)) {
-                return i;
-            }
-        }
-        return -1;
-    }//mb delete
 
     public static boolean isValidBusInput(String input) {
         return Pattern.matches(TextConstants.BUS_REGEX, input);
@@ -73,17 +60,5 @@ public class Validator {
             }
         }
         return true;
-    }
-
-    public static boolean isCurrentStopOnOneRouteWithDestination(Passenger passenger, List<BusRoute> busRoutes) {
-        BusStop current = passenger.getCurrentStop();
-        BusStop destination = passenger.getDestination();
-        for (BusRoute route : busRoutes) {
-            if (route.getStops().contains(current)
-                    && route.getStops().contains(destination)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
