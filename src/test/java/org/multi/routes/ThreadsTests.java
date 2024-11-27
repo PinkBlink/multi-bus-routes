@@ -32,6 +32,7 @@ public class ThreadsTests {
         List<Passenger> passengers = passengerManager.getPassengers();
         List<Bus> buses = logisticManager.getBuses();
         List<Future<String>> futures = new ArrayList<>();
+
         for (Bus bus : buses) {
             futures.add(executorService.submit(bus));
         }

@@ -9,30 +9,33 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DataParserTests {
     private List<BusStop> expectedBusStopList;
     private List<Bus> expectedBusList;
-    private List<Passenger> expectedPassengerList;
+    private Map<Passenger, List<String>> expectedPassengerMap = new HashMap<>();
 
     @BeforeTest
     public void setUp() {
-        expectedPassengerList = Arrays.asList(new Passenger("James Anderson")
-                , new Passenger("Emily Parker")
-                , new Passenger("Michael Bennett")
-                , new Passenger("Sophia Harris")
-                , new Passenger("William Carter")
-                , new Passenger("Olivia Morgan")
-                , new Passenger("Alexander Scott")
-                , new Passenger("Charlotte Thompson")
-                , new Passenger("Benjamin Wright")
-                , new Passenger("Amelia Collins"));
-
+        expectedPassengerMap = Map.of(
+                new Passenger("James Anderson"), List.of("1", "9"),
+                new Passenger("Emily Parker"), List.of("2", "3"),
+                new Passenger("Michael Bennett"), List.of("2", "7"),
+                new Passenger("Sophia Harris"), List.of("1", "3"),
+                new Passenger("William Carter"), List.of("2", "8"),
+                new Passenger("Olivia Morgan"), List.of("4", "9"),
+                new Passenger("Alexander Scott"), List.of("1", "3"),
+                new Passenger("Charlotte Thompson"), List.of("4", "10"),
+                new Passenger("Benjamin Wright"), List.of("3", "6"),
+                new Passenger("Amelia Collins"), List.of("4", "10")
+        );
         expectedBusList = Arrays.asList(new Bus(1, 2)
                 , new Bus(2, 4)
-                , new Bus(3, 1)
-                , new Bus(4, 1)
+                , new Bus(3, 2)
+                , new Bus(4, 2)
                 , new Bus(5, 2));
 
         expectedBusStopList = Arrays.asList(new BusStop("1", 2)
@@ -59,7 +62,7 @@ public class DataParserTests {
 
     @Test
     public void testGetPassengersFromData() {
-        Assert.assertEquals(DataParser.getPassengersFromData(), expectedPassengerList);
+        Assert.assertEquals(DataParser.getPassengersFromData(), expectedPassengerMap);
     }
 }
 

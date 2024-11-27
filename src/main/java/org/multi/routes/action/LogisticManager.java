@@ -4,6 +4,7 @@ import org.multi.routes.entity.Bus;
 import org.multi.routes.entity.BusRoute;
 import org.multi.routes.entity.BusStop;
 import org.multi.routes.ulils.DataParser;
+import org.multi.routes.ulils.LogisticUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,7 +55,7 @@ public class LogisticManager {
         stops = DataParser.getBusStopsFromData();
         buses = DataParser.getBusesFromData();
         buildRoutes();
-        createMap();
+        LogisticUtils.createMap(routes);
         buildBuses();
     }
 
@@ -81,30 +82,5 @@ public class LogisticManager {
         buses.get(2).setRoute(routes.get(2));
         buses.get(3).setRoute(routes.get(3));
         buses.get(4).setRoute(routes.get(4));
-    }
-
-    private void createMap() {
-        for (int i = 0; i < routes.size(); i++) {
-            BusRoute currentRoute = routes.get(i);
-            for (int j = 0; j < routes.size(); j++) {
-                if (i == j) {
-                    continue;
-                }
-                BusRoute nextRoute = routes.get(j);
-                List<BusStop> possibleTransitStops = getTransitStopForNextRoute(currentRoute, nextRoute);
-                if (!possibleTransitStops.isEmpty()) {
-                    currentRoute.addNextRoute(nextRoute, possibleTransitStops.getFirst());
-                }
-            }
-        }
-    }
-
-    private List<BusStop> getTransitStopForNextRoute(BusRoute current, BusRoute next) {
-        List<BusStop> currentStops = current.getStops();
-        List<BusStop> nextStops = next.getStops();
-        return currentStops.stream()
-                .filter(s -> nextStops.contains(s)
-                        && !currentStops.getFirst().equals(s)
-                        && !nextStops.getLast().equals(s)).toList();
     }
 }

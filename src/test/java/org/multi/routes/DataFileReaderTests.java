@@ -23,21 +23,21 @@ public class DataFileReaderTests {
 
     @BeforeTest
     public void setUp() {
-        expectedPassengersList = Arrays.asList("passenger: James Anderson",
-                "passenger: Emily Parker",
-                "passenger: Michael Bennett",
-                "passenger: Sophia Harris",
-                "passenger: William Carter",
-                "passenger: Olivia Morgan",
-                "passenger: Alexander Scott",
-                "passenger: Charlotte Thompson",
-                "passenger: Benjamin Wright",
-                "passenger: Amelia Collins");
+        expectedPassengersList = Arrays.asList("passenger: James Anderson start: 1 destination: 9",
+                "passenger: Emily Parker start: 2 destination: 3",
+                "passenger: Michael Bennett start: 2 destination: 7",
+                "passenger: Sophia Harris start: 1 destination: 3",
+                "passenger: William Carter start: 2 destination: 8",
+                "passenger: Olivia Morgan start: 4 destination: 9",
+                "passenger: Alexander Scott start: 1 destination: 3",
+                "passenger: Charlotte Thompson start: 4 destination: 10",
+                "passenger: Benjamin Wright start: 3 destination: 6",
+                "passenger: Amelia Collins start: 4 destination: 10");
 
         expectedBusesList = Arrays.asList("bus_number: 1 max_passengers: 2",
                 "bus_number: 2 max_passengers: 4",
-                "bus_number: 3 max_passengers: 1",
-                "bus_number: 4 max_passengers: 1",
+                "bus_number: 3 max_passengers: 2",
+                "bus_number: 4 max_passengers: 2",
                 "bus_number: 5 max_passengers: 2");
 
         expectedBusStopsList = Arrays.asList("bus_stop: 1 max_buses: 2",

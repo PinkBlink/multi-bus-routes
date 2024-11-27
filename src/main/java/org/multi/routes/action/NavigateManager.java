@@ -71,6 +71,7 @@ public class NavigateManager {
     private boolean isNeedTransition(Passenger passenger) {
         BusStop current = passenger.getCurrentStop();
         BusStop destination = passenger.getDestination();
-        return routes.stream().filter(r -> r.containsStop(current) && r.containsStop(destination)).toList().isEmpty();
+        return routes.stream().filter(r -> r.containsStop(current)
+                && r.containsStop(destination)).toList().isEmpty();
     }
 }

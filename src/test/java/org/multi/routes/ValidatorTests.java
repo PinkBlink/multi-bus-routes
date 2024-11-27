@@ -28,7 +28,7 @@ public class ValidatorTests {
 
     @BeforeTest
     public void setUp() {
-        validPassenger = "passenger: Sophia Harris";
+        validPassenger = "passenger: Michael Bennett start: 2 destination: 7";
         invalidPassenger = "passenger:Eee";
         validBusStop = "bus_stop: 1 max_buses: 2";
         invalidBusStop = "stop 1 max 4";

@@ -30,7 +30,7 @@ public class App {
         List<BusStop> stops = logisticManager.getStops();
 
         List<Future<String>> futures = new ArrayList<>();
-
+        stops.forEach(stop -> logger.log(INFO, stop + " " + stop.getPassengerLine()));
         for (Bus bus : buses) {
             futures.add(executorService.submit(bus));
         }

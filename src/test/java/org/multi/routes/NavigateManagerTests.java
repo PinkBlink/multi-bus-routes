@@ -4,6 +4,7 @@ import org.multi.routes.action.NavigateManager;
 import org.multi.routes.entity.BusRoute;
 import org.multi.routes.entity.BusStop;
 import org.multi.routes.entity.Passenger;
+import org.multi.routes.ulils.LogisticUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -45,6 +46,7 @@ public class NavigateManagerTests {
         BusRoute route4 = new BusRoute(4, Arrays.asList(stop7, stop8, stop9));
         BusRoute route5 = new BusRoute(5, Arrays.asList(stop9, stop10));
         routeList.addAll(Arrays.asList(route1, route2, route3, route4, route5));
+        LogisticUtils.createMap(routeList);
         navigateManager = new NavigateManager(routeList);
 
 
