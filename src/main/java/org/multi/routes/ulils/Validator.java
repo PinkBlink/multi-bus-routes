@@ -2,9 +2,11 @@ package org.multi.routes.ulils;
 
 import org.multi.routes.constans.TextConstants;
 import org.multi.routes.entity.Bus;
+import org.multi.routes.entity.BusRoute;
 import org.multi.routes.entity.BusStop;
 import org.multi.routes.entity.Passenger;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Validator {
@@ -18,7 +20,7 @@ public class Validator {
     }
 
     public static boolean willGetToTransitStop(Passenger passenger, Bus bus) {
-        if(hasTransitStops(passenger)) {
+        if (hasTransitStops(passenger)) {
             BusStop stop = passenger.getTransitStops().getFirst();
             return bus.getRoute().containsStop(stop);
         }
@@ -62,7 +64,10 @@ public class Validator {
         return true;
     }
 
-    public static void main(String[] args) {
-        System.out.println(isValidPassengerInput("passenger: Sophia Harris start: 4 destination: 3"));
+    public static boolean isNeedTransition(Passenger passenger, List<BusRoute> routes) {
+        BusStop current = passenger.getCurrentStop();
+        BusStop destination = passenger.getDestination();
+        return routes.stream().filter(r -> r.containsStop(current)
+                && r.containsStop(destination)).toList().isEmpty();
     }
 }

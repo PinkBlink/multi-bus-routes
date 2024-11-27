@@ -7,7 +7,6 @@ import org.multi.routes.ulils.DataParser;
 import org.multi.routes.ulils.LogisticUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -59,16 +58,12 @@ public class LogisticManager {
         buildBuses();
     }
 
-    private List<BusStop> getMergedStops(BusStop... busStops) {
-        return new ArrayList<>(Arrays.asList(busStops));
-    }
-
     private void buildRoutes() {
-        List<BusStop> stopsForRoute1 = getMergedStops(stops.get(0), stops.get(1), stops.get(2));
-        List<BusStop> stopsForRoute2 = getMergedStops(stops.get(2), stops.get(4));
-        List<BusStop> stopsForRoute3 = getMergedStops(stops.get(3), stops.get(4), stops.get(5));
-        List<BusStop> stopsForRoute4 = getMergedStops(stops.get(5), stops.get(6), stops.get(7));
-        List<BusStop> stopsForRoute5 = getMergedStops(stops.get(5), stops.get(8), stops.get(9));
+        List<BusStop> stopsForRoute1 = LogisticUtils.getMergedStops(stops.get(0), stops.get(1), stops.get(2));
+        List<BusStop> stopsForRoute2 = LogisticUtils.getMergedStops(stops.get(2), stops.get(4));
+        List<BusStop> stopsForRoute3 = LogisticUtils.getMergedStops(stops.get(3), stops.get(4), stops.get(5));
+        List<BusStop> stopsForRoute4 = LogisticUtils.getMergedStops(stops.get(5), stops.get(6), stops.get(7));
+        List<BusStop> stopsForRoute5 = LogisticUtils.getMergedStops(stops.get(5), stops.get(8), stops.get(9));
         routes.add(new BusRoute(1, stopsForRoute1));
         routes.add(new BusRoute(2, stopsForRoute2));
         routes.add(new BusRoute(3, stopsForRoute3));

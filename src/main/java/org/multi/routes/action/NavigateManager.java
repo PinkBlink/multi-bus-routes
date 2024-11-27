@@ -3,6 +3,8 @@ package org.multi.routes.action;
 import org.multi.routes.entity.BusRoute;
 import org.multi.routes.entity.BusStop;
 import org.multi.routes.entity.Passenger;
+import org.multi.routes.ulils.LogisticUtils;
+import org.multi.routes.ulils.Validator;
 
 import java.util.*;
 
@@ -14,14 +16,13 @@ public class NavigateManager {
     }
 
     public List<BusStop> getTransitStops(Passenger passenger) {
-        if(!isNeedTransition(passenger)){
+        if (!Validator.isNeedTransition(passenger,routes)) {
             return new ArrayList<>();
         }
-        BusRoute desireRoute = getPotentialDesireRoutes(passenger.getDestination()).getFirst();
-        BusRoute passengerRoute = getCurrentPassengerRoute(passenger.getCurrentStop());
+        BusRoute desireRoute = LogisticUtils.getPotentialDesireRoutes(passenger.getDestination(), routes).getFirst();
+        BusRoute passengerRoute = LogisticUtils.getCurrentPassengerRoute(passenger.getCurrentStop(), routes);
         return getTransitionStops(passengerRoute, desireRoute);
     }
-
 
     private List<BusStop> getTransitionStops(BusRoute start, BusRoute destination) {
         if (start.equals(destination)) {
@@ -56,22 +57,5 @@ public class NavigateManager {
             }
         }
         return new ArrayList<>();
-    }
-
-    private List<BusRoute> getPotentialDesireRoutes(BusStop stop) {
-        return routes.stream().filter(r -> r.containsStop(stop) && !r.getStops().getFirst().equals(stop)).toList();
-    }
-
-    private BusRoute getCurrentPassengerRoute(BusStop stop) {
-        return routes.stream()
-                .filter(r -> r.containsStop(stop) && !r.getStops().getLast().equals(stop))
-                .toList().getLast();
-    }
-
-    private boolean isNeedTransition(Passenger passenger) {
-        BusStop current = passenger.getCurrentStop();
-        BusStop destination = passenger.getDestination();
-        return routes.stream().filter(r -> r.containsStop(current)
-                && r.containsStop(destination)).toList().isEmpty();
     }
 }
