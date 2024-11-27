@@ -40,6 +40,18 @@ public class BusStop {
         return stoppedBuses;
     }
 
+    public Set<Passenger> getPassengerLine() {
+        return passengerLine;
+    }
+
+    public int getMaxBusesCapacity() {
+        return maxBusesCapacity;
+    }
+
+    public String getStopName(){
+        return stopName;
+    }
+
     public void addBusToStop(Bus bus) {
         lock.lock();
         try {
@@ -87,14 +99,6 @@ public class BusStop {
         } finally {
             lock.unlock();
         }
-    }
-
-    public Set<Passenger> getPassengerLine() {
-        return passengerLine;
-    }
-
-    public int getMaxBusesCapacity() {
-        return maxBusesCapacity;
     }
 
     @Override

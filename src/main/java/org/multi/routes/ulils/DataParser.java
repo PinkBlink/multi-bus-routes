@@ -9,8 +9,7 @@ import org.multi.routes.entity.Passenger;
 import org.multi.routes.exception.IllegalStringException;
 import org.multi.routes.exception.NoFileException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.multi.routes.constans.TextConstants.*;
 
@@ -46,31 +45,46 @@ public class DataParser {
         return busesList;
     }
 
-    public static List<Passenger> getPassengersFromData() {
-        List<Passenger> passengerList = new ArrayList<>();
+    public static Map<Passenger, List<String>> getPassengersFromData() {
+        Map<Passenger, List<String>> passengerMap = new HashMap<>();
         try {
             List<String> passengerStringList = DataFileReader.getPassengersList();
             for (String passenger : passengerStringList) {
-                passengerList.add(getPassengerFromString(passenger));
+                Map.Entry<Passenger,List<String>> passengerEntry = getPassengerFromString(passenger);
+                Passenger passengerKey = passengerEntry.getKey();
+                List<String> passengerValue = passengerEntry.getValue();
+                passengerMap.put(passengerKey,passengerValue);
             }
         } catch (NoFileException e) {
             logger.log(Level.ERROR, e.getMessage());
         }
-        return passengerList;
+        return passengerMap;
     }
 
-    private static String getCleanString(String string, String regex) {
-        return string.replace(regex, "");
+    private static String getCleanString(String string, String... regex) {
+        for (int i = 0; i < regex.length; i++) {
+            if (i == 0) {
+                string = string.replace(regex[i], "");
+            } else {
+                string = string.replace(regex[i], SEPARATOR);
+            }
+        }
+        return string;
     }
 
-    private static String getCleanString(String string, String regexFirst, String regexSecond) {
-        return string.replace(regexFirst, "").replace(regexSecond, SEPARATOR);
+    public static void main(String[] args) {
+        System.out.println(getCleanString("bus_stop: 1 max_buses: 2", BUS_STOP_STRING, MAX_BUSES_CAPACITY_STRING));
     }
 
-    private static Passenger getPassengerFromString(String passengerString) {
+    private static Map.Entry<Passenger, List<String>> getPassengerFromString(String passengerString) {
         if (Validator.isValidPassengerInput(passengerString)) {
-            String name = getCleanString(passengerString, PASSENGER_BEGIN_STRING);
-            return new Passenger(name);
+            String[] passengerInfo = getCleanString(passengerString, PASSENGER_BEGIN_STRING
+                    , PASSENGER_CURRENT_STOP_STRING
+                    , PASSENGER_DESTINATION_STRING)
+                    .split(SEPARATOR);
+            Passenger passenger = new Passenger(passengerInfo[0]);
+            List<String> fromToDestination = new ArrayList<>(Arrays.asList(passengerInfo[1], passengerInfo[2]));
+            return new AbstractMap.SimpleEntry<>(passenger, fromToDestination);
         } else {
             throw new IllegalStringException("Wrong string :" + passengerString);
         }

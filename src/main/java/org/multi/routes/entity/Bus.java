@@ -6,7 +6,6 @@ import org.multi.routes.ulils.Validator;
 
 import java.util.*;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -17,7 +16,7 @@ import static org.apache.logging.log4j.Level.INFO;
 public class Bus implements Callable<String> {
     private final Logger logger = LogManager.getLogger(this);
     private final int number;
-    private int iterationCounter = 3;
+    private int iterationCounter = 0;
     private final int maximumPassengerCapacity;
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
@@ -97,7 +96,7 @@ public class Bus implements Callable<String> {
             Set<Passenger> passengerCopy = new HashSet<>(passengers);
             for (Passenger passenger : passengerCopy) {
                 if (Validator.hasTransitStops(passenger)
-                 && passenger.getTransitStops().getFirst().equals(currentStop)) {
+                        && passenger.getTransitStops().getFirst().equals(currentStop)) {
                     movePassengerToStop(passenger);
                 }
                 if (passenger.getDestination().equals(currentStop)) {
@@ -150,20 +149,18 @@ public class Bus implements Callable<String> {
     }
 
     @Override
-    public String call() throws InterruptedException {
-        while (iterationCounter > 0) {
+    public String call() {
+        while (iterationCounter < 6) {
             while (index < route.getStops().size()) {
                 stop();
                 disembarkationPassengers();
-                TimeUnit.SECONDS.sleep(2);
                 boardingPassengers();
-                TimeUnit.SECONDS.sleep(2);
                 ride();
             }
-            iterationCounter--;
+            iterationCounter++;
             index = 0;
         }
-        return this + " FINISHED THE ROUTE (LAST STATION WAS : " + currentStop + ")";
+        return this + " FINISHED THE ROUTE (LAPS COMPLETED : " + iterationCounter + ")";
     }
 
     @Override

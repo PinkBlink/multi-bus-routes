@@ -1,10 +1,15 @@
 package org.multi.routes.entity;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Passenger {
+    private final Logger logger = LogManager.getLogger(this);
     private final String name;
     private BusStop destination;
     private BusStop currentStop;
@@ -45,8 +50,12 @@ public class Passenger {
         this.currentStop = currentStop;
         transitStops.remove(currentStop);
         isArrivedAtDestination = currentStop.equals(destination);
+        if(isArrivedAtDestination){
+            logger.log(Level.INFO,this + " ARRIVED TO DESTINATION");
+        }
     }
-    public void setDestination(BusStop destination){
+
+    public void setDestination(BusStop destination) {
         this.destination = destination;
     }
 

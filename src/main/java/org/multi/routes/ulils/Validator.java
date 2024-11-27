@@ -61,4 +61,8 @@ public class Validator {
         }
         return true;
     }
+
+    public static void main(String[] args) {
+        System.out.println(isValidPassengerInput("passenger: Sophia Harris start: 4 destination: 3"));
+    }
 }
