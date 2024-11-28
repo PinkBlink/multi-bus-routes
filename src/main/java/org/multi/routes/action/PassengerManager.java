@@ -12,7 +12,7 @@ public class PassengerManager {
     private Map<Passenger, List<String>> passengers;
     private final LogisticManager logisticManager;
     private final NavigateManager navigateManager;
-    private List<Passenger> createdPassengers;
+    private final List<Passenger> createdPassengers;
 
     public PassengerManager() {
         passengers = DataParser.getPassengersFromData();
@@ -21,7 +21,8 @@ public class PassengerManager {
         createdPassengers = new ArrayList<>();
         setUpPassengers();
     }
-    public List<Passenger> getPassengers(){
+
+    public List<Passenger> getPassengers() {
         return createdPassengers;
     }
 
@@ -29,11 +30,11 @@ public class PassengerManager {
         for (Map.Entry<Passenger, List<String>> entry : passengers.entrySet()) {
             Passenger passenger = entry.getKey();
             List<String> passengerInfo = entry.getValue();
-            BusStop currentSop = logisticManager.getStop(passengerInfo.get(0));
+            BusStop currentStop = logisticManager.getStop(passengerInfo.get(0));
             BusStop destination = logisticManager.getStop(passengerInfo.get(1));
             passenger.setDestination((destination));
-            passenger.setCurrentStop(currentSop);
-            currentSop.addPassengerToLine(passenger);
+            passenger.setCurrentStop(currentStop);
+            currentStop.addPassengerToLine(passenger);
             List<BusStop> transitStops = navigateManager.getTransitStops(passenger);
             passenger.setTransitStops(transitStops);
             createdPassengers.add(passenger);
