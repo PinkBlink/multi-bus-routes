@@ -6,7 +6,6 @@ import org.multi.routes.ulils.Validator;
 
 import java.util.*;
 import java.util.concurrent.Callable;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -15,21 +14,33 @@ import static org.apache.logging.log4j.Level.INFO;
 
 public class Bus implements Callable<String> {
     private final Logger logger = LogManager.getLogger(this);
-    private final int number;
-    private int iterationCounter = 0;
-    private final int maximumPassengerCapacity;
     private final Lock lock = new ReentrantLock();
-    private final Condition condition = lock.newCondition();
-    private BusRoute route;
+    private final int number;
+    private final int maximumPassengerCapacity;
     private final Set<Passenger> passengers;
+    private BusRoute route;
     private BusStop currentStop;
-
-    private int index;
+    private BusState state;
+    private int iterationCounter = 0;
+    private int stopIndex = 0;
 
     public Bus(int number, int maximumPassengerCapacity) {
         this.number = number;
         this.maximumPassengerCapacity = maximumPassengerCapacity;
         passengers = new HashSet<>(maximumPassengerCapacity);
+
+    }
+
+    public int getStopIndex() {
+        return stopIndex;
+    }
+
+    public void setStopIndex(int stopIndex) {
+        this.stopIndex = stopIndex;
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 
     public Lock getLock() {
@@ -48,10 +59,6 @@ public class Bus implements Callable<String> {
         this.currentStop = currentStop;
     }
 
-    public Condition getCondition() {
-        return condition;
-    }
-
     public BusRoute getRoute() {
         return route;
     }
@@ -62,8 +69,8 @@ public class Bus implements Callable<String> {
 
     public void setRoute(BusRoute route) {
         this.route = route;
-        index = 0;
-        currentStop = route.getStops().get(index);
+        stopIndex = 0;
+        currentStop = route.getStops().get(stopIndex);
     }
 
     public void addPassengerToBus(Passenger passenger) {
@@ -78,87 +85,17 @@ public class Bus implements Callable<String> {
         passengers.remove(passenger);
     }
 
-    public void ride() {
-        currentStop.removeBusFromStop(this);
-        logger.log(INFO, this + " going from " + currentStop);
-        index++;
-    }
-
-    public void stop() {
-        currentStop = route.getStops().get(index);
-        currentStop.addBusToStop(this);
-    }
-
-    public void disembarkationPassengers() {
-        lock.lock();
-        try {
-            logger.log(INFO, this + " began disembarking passengers;");
-            Set<Passenger> passengerCopy = new HashSet<>(passengers);
-            for (Passenger passenger : passengerCopy) {
-                if (Validator.hasTransitStops(passenger)
-                        && passenger.getTransitStops().getFirst().equals(currentStop)) {
-                    movePassengerToStop(passenger);
-                }
-                if (passenger.getDestination().equals(currentStop)) {
-                    movePassengerToStop(passenger);
-                }
-            }
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    private void movePassengerToStop(Passenger passenger) {
-        removePassenger(passenger);
-        logger.log(INFO, passenger + " removed from " + this + " to " + currentStop);
-        currentStop.addPassengerToLine(passenger);
-        passenger.setCurrentStop(currentStop);
-    }
-
-    public void boardingPassengers() {
-        logger.log(INFO, this + " began boarding passengers;");
-        Set<Passenger> passengersInLineCopy;
-        currentStop.getLock().lock();
-        try {
-            passengersInLineCopy = new HashSet<>(currentStop.getPassengerLine());
-        } finally {
-            currentStop.getLock().unlock();
-        }
-
-        lock.lock();
-        try {
-            for (Passenger passenger : passengersInLineCopy) {
-                if (!Validator.isBusFull(this)
-                        && Validator.isDesireBus(passenger, this)
-                        && !passenger.isArrivedAtDestination()) {
-                    currentStop.getLock().lock();
-                    try {
-                        if (currentStop.getPassengerLine().contains(passenger)) {
-                            currentStop.removePassengerFromLine(passenger);
-                            addPassengerToBus(passenger);
-                            logger.log(INFO, passenger + " added to " + this);
-                        }
-                    } finally {
-                        currentStop.getLock().unlock();
-                    }
-                }
-            }
-        } finally {
-            lock.unlock();
-        }
-    }
-
     @Override
     public String call() {
+        if (state == null) {
+            state = new StopState(this);
+        }
         while (iterationCounter < 6) {
-            while (index < route.getStops().size()) {
-                stop();
-                disembarkationPassengers();
-                boardingPassengers();
-                ride();
+            while (stopIndex < route.getStops().size()) {
+                state = state.act();
             }
             iterationCounter++;
-            index = 0;
+            stopIndex = 0;
         }
         return this + " FINISHED THE ROUTE (LAPS COMPLETED : " + iterationCounter + ")";
     }
