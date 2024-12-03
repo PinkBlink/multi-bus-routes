@@ -1,24 +1,48 @@
-Маршрут. 
-Автобусный маршрут состоит из последовательности различных остановок. 
-На одной остановке может останавливаться несколько автобусов одновременно, но не более заданного числа. 
-Если автобусы стоят на остановке пассажиры могут пересесть из одного автобуса в другой или остаться на остановке.
-Автобусы могут ездить каждый по своему маршруту.
-Программа должна использовать возможности синхронизации, поставляемые библиотеками java.util.concurrent и java.util.concurrent.locks.
+# Bus Route System
 
-- Не использовать synchronized, volatile, BlockingQueue и другие ограниченно потокобезопасные коллекции.
+The **Bus Route System** simulates a network of bus routes and stops, ensuring thread-safe interactions between buses, passengers, and stops. Each bus follows its own route, stopping at designated stops where passengers can transfer between buses or wait for the next one.
 
-- Классы и другие сущности приложения должны быть грамотно структурированы по пакетам и иметь отражающую их функциональность название.
+## System Features
+- **Bus Stops**: Multiple buses can stop at the same bus stop, but the total number of buses at a stop is limited.
+- **Passenger Interaction**: Passengers can transfer between buses or remain at the stop while waiting for their destination.
+- **Independent Routes**: Each bus operates independently, following its assigned route.
 
-- Использовать шаблон State для описания состояний объекта, если только этих состояний больше двух.
+---
 
-- Для создания потоков использовать по возможности Callable
+## Development Requirements
 
-- Вместо Thread.sleep использовать только возможности перечисления TimeUnit.
+### Synchronization
+- Use synchronization utilities provided by `java.util.concurrent` and `java.util.concurrent.locks`.
+- Avoid using:
+    - `synchronized`
+    - `volatile`
+    - `BlockingQueue`
+    - Other collections with limited thread-safety.
 
-- Данные инициализации объектов считывать из файла.
+### Code Structure
+- Organize classes and entities into meaningful packages.
+- Use clear and descriptive names that reflect their functionality.
 
-- В приложении должен присутствовать потокобезопасный Singleton. 
+### Design Patterns
+- Implement the **State** pattern for objects with more than two states.
 
-- Для записи логов использовать Log4J2.
+### Multithreading
+- Use `Callable` for creating threads wherever possible.
+- Replace `Thread.sleep` with `TimeUnit` utilities for managing delays.
 
-- Разрешается для вывода работы потоков использовать метод main
+### Initialization
+- Load object initialization data from a file.
+
+### Singleton
+- Ensure the application includes a thread-safe **Singleton**.
+
+### Logging
+- Use **Log4J2** for logging system behavior.
+
+### Output
+- Utilize the `main` method to demonstrate the functionality of threads if necessary.
+
+---
+
+## Implementation Notes
+This system models real-world bus route scenarios with careful attention to thread safety, modularity, and scalability, leveraging modern Java libraries and design principles.
