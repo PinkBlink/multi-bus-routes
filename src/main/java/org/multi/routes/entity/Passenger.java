@@ -14,6 +14,7 @@ public class Passenger {
     private BusStop destination;
     private BusStop currentStop;
     private List<BusStop> transitStops = new ArrayList<>();
+    private Bus currentBus;
     private boolean isArrivedAtDestination;
 
     public Passenger(String name) {
@@ -30,6 +31,10 @@ public class Passenger {
 
     public BusStop getCurrentStop() {
         return currentStop;
+    }
+
+    public Bus getCurrentBus() {
+        return currentBus;
     }
 
     public boolean isArrivedAtDestination() {
@@ -52,7 +57,6 @@ public class Passenger {
     public void setDestination(BusStop destination) {
         this.destination = destination;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
