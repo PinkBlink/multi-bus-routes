@@ -50,10 +50,10 @@ public class DataParser {
         try {
             List<String> passengerStringList = DataFileReader.getPassengersList();
             for (String passenger : passengerStringList) {
-                Map.Entry<Passenger,List<String>> passengerEntry = getPassengerFromString(passenger);
+                Map.Entry<Passenger, List<String>> passengerEntry = getPassengerFromString(passenger);
                 Passenger passengerKey = passengerEntry.getKey();
                 List<String> passengerValue = passengerEntry.getValue();
-                passengerMap.put(passengerKey,passengerValue);
+                passengerMap.put(passengerKey, passengerValue);
             }
         } catch (NoFileException e) {
             logger.log(Level.ERROR, e.getMessage());
@@ -70,10 +70,6 @@ public class DataParser {
             }
         }
         return string;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(getCleanString("bus_stop: 1 max_buses: 2", BUS_STOP_STRING, MAX_BUSES_CAPACITY_STRING));
     }
 
     private static Map.Entry<Passenger, List<String>> getPassengerFromString(String passengerString) {

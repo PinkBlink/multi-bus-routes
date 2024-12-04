@@ -17,7 +17,7 @@ public class RideState implements BusState {
         return new StopState(bus);
     }
 
-    public void ride() {
+    private void ride() {
         currentStop.getLock().lock();
         try {
             currentStop.removeBusFromStop(bus);

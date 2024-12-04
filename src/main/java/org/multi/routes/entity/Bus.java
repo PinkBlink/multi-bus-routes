@@ -21,22 +21,18 @@ public class Bus implements Callable<String> {
     private BusRoute route;
     private BusStop currentStop;
     private BusState state;
-    private int iterationCounter = 0;
-    private int stopIndex = 0;
+    private int iterationCounter;
+    private int stopIndex;
 
     public Bus(int number, int maximumPassengerCapacity) {
+        this(number, maximumPassengerCapacity, 6);
+    }
+
+    public Bus(int number, int maximumPassengerCapacity, int iterationCounter) {
         this.number = number;
         this.maximumPassengerCapacity = maximumPassengerCapacity;
+        this.iterationCounter = iterationCounter;
         passengers = new HashSet<>(maximumPassengerCapacity);
-
-    }
-
-    public int getStopIndex() {
-        return stopIndex;
-    }
-
-    public void setStopIndex(int stopIndex) {
-        this.stopIndex = stopIndex;
     }
 
     public Logger getLogger() {
@@ -47,25 +43,34 @@ public class Bus implements Callable<String> {
         return lock;
     }
 
+    public int getStopIndex() {
+        return stopIndex;
+    }
+
     public int getMaximumPassengerCapacity() {
         return maximumPassengerCapacity;
+    }
+
+    public Set<Passenger> getPassengers() {
+        return passengers;
     }
 
     public BusStop getCurrentStop() {
         return currentStop;
     }
 
-    public void setCurrentStop(BusStop currentStop) {
-        this.currentStop = currentStop;
-    }
-
     public BusRoute getRoute() {
         return route;
     }
 
-    public Set<Passenger> getPassengers() {
-        return passengers;
+    public void setCurrentStop(BusStop currentStop) {
+        this.currentStop = currentStop;
     }
+
+    public void setStopIndex(int stopIndex) {
+        this.stopIndex = stopIndex;
+    }
+
 
     public void setRoute(BusRoute route) {
         this.route = route;
@@ -90,14 +95,14 @@ public class Bus implements Callable<String> {
         if (state == null) {
             state = new StopState(this);
         }
-        while (iterationCounter < 6) {
+        while (iterationCounter > 0) {
             while (stopIndex < route.getStops().size()) {
                 state = state.act();
             }
-            iterationCounter++;
+            iterationCounter--;
             stopIndex = 0;
         }
-        return this + " FINISHED THE ROUTE (LAPS COMPLETED : " + iterationCounter + ")";
+        return this + " FINISHED THE ROUTE (LAPS LEFT : " + iterationCounter + ")";
     }
 
     @Override

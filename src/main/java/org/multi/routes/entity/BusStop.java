@@ -2,6 +2,7 @@ package org.multi.routes.entity;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.multi.routes.ulils.Validator;
 
 import java.util.*;
 import java.util.concurrent.locks.Condition;
@@ -15,7 +16,6 @@ public class BusStop {
     private final Logger logger = LogManager.getLogger(this);
     private final Lock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
-
     private final String stopName;
     private final int maxBusesCapacity;
     private final Set<Bus> stoppedBuses;
@@ -32,10 +32,6 @@ public class BusStop {
         return lock;
     }
 
-    public Condition getCondition() {
-        return condition;
-    }
-
     public Set<Bus> getStoppedBuses() {
         return stoppedBuses;
     }
@@ -48,14 +44,14 @@ public class BusStop {
         return maxBusesCapacity;
     }
 
-    public String getStopName(){
+    public String getStopName() {
         return stopName;
     }
 
     public void addBusToStop(Bus bus) {
         lock.lock();
         try {
-            while (stoppedBuses.size() == maxBusesCapacity) {
+            while (Validator.isStopFull(this)) {
                 condition.await();
             }
             stoppedBuses.add(bus);

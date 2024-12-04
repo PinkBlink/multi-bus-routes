@@ -13,21 +13,15 @@ public class Passenger {
     private final String name;
     private BusStop destination;
     private BusStop currentStop;
-    private Bus currentBus;
+    private List<BusStop> transitStops = new ArrayList<>();
     private boolean isArrivedAtDestination;
 
     public Passenger(String name) {
         this.name = name;
     }
 
-    private List<BusStop> transitStops = new ArrayList<>();
-
     public List<BusStop> getTransitStops() {
         return transitStops;
-    }
-
-    public void setTransitStops(List<BusStop> transitStops) {
-        this.transitStops = transitStops;
     }
 
     public BusStop getDestination() {
@@ -42,29 +36,21 @@ public class Passenger {
         return isArrivedAtDestination;
     }
 
-    public void setArrivedAtDestination(boolean arrivedAtDestination) {
-        isArrivedAtDestination = arrivedAtDestination;
+    public void setTransitStops(List<BusStop> transitStops) {
+        this.transitStops = transitStops;
     }
 
     public void setCurrentStop(BusStop currentStop) {
         this.currentStop = currentStop;
         transitStops.remove(currentStop);
         isArrivedAtDestination = currentStop.equals(destination);
-        if(isArrivedAtDestination){
-            logger.log(Level.INFO,this + " ARRIVED TO DESTINATION");
+        if (isArrivedAtDestination) {
+            logger.log(Level.INFO, this + " ARRIVED TO DESTINATION");
         }
     }
 
     public void setDestination(BusStop destination) {
         this.destination = destination;
-    }
-
-    public Bus getCurrentBus() {
-        return currentBus;
-    }
-
-    public void setCurrentBus(Bus currentBus) {
-        this.currentBus = currentBus;
     }
 
     @Override

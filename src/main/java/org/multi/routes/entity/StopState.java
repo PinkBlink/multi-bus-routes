@@ -15,8 +15,8 @@ public class StopState implements BusState {
 
     public StopState(Bus bus) {
         this.bus = bus;
-        currentStop = bus.getCurrentStop();
         stops = bus.getRoute().getStops();
+
     }
 
     @Override
@@ -27,13 +27,13 @@ public class StopState implements BusState {
         return new RideState(bus);
     }
 
-    public void stop() {
+    private void stop() {
         currentStop = stops.get(bus.getStopIndex());
         bus.setCurrentStop(currentStop);
         currentStop.addBusToStop(bus);
     }
 
-    public void disembarkationPassengers() {
+    private void disembarkationPassengers() {
         bus.getLock().lock();
         try {
             bus.getLogger().log(INFO, bus + " began disembarking passengers;");
@@ -59,7 +59,7 @@ public class StopState implements BusState {
         passenger.setCurrentStop(currentStop);
     }
 
-    public void boardingPassengers() {
+    private void boardingPassengers() {
         Set<Passenger> passengersInLineCopy;
         currentStop.getLock().lock();
         try {
@@ -69,24 +69,28 @@ public class StopState implements BusState {
         }
         bus.getLock().lock();
         try {
-            for (Passenger passenger : passengersInLineCopy) {
-                if (!Validator.isBusFull(bus)
-                        && Validator.isDesireBus(passenger, bus)
-                        && !passenger.isArrivedAtDestination()) {
-                    currentStop.getLock().lock();
-                    try {
-                        if (currentStop.getPassengerLine().contains(passenger)) {
-                            currentStop.removePassengerFromLine(passenger);
-                            bus.addPassengerToBus(passenger);
-                            bus.getLogger().log(INFO, passenger + " added to " + this);
-                        }
-                    } finally {
-                        currentStop.getLock().unlock();
-                    }
-                }
-            }
+            movePassengersToBus(passengersInLineCopy);
         } finally {
             bus.getLock().unlock();
+        }
+    }
+
+    private void movePassengersToBus(Set<Passenger> passengers) {
+        for (Passenger passenger : passengers) {
+            if (!Validator.isBusFull(bus)
+                    && Validator.isDesireBus(passenger, bus)
+                    && !passenger.isArrivedAtDestination()) {
+                currentStop.getLock().lock();
+                try {
+                    if (currentStop.getPassengerLine().contains(passenger)) {
+                        currentStop.removePassengerFromLine(passenger);
+                        bus.addPassengerToBus(passenger);
+                        bus.getLogger().log(INFO, passenger + " added to " + this);
+                    }
+                } finally {
+                    currentStop.getLock().unlock();
+                }
+            }
         }
     }
 }

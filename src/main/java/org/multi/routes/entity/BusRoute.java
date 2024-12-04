@@ -11,21 +11,22 @@ public class BusRoute {
 
     private final Map<BusRoute, BusStop> nextAccessibleRoutes = new HashMap<>();
 
-    public void addNextRoute(BusRoute route, BusStop transitStop) {
-        nextAccessibleRoutes.put(route, transitStop);
+    public BusRoute(int routeNumber, List<BusStop> route) {
+        this.routeNumber = routeNumber;
+        this.route = route;
     }
 
     public Map<BusRoute, BusStop> getNextAccessibleRoutes() {
         return nextAccessibleRoutes;
     }
 
-    public BusRoute(int routeNumber, List<BusStop> route) {
-        this.routeNumber = routeNumber;
-        this.route = route;
-    }
 
     public List<BusStop> getStops() {
         return route;
+    }
+
+    public void addNextRoute(BusRoute route, BusStop transitStop) {
+        nextAccessibleRoutes.put(route, transitStop);
     }
 
     public boolean containsStop(BusStop stop) {

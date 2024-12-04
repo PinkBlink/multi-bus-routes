@@ -16,7 +16,7 @@ public class NavigateManager {
     }
 
     public List<BusStop> getTransitStops(Passenger passenger) {
-        if (!Validator.isNeedTransition(passenger,routes)) {
+        if (!Validator.isNeedTransition(passenger, routes)) {
             return new ArrayList<>();
         }
         BusRoute desireRoute = LogisticUtils.getPotentialDesireRoutes(passenger.getDestination(), routes).getFirst();

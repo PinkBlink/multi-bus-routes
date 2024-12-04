@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PassengerManager {
-    private Map<Passenger, List<String>> passengers;
+    private final Map<Passenger, List<String>> passengers;
     private final LogisticManager logisticManager;
     private final NavigateManager navigateManager;
     private final List<Passenger> createdPassengers;
