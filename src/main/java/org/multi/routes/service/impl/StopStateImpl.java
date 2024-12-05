@@ -1,5 +1,9 @@
-package org.multi.routes.entity;
+package org.multi.routes.service.impl;
 
+import org.multi.routes.model.Bus;
+import org.multi.routes.model.BusStop;
+import org.multi.routes.model.Passenger;
+import org.multi.routes.service.BusState;
 import org.multi.routes.ulils.Validator;
 
 import java.util.HashSet;
@@ -8,23 +12,23 @@ import java.util.Set;
 
 import static org.apache.logging.log4j.Level.INFO;
 
-public class StopState implements BusState {
+public class StopStateImpl implements BusState {
     private final Bus bus;
     private final List<BusStop> stops;
     private BusStop currentStop;
 
-    public StopState(Bus bus) {
+    public StopStateImpl(Bus bus) {
         this.bus = bus;
         stops = bus.getRoute().getStops();
 
     }
 
     @Override
-    public BusState act() {
+    public BusState doAction() {
         stop();
         disembarkationPassengers();
         boardingPassengers();
-        return new RideState(bus);
+        return new RideStateImpl(bus);
     }
 
     private void stop() {

@@ -1,8 +1,8 @@
-package org.multi.routes.action;
+package org.multi.routes.service.impl;
 
-import org.multi.routes.entity.BusRoute;
-import org.multi.routes.entity.BusStop;
-import org.multi.routes.entity.Passenger;
+import org.multi.routes.model.BusRoute;
+import org.multi.routes.model.BusStop;
+import org.multi.routes.model.Passenger;
 import org.multi.routes.ulils.LogisticUtils;
 import org.multi.routes.ulils.Validator;
 

@@ -1,12 +1,12 @@
-package org.multi.routes;
+package org.multi.routes.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.multi.routes.action.LogisticManager;
-import org.multi.routes.action.PassengerManager;
-import org.multi.routes.entity.Bus;
-import org.multi.routes.entity.BusStop;
-import org.multi.routes.entity.Passenger;
+import org.multi.routes.service.impl.LogisticManager;
+import org.multi.routes.service.impl.PassengerManager;
+import org.multi.routes.model.Bus;
+import org.multi.routes.model.BusStop;
+import org.multi.routes.model.Passenger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +18,8 @@ import java.util.concurrent.Future;
 import static org.apache.logging.log4j.Level.ERROR;
 import static org.apache.logging.log4j.Level.INFO;
 
-public class App {
-    private final static Logger logger = LogManager.getLogger(App.class);
+public class Controller {
+    private final static Logger logger = LogManager.getLogger(Controller.class);
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(3);

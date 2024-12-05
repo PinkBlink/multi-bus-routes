@@ -1,9 +1,8 @@
-package org.multi.routes.action;
+package org.multi.routes.service.impl;
 
-import org.multi.routes.entity.Bus;
-import org.multi.routes.entity.BusRoute;
-import org.multi.routes.entity.BusStop;
-import org.multi.routes.ulils.DataParser;
+import org.multi.routes.model.Bus;
+import org.multi.routes.model.BusRoute;
+import org.multi.routes.model.BusStop;
 import org.multi.routes.ulils.LogisticUtils;
 
 import java.util.ArrayList;
@@ -51,8 +50,8 @@ public class LogisticManager {
     }
 
     private void setUp() {
-        stops = DataParser.getBusStopsFromData();
-        buses = DataParser.getBusesFromData();
+        stops = EntityParserImpl.getBusStopsFromData();
+        buses = EntityParserImpl.getBusesFromData();
         buildRoutes();
         LogisticUtils.createMap(routes);
         buildBuses();

@@ -1,4 +1,4 @@
-package org.multi.routes.entity;
+package org.multi.routes.model;
 
 import java.util.HashMap;
 import java.util.List;

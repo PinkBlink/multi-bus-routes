@@ -3,7 +3,7 @@ package org.multi.routes.ulils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.multi.routes.constans.PathConstants;
+import org.multi.routes.ulils.constans.PathConstants;
 import org.multi.routes.exception.NoFileException;
 
 import java.io.IOException;

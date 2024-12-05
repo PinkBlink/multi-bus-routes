@@ -1,7 +1,9 @@
-package org.multi.routes.entity;
+package org.multi.routes.model;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.multi.routes.service.BusState;
+import org.multi.routes.service.impl.StopStateImpl;
 import org.multi.routes.ulils.Validator;
 
 import java.util.*;
@@ -14,7 +16,7 @@ import static org.apache.logging.log4j.Level.INFO;
 
 public class Bus implements Callable<String> {
     private final Logger logger = LogManager.getLogger(this);
-    private final Lock lock = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock();
     private final int number;
     private final int maximumPassengerCapacity;
     private final Set<Passenger> passengers;
@@ -93,11 +95,11 @@ public class Bus implements Callable<String> {
     @Override
     public String call() {
         if (state == null) {
-            state = new StopState(this);
+            state = new StopStateImpl(this);
         }
         while (iterationCounter > 0) {
             while (stopIndex < route.getStops().size()) {
-                state = state.act();
+                state = state.doAction();
             }
             iterationCounter--;
             stopIndex = 0;

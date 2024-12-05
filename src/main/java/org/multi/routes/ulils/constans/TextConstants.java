@@ -1,6 +1,7 @@
-package org.multi.routes.constans;
+package org.multi.routes.ulils.constans;
 
 public class TextConstants {
+    public static final String SEPARATOR = "/";
     public static final String PASSENGER_BEGIN_STRING = "passenger: ";
     public static final String PASSENGER_CURRENT_STOP_STRING = " start: ";
     public static final String PASSENGER_DESTINATION_STRING = " destination: ";

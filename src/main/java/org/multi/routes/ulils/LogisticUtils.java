@@ -1,7 +1,7 @@
 package org.multi.routes.ulils;
 
-import org.multi.routes.entity.BusRoute;
-import org.multi.routes.entity.BusStop;
+import org.multi.routes.model.BusRoute;
+import org.multi.routes.model.BusStop;
 
 import java.util.ArrayList;
 import java.util.Arrays;

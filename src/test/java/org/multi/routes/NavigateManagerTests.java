@@ -1,9 +1,9 @@
 package org.multi.routes;
 
-import org.multi.routes.action.NavigateManager;
-import org.multi.routes.entity.BusRoute;
-import org.multi.routes.entity.BusStop;
-import org.multi.routes.entity.Passenger;
+import org.multi.routes.service.impl.NavigateManager;
+import org.multi.routes.model.BusRoute;
+import org.multi.routes.model.BusStop;
+import org.multi.routes.model.Passenger;
 import org.multi.routes.ulils.LogisticUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;

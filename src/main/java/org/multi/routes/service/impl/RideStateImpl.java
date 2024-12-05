@@ -1,20 +1,24 @@
-package org.multi.routes.entity;
+package org.multi.routes.service.impl;
+
+import org.multi.routes.model.Bus;
+import org.multi.routes.model.BusStop;
+import org.multi.routes.service.BusState;
 
 import static org.apache.logging.log4j.Level.INFO;
 
-public class RideState implements BusState {
+public class RideStateImpl implements BusState {
     private final Bus bus;
     private final BusStop currentStop;
 
-    public RideState(Bus bus) {
+    public RideStateImpl(Bus bus) {
         this.bus = bus;
         currentStop = bus.getCurrentStop();
     }
 
     @Override
-    public BusState act() {
+    public BusState doAction() {
         ride();
-        return new StopState(bus);
+        return new StopStateImpl(bus);
     }
 
     private void ride() {

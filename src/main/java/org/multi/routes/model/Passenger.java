@@ -1,4 +1,4 @@
-package org.multi.routes.entity;
+package org.multi.routes.model;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

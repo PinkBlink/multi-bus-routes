@@ -1,8 +1,7 @@
-package org.multi.routes.action;
+package org.multi.routes.service.impl;
 
-import org.multi.routes.entity.BusStop;
-import org.multi.routes.entity.Passenger;
-import org.multi.routes.ulils.DataParser;
+import org.multi.routes.model.BusStop;
+import org.multi.routes.model.Passenger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ public class PassengerManager {
     private final List<Passenger> createdPassengers;
 
     public PassengerManager() {
-        passengers = DataParser.getPassengersFromData();
+        passengers = EntityParserImpl.getPassengersFromData();
         logisticManager = LogisticManager.getInstance();
         navigateManager = new NavigateManager(logisticManager.getRoutes());
         createdPassengers = new ArrayList<>();

@@ -1,9 +1,9 @@
 package org.multi.routes;
 
-import org.multi.routes.entity.Bus;
-import org.multi.routes.entity.BusStop;
-import org.multi.routes.entity.Passenger;
-import org.multi.routes.ulils.DataParser;
+import org.multi.routes.model.Bus;
+import org.multi.routes.model.BusStop;
+import org.multi.routes.model.Passenger;
+import org.multi.routes.service.impl.EntityParserImpl;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DataParserTests {
+public class EntityParserImplTests {
     private List<BusStop> expectedBusStopList;
     private List<Bus> expectedBusList;
     private Map<Passenger, List<String>> expectedPassengerMap = new HashMap<>();
@@ -52,17 +52,17 @@ public class DataParserTests {
 
     @Test
     public void testGetBusesFromData() {
-        Assert.assertEquals(DataParser.getBusesFromData(), expectedBusList);
+        Assert.assertEquals(EntityParserImpl.getBusesFromData(), expectedBusList);
     }
 
     @Test
     public void testGetBusStopsFromData() {
-        Assert.assertEquals(DataParser.getBusStopsFromData(), expectedBusStopList);
+        Assert.assertEquals(EntityParserImpl.getBusStopsFromData(), expectedBusStopList);
     }
 
     @Test
     public void testGetPassengersFromData() {
-        Assert.assertEquals(DataParser.getPassengersFromData(), expectedPassengerMap);
+        Assert.assertEquals(EntityParserImpl.getPassengersFromData(), expectedPassengerMap);
     }
 }
 

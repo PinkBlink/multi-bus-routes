@@ -1,9 +1,9 @@
 package org.multi.routes;
 
-import org.multi.routes.entity.Bus;
-import org.multi.routes.entity.BusRoute;
-import org.multi.routes.entity.BusStop;
-import org.multi.routes.entity.Passenger;
+import org.multi.routes.model.Bus;
+import org.multi.routes.model.BusRoute;
+import org.multi.routes.model.BusStop;
+import org.multi.routes.model.Passenger;
 import org.multi.routes.ulils.Validator;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;

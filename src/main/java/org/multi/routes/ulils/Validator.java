@@ -1,10 +1,10 @@
 package org.multi.routes.ulils;
 
-import org.multi.routes.constans.TextConstants;
-import org.multi.routes.entity.Bus;
-import org.multi.routes.entity.BusRoute;
-import org.multi.routes.entity.BusStop;
-import org.multi.routes.entity.Passenger;
+import org.multi.routes.ulils.constans.TextConstants;
+import org.multi.routes.model.Bus;
+import org.multi.routes.model.BusRoute;
+import org.multi.routes.model.BusStop;
+import org.multi.routes.model.Passenger;
 
 import java.util.List;
 import java.util.regex.Pattern;

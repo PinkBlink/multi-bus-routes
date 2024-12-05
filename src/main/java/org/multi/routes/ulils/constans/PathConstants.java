@@ -1,4 +1,4 @@
-package org.multi.routes.constans;
+package org.multi.routes.ulils.constans;
 
 import java.nio.file.Path;
 
