@@ -6,14 +6,15 @@ import java.util.Map;
 import java.util.Objects;
 
 public class BusRoute {
-    private final int routeNumber;
-    private final List<BusStop> route;
+    private int routeNumber;
+    private List<BusStop> route;
 
-    private final Map<BusRoute, BusStop> nextAccessibleRoutes = new HashMap<>();
+    private final Map<BusRoute, BusStop> nextAccessibleRoutes;
 
-    public BusRoute(int routeNumber, List<BusStop> route) {
+    public BusRoute(int routeNumber, List<BusStop> route, Map<BusRoute, BusStop> nextAccessibleRoutes) {
         this.routeNumber = routeNumber;
         this.route = route;
+        this.nextAccessibleRoutes = nextAccessibleRoutes;
     }
 
     public Map<BusRoute, BusStop> getNextAccessibleRoutes() {
@@ -25,12 +26,12 @@ public class BusRoute {
         return route;
     }
 
-    public void addNextRoute(BusRoute route, BusStop transitStop) {
-        nextAccessibleRoutes.put(route, transitStop);
+    public void setRouteNumber(int routeNumber) {
+        this.routeNumber = routeNumber;
     }
 
-    public boolean containsStop(BusStop stop) {
-        return route.contains(stop);
+    public void setRoute(List<BusStop> route) {
+        this.route = route;
     }
 
     @Override

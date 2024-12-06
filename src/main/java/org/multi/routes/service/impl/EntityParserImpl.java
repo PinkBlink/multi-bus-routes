@@ -70,7 +70,7 @@ public class EntityParserImpl implements EntityParser {
                 && Validator.isValidNumberString(separatedBusString[1])) {
             int number = Integer.parseInt(separatedBusString[0]);
             int maxPassengerCapacity = Integer.parseInt(separatedBusString[1]);
-            return new Bus(number, maxPassengerCapacity);
+            return new Bus(number, maxPassengerCapacity, 6, new HashSet<>());
         } else {
             throw new IllegalStringException(separatedBusString[0] + " or "
                     + separatedBusString[1] + "not a valid number");

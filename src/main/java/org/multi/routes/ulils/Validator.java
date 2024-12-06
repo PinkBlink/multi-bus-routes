@@ -16,13 +16,13 @@ public class Validator {
 
     public static boolean willGetDestination(Passenger passenger, Bus bus) {
         BusStop passengerDestination = passenger.getDestination();
-        return bus.getRoute().containsStop(passengerDestination);
+        return bus.getRoute().getStops().contains(passengerDestination);
     }
 
     public static boolean willGetToTransitStop(Passenger passenger, Bus bus) {
         if (hasTransitStops(passenger)) {
             BusStop stop = passenger.getTransitStops().getFirst();
-            return bus.getRoute().containsStop(stop);
+            return bus.getRoute().getStops().contains(stop);
         }
         return false;
     }

@@ -17,24 +17,20 @@ import static org.apache.logging.log4j.Level.INFO;
 public class Bus implements Callable<String> {
     private final Logger logger = LogManager.getLogger(this);
     private final ReentrantLock lock = new ReentrantLock();
-    private final int number;
-    private final int maximumPassengerCapacity;
-    private final Set<Passenger> passengers;
+    private int number;
+    private int maximumPassengerCapacity;
+    private Set<Passenger> passengers;
     private BusRoute route;
     private BusStop currentStop;
     private BusState state;
     private int iterationCounter;
     private int stopIndex;
 
-    public Bus(int number, int maximumPassengerCapacity) {
-        this(number, maximumPassengerCapacity, 6);
-    }
-
-    public Bus(int number, int maximumPassengerCapacity, int iterationCounter) {
+    public Bus(int number, int maximumPassengerCapacity, int iterationCounter, HashSet<Passenger> passengers) {
         this.number = number;
         this.maximumPassengerCapacity = maximumPassengerCapacity;
         this.iterationCounter = iterationCounter;
-        passengers = new HashSet<>(maximumPassengerCapacity);
+        this.passengers = passengers;
     }
 
     public Logger getLogger() {
@@ -65,6 +61,14 @@ public class Bus implements Callable<String> {
         return route;
     }
 
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
+    public void setMaximumPassengerCapacity(int maximumPassengerCapacity) {
+        this.maximumPassengerCapacity = maximumPassengerCapacity;
+    }
+
     public void setCurrentStop(BusStop currentStop) {
         this.currentStop = currentStop;
     }
@@ -80,16 +84,8 @@ public class Bus implements Callable<String> {
         currentStop = route.getStops().get(stopIndex);
     }
 
-    public void addPassengerToBus(Passenger passenger) {
-        if (!Validator.isBusFull(this)) {
-            passengers.add(passenger);
-        } else {
-            logger.log(INFO, this + " is full. Passengers :" + passengers);
-        }
-    }
-
-    public void removePassenger(Passenger passenger) {
-        passengers.remove(passenger);
+    public void setPassengers(Set<Passenger> passengers) {
+        this.passengers = passengers;
     }
 
     @Override

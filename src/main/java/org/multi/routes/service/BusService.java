@@ -1,4 +1,11 @@
 package org.multi.routes.service;
 
-public interface BusService {
+import org.multi.routes.model.Bus;
+import org.multi.routes.model.Passenger;
+
+import java.util.concurrent.Callable;
+
+public interface BusService{
+    Bus addPassengerToBus(Bus bus, Passenger passenger);
+    Passenger removePassengerFromBus(Bus bus, Passenger passenger);
 }

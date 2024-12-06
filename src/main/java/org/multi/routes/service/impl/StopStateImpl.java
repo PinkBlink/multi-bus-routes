@@ -3,7 +3,10 @@ package org.multi.routes.service.impl;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
+import org.multi.routes.service.BusService;
 import org.multi.routes.service.BusState;
+import org.multi.routes.service.BusStopService;
+import org.multi.routes.service.PassengerService;
 import org.multi.routes.ulils.Validator;
 
 import java.util.HashSet;
@@ -13,6 +16,9 @@ import java.util.Set;
 import static org.apache.logging.log4j.Level.INFO;
 
 public class StopStateImpl implements BusState {
+    private BusStopService busStopService = new BusStopServiceImpl();
+    private BusService busService = new BusServiceImpl();
+    private PassengerService passengerService = new PassengerServiceImpl();
     private final Bus bus;
     private final List<BusStop> stops;
     private BusStop currentStop;
@@ -34,7 +40,7 @@ public class StopStateImpl implements BusState {
     private void stop() {
         currentStop = stops.get(bus.getStopIndex());
         bus.setCurrentStop(currentStop);
-        currentStop.addBusToStop(bus);
+        busStopService.addBusToStop(currentStop, bus);
     }
 
     private void disembarkationPassengers() {
@@ -57,10 +63,11 @@ public class StopStateImpl implements BusState {
     }
 
     private void movePassengerToStop(Passenger passenger) {
-        bus.removePassenger(passenger);
-        bus.getLogger().log(INFO, passenger + " removed from " + this + " to " + currentStop);
-        currentStop.addPassengerToLine(passenger);
+        busService.removePassengerFromBus(bus, passenger);
+        busStopService.addPassengerToLine(currentStop, passenger);
+        bus.getLogger().log(INFO, passenger + " removed from " + bus + " to " + currentStop);
         passenger.setCurrentStop(currentStop);
+        passengerService.removeTransitStop(passenger, currentStop);
     }
 
     private void boardingPassengers() {
@@ -87,9 +94,9 @@ public class StopStateImpl implements BusState {
                 currentStop.getLock().lock();
                 try {
                     if (currentStop.getPassengerLine().contains(passenger)) {
-                        currentStop.removePassengerFromLine(passenger);
-                        bus.addPassengerToBus(passenger);
-                        bus.getLogger().log(INFO, passenger + " added to " + this);
+                        busStopService.removePassengerFromLine(currentStop, passenger);
+                        busService.addPassengerToBus(bus, passenger);
+                        bus.getLogger().log(INFO, passenger + " added to " + bus);
                     }
                 } finally {
                     currentStop.getLock().unlock();

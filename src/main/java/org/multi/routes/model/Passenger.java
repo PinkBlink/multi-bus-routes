@@ -47,7 +47,6 @@ public class Passenger {
 
     public void setCurrentStop(BusStop currentStop) {
         this.currentStop = currentStop;
-        transitStops.remove(currentStop);
         isArrivedAtDestination = currentStop.equals(destination);
         if (isArrivedAtDestination) {
             logger.log(Level.INFO, this + " ARRIVED TO DESTINATION");
@@ -57,6 +56,7 @@ public class Passenger {
     public void setDestination(BusStop destination) {
         this.destination = destination;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
