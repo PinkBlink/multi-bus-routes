@@ -17,6 +17,5 @@ public class TextConstants {
             + PASSENGER_DESTINATION_STRING + "[\\w]+$";
     public static final String BUS_REGEX = "^" + BUS_NUMBER_STRING + "[0-9]+" + MAX_PASSENGERS_CAPACITY_STRING + "[0-9]+$";
     public static final String BUS_STOP_REGEX = "^" + BUS_STOP_NAME_STRING + "[\\w]+" + MAX_BUSES_CAPACITY_STRING + "[0-9]+$";
-
     public static final String BUS_ROUTE_REGEX = "^" + BUS_ROUTE_NUMBER_STRING + "[0-9]+" + BUS_ROUTE_STOPS + "[\\w, ]{1,} \\w+$";
 }

@@ -3,18 +3,20 @@ package org.multi.routes.service.impl;
 import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
+import org.multi.routes.service.Navigator;
 import org.multi.routes.ulils.LogisticUtils;
 import org.multi.routes.ulils.Validator;
 
 import java.util.*;
 
-public class NavigateManager {
+public class NavigatorImpl implements Navigator {
     private final List<BusRoute> routes;
 
-    public NavigateManager(List<BusRoute> routes) {
+    public NavigatorImpl(List<BusRoute> routes) {
         this.routes = routes;
     }
 
+    @Override
     public List<BusStop> getTransitStops(Passenger passenger) {
         if (!Validator.isNeedTransition(passenger, routes)) {
             return new ArrayList<>();

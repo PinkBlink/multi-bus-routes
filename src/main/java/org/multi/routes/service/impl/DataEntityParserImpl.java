@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.multi.routes.model.Bus;
+import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
 import org.multi.routes.exception.IllegalStringException;
@@ -19,6 +20,34 @@ import static org.multi.routes.ulils.constans.TextConstants.*;
 public class DataEntityParserImpl implements DataEntityParser {
 
     private final Logger logger = LogManager.getLogger(DataEntityParserImpl.class);
+
+    @Override
+    public List<BusStop> getBusStopsFromData() {
+        List<BusStop> result = new ArrayList<>();
+        try {
+            List<String> stringBusStops = DataFileReader.getBusStopsList();
+            for (String busString : stringBusStops) {
+                BusStop busStop = getBusStopFromString(busString);
+                result.add(busStop);
+            }
+        } catch (NoFileException e) {
+            logger.log(Level.ERROR, e.getMessage());
+        }
+        return result;
+    }
+
+    @Override
+    public List<BusRoute> getBusRoutesFromData(List<BusStop> busStops){
+        List<BusRoute> busRoutes = new ArrayList<>();
+        try{
+            List<String> stringBusRoutes = DataFileReader.getBusRoutesList();
+            for (String routeString: stringBusRoutes){
+
+            }
+        }catch (NoFileException e){
+            logger.log(Level.ERROR,e.getMessage());
+        }
+    }
 
     @Override
     public Map<Passenger, List<String>> getPassengersFromData() {
@@ -48,8 +77,11 @@ public class DataEntityParserImpl implements DataEntityParser {
         return string;
     }
 
-    private Map.Entry<Passenger, List<String>> getPassengerFromString(String passengerString) {
-
+    private BusRoute getBusRouteFromString(String busRoute, List<BusStop> stops){
+        if(!Validator.isValidBusRouteInput(busRoute)){
+            throw new IllegalStringException(busRoute);
+        }
+        return null;
     }
 
     private Bus getBusFromString(String busString) {

@@ -2,8 +2,7 @@ package org.multi.routes;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.multi.routes.service.impl.LogisticManager;
-import org.multi.routes.service.impl.NavigateManager;
+import org.multi.routes.service.impl.NavigatorImpl;
 import org.multi.routes.service.impl.DataPassengerBuilder;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusRoute;
@@ -65,7 +64,7 @@ public class ThreadsTests {
                 stopE, stopF, stopG, stopH
         ));
         LogisticUtils.createMap(Arrays.asList(route1, route2));
-        NavigateManager navigateManager = new NavigateManager(Arrays.asList(route1, route2));
+        NavigatorImpl navigateManager = new NavigatorImpl(Arrays.asList(route1, route2));
         Bus bus1 = new Bus(1, 2);
         Bus bus2 = new Bus(2, 2);
         Bus bus3 = new Bus(3, 2);
@@ -110,7 +109,7 @@ public class ThreadsTests {
     }
 
     private void fillPassengersTrip(Passenger passenger, BusStop currentStop, BusStop destination
-            , NavigateManager navigateManager) {
+            , NavigatorImpl navigateManager) {
         passenger.setDestination(destination);
         passenger.setCurrentStop(currentStop);
         currentStop.addPassengerToLine(passenger);

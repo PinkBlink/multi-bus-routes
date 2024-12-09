@@ -2,7 +2,6 @@ package org.multi.routes.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.multi.routes.service.impl.LogisticManager;
 import org.multi.routes.service.impl.DataPassengerBuilder;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
