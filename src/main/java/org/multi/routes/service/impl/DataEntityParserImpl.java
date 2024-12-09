@@ -18,7 +18,7 @@ import static org.multi.routes.ulils.constans.TextConstants.*;
 
 public class DataEntityParserImpl implements DataEntityParser {
 
-    private final Logger logger = LogManager.getLogger(DataEntityParserImpl.class);2
+    private final Logger logger = LogManager.getLogger(DataEntityParserImpl.class);
 
     @Override
     public Map<Passenger, List<String>> getPassengersFromData() {

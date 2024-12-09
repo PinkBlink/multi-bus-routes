@@ -13,13 +13,12 @@ import java.util.List;
 
 public class DataFileReader {
     private static final Logger logger = LogManager.getLogger(DataFileReader.class);
-    private static final String ERROR_MESSAGE = "Problem with file or with path: ";
 
     public static List<String> getPassengersList() throws NoFileException {
         try {
             return readFromFile(PathConstants.PATH_TO_PASSENGERS);
         } catch (IOException e) {
-            String errorMessage = ERROR_MESSAGE + PathConstants.PATH_TO_PASSENGERS;
+            String errorMessage = getErrorMessage(PathConstants.PATH_TO_PASSENGERS);
             logger.log(Level.ERROR, errorMessage);
             throw new NoFileException(errorMessage);
         }
@@ -29,7 +28,7 @@ public class DataFileReader {
         try {
             return readFromFile(PathConstants.PATH_TO_BUSES);
         } catch (IOException e) {
-            String errorMessage = ERROR_MESSAGE + PathConstants.PATH_TO_BUSES;
+            String errorMessage = getErrorMessage(PathConstants.PATH_TO_BUSES);
             logger.log(Level.ERROR, errorMessage);
             throw new NoFileException(errorMessage);
         }
@@ -39,7 +38,17 @@ public class DataFileReader {
         try {
             return readFromFile(PathConstants.PATH_TO_BUS_STOPS);
         } catch (IOException e) {
-            String errorMessage = ERROR_MESSAGE + PathConstants.PATH_TO_BUS_STOPS;
+            String errorMessage = getErrorMessage(PathConstants.PATH_TO_BUS_STOPS);
+            logger.log(Level.ERROR, errorMessage);
+            throw new NoFileException(errorMessage);
+        }
+    }
+
+    public static List<String> getBusRoutesList() throws NoFileException {
+        try {
+            return readFromFile(PathConstants.PATH_TO_BUS_ROUTES);
+        } catch (IOException e) {
+            String errorMessage = getErrorMessage(PathConstants.PATH_TO_BUS_ROUTES);
             logger.log(Level.ERROR, errorMessage);
             throw new NoFileException(errorMessage);
         }
@@ -47,5 +56,10 @@ public class DataFileReader {
 
     private static List<String> readFromFile(Path path) throws IOException {
         return Files.readAllLines(path);
+    }
+
+    private static String getErrorMessage(Path problemPath) {
+        String errorMessage = "Problem with file or with path: ";
+        return errorMessage + problemPath;
     }
 }
