@@ -50,4 +50,8 @@ public class LogisticUtils {
                 .filter(route -> busRouteService.containsStop(route, stop) && !route.getStops().getLast().equals(stop))
                 .toList().getLast();
     }
+
+    public static BusStop findBusStopByName(List<BusStop> stops, String name) {
+        return stops.stream().filter(stop -> stop.getStopName().equals(name)).findFirst().get();
+    }
 }

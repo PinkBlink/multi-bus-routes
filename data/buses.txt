@@ -1,5 +1,5 @@
-bus_number: 1 max_passengers: 2
-bus_number: 2 max_passengers: 4
-bus_number: 3 max_passengers: 2
-bus_number: 4 max_passengers: 2
-bus_number: 5 max_passengers: 2
+bus_number: 1 max_passengers: 2 bus_route: 1
+bus_number: 2 max_passengers: 4 bus_route: 2
+bus_number: 3 max_passengers: 2 bus_route: 3
+bus_number: 4 max_passengers: 2 bus_route: 4
+bus_number: 5 max_passengers: 2 bus_route: 5

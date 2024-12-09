@@ -19,8 +19,8 @@ public class StopStateImpl implements BusState {
     private BusStopService busStopService = new BusStopServiceImpl();
     private BusService busService = new BusServiceImpl();
     private PassengerService passengerService = new PassengerServiceImpl();
-    private final Bus bus;
-    private final List<BusStop> stops;
+    private Bus bus;
+    private List<BusStop> stops;
     private BusStop currentStop;
 
     public StopStateImpl(Bus bus) {

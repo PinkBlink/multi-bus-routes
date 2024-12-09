@@ -7,26 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class PassengerManager {
-    private final Map<Passenger, List<String>> passengers;
+public class DataPassengerBuilder {
+    private  Map<Passenger, List<String>> passengersMap;
     private final LogisticManager logisticManager;
     private final NavigateManager navigateManager;
     private final List<Passenger> createdPassengers;
+    public Passenger DataPassengerBuilder(Map<Passenger,List<String>>passengersMap){
+        this.passengersMap = passengersMap;
+    }
 
-    public PassengerManager() {
-        passengers = DataEntityParserImpl.getPassengersFromData();
+    public DataPassengerBuilder() {
+        passengersMap = DataEntityParserImpl.getPassengersFromData();
         logisticManager = LogisticManager.getInstance();
         navigateManager = new NavigateManager(logisticManager.getRoutes());
         createdPassengers = new ArrayList<>();
         setUpPassengers();
     }
 
-    public List<Passenger> getPassengers() {
+    public List<Passenger> getPassengersMap() {
         return createdPassengers;
     }
 
     private void setUpPassengers() {
-        for (Map.Entry<Passenger, List<String>> entry : passengers.entrySet()) {
+        for (Map.Entry<Passenger, List<String>> entry : passengersMap.entrySet()) {
             Passenger passenger = entry.getKey();
             List<String> passengerInfo = entry.getValue();
             BusStop currentStop = logisticManager.getStop(passengerInfo.get(0));

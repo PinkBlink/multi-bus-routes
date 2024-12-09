@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.multi.routes.service.impl.LogisticManager;
 import org.multi.routes.service.impl.NavigateManager;
-import org.multi.routes.service.impl.PassengerManager;
+import org.multi.routes.service.impl.DataPassengerBuilder;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
@@ -27,8 +27,8 @@ public class ThreadsTests {
     public void threadsFromFilesTest() throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         LogisticManager logisticManager = LogisticManager.getInstance();
-        PassengerManager passengerManager = new PassengerManager();
-        List<Passenger> passengers = passengerManager.getPassengers();
+        DataPassengerBuilder dataPassengerBuilder = new DataPassengerBuilder();
+        List<Passenger> passengers = dataPassengerBuilder.getPassengersMap();
         List<Bus> buses = logisticManager.getBuses();
         List<Future<String>> futures = new ArrayList<>();
 

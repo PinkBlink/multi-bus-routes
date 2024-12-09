@@ -40,7 +40,7 @@ public class DataEntityParserImpl implements DataEntityParser {
     private String getCleanString(String string, String... regex) {
         for (int i = 0; i < regex.length; i++) {
             if (i == 0) {
-                string = string.replace(regex[i], "");
+                string = string.replace(regex[i], EMPTY_STRING);
             } else {
                 string = string.replace(regex[i], SEPARATOR);
             }
@@ -73,7 +73,7 @@ public class DataEntityParserImpl implements DataEntityParser {
         if (!Validator.isValidBusStopInput(busStopString)) {
             throw new IllegalStringException(busStopString + " does not much BusStop;");
         }
-        String[] separatedBusStopString = getCleanString(busStopString, BUS_STOP_STRING, MAX_BUSES_CAPACITY_STRING)
+        String[] separatedBusStopString = getCleanString(busStopString, BUS_STOP_NAME_STRING, MAX_BUSES_CAPACITY_STRING)
                 .split(SEPARATOR);
         String busStopName = separatedBusStopString[0];
         if (Validator.isValidNumberString(separatedBusStopString[1])) {
@@ -104,7 +104,7 @@ public class DataEntityParserImpl implements DataEntityParser {
 
     public AbstractMap.SimpleEntry<Passenger, List<String>> getPassenger(String passengerString) {
         if (Validator.isValidPassengerInput(passengerString)) {
-            String[] passengerInfo = getCleanString(passengerString, PASSENGER_BEGIN_STRING
+            String[] passengerInfo = getCleanString(passengerString, PASSENGER_NAME_STRING
                     , PASSENGER_CURRENT_STOP_STRING
                     , PASSENGER_DESTINATION_STRING)
                     .split(SEPARATOR);
