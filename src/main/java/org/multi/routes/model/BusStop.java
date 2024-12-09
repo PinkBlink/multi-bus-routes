@@ -2,6 +2,7 @@ package org.multi.routes.model;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.multi.routes.ulils.IdGenerator;
 import org.multi.routes.ulils.Validator;
 
 import java.util.*;
@@ -13,8 +14,9 @@ import static org.apache.logging.log4j.Level.ERROR;
 import static org.apache.logging.log4j.Level.INFO;
 
 public class BusStop {
-    private final Lock lock = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
+    private int id;
     private String stopName;
     private int maxBusesCapacity;
     private Set<Bus> stoppedBuses;
@@ -25,6 +27,7 @@ public class BusStop {
         this.stopName = stopName;
         this.maxBusesCapacity = maxBusesCapacity;
         this.stoppedBuses = new HashSet<>(maxBusesCapacity);
+        this.id = IdGenerator.getNewId();
     }
 
     public Lock getLock() {
@@ -51,6 +54,10 @@ public class BusStop {
         return condition;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public void setStopName(String stopName) {
         this.stopName = stopName;
     }
@@ -63,6 +70,10 @@ public class BusStop {
         this.stoppedBuses = stoppedBuses;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -72,12 +83,13 @@ public class BusStop {
             return false;
         }
         return maxBusesCapacity == busStop.maxBusesCapacity
-                && Objects.equals(stopName, busStop.stopName);
+                && Objects.equals(stopName, busStop.stopName)
+                && id == busStop.getId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(stopName, maxBusesCapacity);
+        return Objects.hash(stopName, maxBusesCapacity, id);
     }
 
     @Override

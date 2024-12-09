@@ -1,11 +1,13 @@
 package org.multi.routes.model;
 
-import java.util.HashMap;
+import org.multi.routes.ulils.IdGenerator;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class BusRoute {
+    private int id;
     private int routeNumber;
     private List<BusStop> route;
 
@@ -15,6 +17,7 @@ public class BusRoute {
         this.routeNumber = routeNumber;
         this.route = route;
         this.nextAccessibleRoutes = nextAccessibleRoutes;
+        this.id = IdGenerator.getNewId();
     }
 
     public Map<BusRoute, BusStop> getNextAccessibleRoutes() {
@@ -26,12 +29,20 @@ public class BusRoute {
         return route;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public void setRouteNumber(int routeNumber) {
         this.routeNumber = routeNumber;
     }
 
     public void setRoute(List<BusStop> route) {
         this.route = route;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Override
@@ -43,12 +54,13 @@ public class BusRoute {
             return false;
         }
         return routeNumber == route1.routeNumber
-                && Objects.equals(route, route1.route);
+                && Objects.equals(route, route1.route)
+                && id == route1.getId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(routeNumber, route);
+        return Objects.hash(routeNumber, route, id);
     }
 
     @Override

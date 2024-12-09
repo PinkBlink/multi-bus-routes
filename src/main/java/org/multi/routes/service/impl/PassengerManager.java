@@ -14,7 +14,7 @@ public class PassengerManager {
     private final List<Passenger> createdPassengers;
 
     public PassengerManager() {
-        passengers = EntityParserImpl.getPassengersFromData();
+        passengers = DataEntityParserImpl.getPassengersFromData();
         logisticManager = LogisticManager.getInstance();
         navigateManager = new NavigateManager(logisticManager.getRoutes());
         createdPassengers = new ArrayList<>();

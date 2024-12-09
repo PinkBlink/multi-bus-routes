@@ -50,8 +50,8 @@ public class LogisticManager {
     }
 
     private void setUp() {
-        stops = EntityParserImpl.getBusStopsFromData();
-        buses = EntityParserImpl.getBusesFromData();
+        stops = DataEntityParserImpl.getBusStopsFromData();
+        buses = DataEntityParserImpl.getBusesFromData();
         buildRoutes();
         LogisticUtils.createMap(routes);
         buildBuses();

@@ -8,7 +8,7 @@ import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
 import org.multi.routes.exception.IllegalStringException;
 import org.multi.routes.exception.NoFileException;
-import org.multi.routes.service.EntityParser;
+import org.multi.routes.service.DataEntityParser;
 import org.multi.routes.ulils.DataFileReader;
 import org.multi.routes.ulils.Validator;
 
@@ -16,9 +16,11 @@ import java.util.*;
 
 import static org.multi.routes.ulils.constans.TextConstants.*;
 
-public class EntityParserImpl implements EntityParser {
-    private final Logger logger = LogManager.getLogger(EntityParserImpl.class);
+public class DataEntityParserImpl implements DataEntityParser {
 
+    private final Logger logger = LogManager.getLogger(DataEntityParserImpl.class);2
+
+    @Override
     public Map<Passenger, List<String>> getPassengersFromData() {
         Map<Passenger, List<String>> passengerMap = new HashMap<>();
         try {
@@ -47,17 +49,7 @@ public class EntityParserImpl implements EntityParser {
     }
 
     private Map.Entry<Passenger, List<String>> getPassengerFromString(String passengerString) {
-        if (Validator.isValidPassengerInput(passengerString)) {
-            String[] passengerInfo = getCleanString(passengerString, PASSENGER_BEGIN_STRING
-                    , PASSENGER_CURRENT_STOP_STRING
-                    , PASSENGER_DESTINATION_STRING)
-                    .split(SEPARATOR);
-            Passenger passenger = new Passenger(passengerInfo[0]);
-            List<String> fromToDestination = new ArrayList<>(Arrays.asList(passengerInfo[1], passengerInfo[2]));
-            return new AbstractMap.SimpleEntry<>(passenger, fromToDestination);
-        } else {
-            throw new IllegalStringException("Wrong string :" + passengerString);
-        }
+
     }
 
     private Bus getBusFromString(String busString) {
@@ -92,8 +84,7 @@ public class EntityParserImpl implements EntityParser {
         }
     }
 
-    @Override
-    public List<Bus> getBuses(List<String> busesString) {
+    public List<Bus> getBusesFromString(List<String> busesString) {
         List<Bus> busStops = new ArrayList<>();
         for (String busString : busesString) {
             Bus busStop = getBusFromString(busString);
@@ -102,8 +93,7 @@ public class EntityParserImpl implements EntityParser {
         return busStops;
     }
 
-    @Override
-    public List<BusStop> getBusStops(List<String> busStopsString) {
+    public List<BusStop> getBusStopsFromString(List<String> busStopsString) {
         List<BusStop> busStops = new ArrayList<>();
         for (String busStopString : busStopsString) {
             BusStop busStop = getBusStopFromString(busStopString);
@@ -112,8 +102,17 @@ public class EntityParserImpl implements EntityParser {
         return busStops;
     }
 
-    @Override
-    public List<Passenger> getPassengers(List<String> passengersString) {
-        return null;
+    public AbstractMap.SimpleEntry<Passenger, List<String>> getPassenger(String passengerString) {
+        if (Validator.isValidPassengerInput(passengerString)) {
+            String[] passengerInfo = getCleanString(passengerString, PASSENGER_BEGIN_STRING
+                    , PASSENGER_CURRENT_STOP_STRING
+                    , PASSENGER_DESTINATION_STRING)
+                    .split(SEPARATOR);
+            Passenger passenger = new Passenger(passengerInfo[0]);
+            List<String> fromToDestination = new ArrayList<>(Arrays.asList(passengerInfo[1], passengerInfo[2]));
+            return new AbstractMap.SimpleEntry<>(passenger, fromToDestination);
+        } else {
+            throw new IllegalStringException("Wrong string :" + passengerString);
+        }
     }
 }

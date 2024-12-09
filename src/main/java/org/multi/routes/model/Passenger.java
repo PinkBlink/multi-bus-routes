@@ -3,6 +3,7 @@ package org.multi.routes.model;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.multi.routes.ulils.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,9 @@ import java.util.Objects;
 
 public class Passenger {
     private final Logger logger = LogManager.getLogger(this);
-    private final String name;
+
+    private int id;
+    private String name;
     private BusStop destination;
     private BusStop currentStop;
     private List<BusStop> transitStops = new ArrayList<>();
@@ -19,6 +22,7 @@ public class Passenger {
 
     public Passenger(String name) {
         this.name = name;
+        this.id = IdGenerator.getNewId();
     }
 
     public List<BusStop> getTransitStops() {
@@ -35,6 +39,10 @@ public class Passenger {
 
     public Bus getCurrentBus() {
         return currentBus;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public boolean isArrivedAtDestination() {
@@ -57,6 +65,10 @@ public class Passenger {
         this.destination = destination;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -65,7 +77,9 @@ public class Passenger {
         if (!(o instanceof Passenger passenger)) {
             return false;
         }
-        return Objects.equals(name, passenger.name) && Objects.equals(destination, passenger.destination);
+        return Objects.equals(name, passenger.name)
+                && Objects.equals(destination, passenger.destination)
+                && id == passenger.getId();
     }
 
     @Override

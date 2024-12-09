@@ -30,20 +30,20 @@ public class NavigateManager {
         }
         Queue<BusRoute> routeQueue = new ArrayDeque<>();
         Queue<List<BusStop>> transitStops = new ArrayDeque<>();
-        Set<BusRoute> visited = new HashSet<>();
+        Set<BusRoute> visitedRoutes = new HashSet<>();
 
         routeQueue.add(start);
         transitStops.add(new ArrayList<>());
-        visited.add(start);
+        visitedRoutes.add(start);
 
         while (!routeQueue.isEmpty()) {
             BusRoute currentRoute = routeQueue.poll();
             List<BusStop> currentTransit = transitStops.poll();
 
-            for (Map.Entry<BusRoute, BusStop> next : currentRoute.getNextAccessibleRoutes().entrySet()) {
-                BusRoute nextRoute = next.getKey();
-                BusStop transitStop = next.getValue();
-                if (visited.contains(nextRoute)) {
+            for (Map.Entry<BusRoute, BusStop> nextAccessibleRoute : currentRoute.getNextAccessibleRoutes().entrySet()) {
+                BusRoute nextRoute = nextAccessibleRoute.getKey();
+                BusStop transitStop = nextAccessibleRoute.getValue();
+                if (visitedRoutes.contains(nextRoute)) {
                     continue;
                 }
                 List<BusStop> newStops = new ArrayList<>(currentTransit);
@@ -53,7 +53,7 @@ public class NavigateManager {
                 }
                 routeQueue.add(nextRoute);
                 transitStops.add(newStops);
-                visited.add(nextRoute);
+                visitedRoutes.add(nextRoute);
             }
         }
         return new ArrayList<>();

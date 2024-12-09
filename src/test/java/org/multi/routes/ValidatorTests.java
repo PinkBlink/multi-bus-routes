@@ -4,14 +4,23 @@ import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
+import org.multi.routes.service.BusService;
+import org.multi.routes.service.BusStopService;
+import org.multi.routes.service.impl.BusServiceImpl;
+import org.multi.routes.service.impl.BusStopServiceImpl;
 import org.multi.routes.ulils.Validator;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class ValidatorTests {
+    private BusService busService = new BusServiceImpl();
+    private BusStopService busStopService = new BusStopServiceImpl();
+
     private String validPassenger;
     private String invalidPassenger;
     private String validBusStop;
@@ -38,9 +47,9 @@ public class ValidatorTests {
         stop2 = new BusStop("2", 2);
         BusStop stop3 = new BusStop("3", 2);
         BusStop stop4 = new BusStop("4", 1);
-        BusRoute busRoute = new BusRoute(1, Arrays.asList(stop1, stop2, stop3));
-        emptyBus = new Bus(1, 2);
-        fullBus = new Bus(1, 1);
+        BusRoute busRoute = new BusRoute(1, Arrays.asList(stop1, stop2, stop3), new HashMap<>());
+        emptyBus = new Bus(1, 2, 6, new HashSet<>());
+        fullBus = new Bus(1, 1, 6, new HashSet<>());
         emptyBus.setRoute(busRoute);
         fullBus.setRoute(busRoute);
         passenger1 = new Passenger("1");
@@ -49,8 +58,8 @@ public class ValidatorTests {
         passenger2 = new Passenger("2");
         passenger1.setCurrentStop(stop1);
         passenger2.setDestination(stop4);
-        fullBus.addPassengerToBus(passenger1);
-        fullBus.addPassengerToBus(passenger2);
+        busService.addPassengerToBus(fullBus, passenger1);
+        busService.addPassengerToBus(fullBus, passenger2);
     }
 
     @Test
@@ -74,8 +83,8 @@ public class ValidatorTests {
     @Test
     public void testIsFullStop() {
         Assert.assertFalse(Validator.isStopFull(stop2));
-        stop1.addBusToStop(emptyBus);
-        stop1.addBusToStop(fullBus);
+        busStopService.addBusToStop(stop1, emptyBus);
+        busStopService.addBusToStop(stop1, fullBus);
         Assert.assertTrue(Validator.isStopFull(stop1));
     }
 
