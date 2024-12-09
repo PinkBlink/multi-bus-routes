@@ -5,11 +5,9 @@ import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.service.DataEntityParser;
 import org.multi.routes.service.impl.DataEntityParserImpl;
-import org.multi.routes.service.impl.LogisticManager;
 import org.multi.routes.ulils.LogisticUtils;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -25,7 +23,6 @@ public class FileDataRepository {
         DataEntityParser dataEntityParser = new DataEntityParserImpl();
         busesFromData = dataEntityParser.getBusesFromData();
         busStopsFromData = dataEntityParser.getBusStopsFromData();
-
     }
 
     public FileDataRepository getInstance() {
@@ -41,9 +38,10 @@ public class FileDataRepository {
     }
 
     private Passenger setCurrentStopAndDestination(Passenger passenger, String currentStopName, String destinationStopName, List<BusStop> stops) {
-        BusStop currentBusStop = LogisticUtils.findBusStopByName(stops,currentStopName);
-        BusStop destinationStop = LogisticUtils.findBusStopByName(stops,destinationStopName);
+        BusStop currentBusStop = LogisticUtils.findBusStopByName(stops, currentStopName);
+        BusStop destinationStop = LogisticUtils.findBusStopByName(stops, destinationStopName);
         passenger.setCurrentStop(currentBusStop);
         passenger.setDestination(destinationStop);
+        return passenger;
     }
 }

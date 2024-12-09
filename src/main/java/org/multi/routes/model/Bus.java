@@ -5,15 +5,11 @@ import org.apache.logging.log4j.Logger;
 import org.multi.routes.service.BusState;
 import org.multi.routes.service.impl.StopStateImpl;
 import org.multi.routes.ulils.IdGenerator;
-import org.multi.routes.ulils.Validator;
 
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-
-import static org.apache.logging.log4j.Level.INFO;
-
 
 public class Bus implements Callable<String> {
     private final Logger logger = LogManager.getLogger(this);
