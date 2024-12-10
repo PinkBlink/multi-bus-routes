@@ -2,10 +2,12 @@ package org.multi.routes.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.multi.routes.service.impl.DataPassengerBuilder;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
+import org.multi.routes.repository.FileDataRepository;
+import org.multi.routes.service.DataEntityParser;
+import org.multi.routes.service.impl.DataEntityParserImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +24,14 @@ public class Controller {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
-        LogisticManager logisticManager = LogisticManager.getInstance();
-        DataPassengerBuilder dataPassengerBuilder = new DataPassengerBuilder();
-        List<Passenger> passengers = dataPassengerBuilder.getPassengersMap();
-        List<Bus> buses = logisticManager.getBuses();
-        List<BusStop> stops = logisticManager.getStops();
+        DataEntityParser dataEntityParser = new DataEntityParserImpl();
+        FileDataRepository fileDataRepository = FileDataRepository.getInstance(dataEntityParser);
+
+        List<Bus> buses = fileDataRepository.getBusesFromData();
+        List<Passenger> passengers = fileDataRepository.getPassengersFromData();
+        List<BusStop> stops = fileDataRepository.getBusStopsFromData();
 
         List<Future<String>> futures = new ArrayList<>();
-        stops.forEach(stop -> logger.log(INFO, stop + " " + stop.getPassengerLine()));
         for (Bus bus : buses) {
             futures.add(executorService.submit(bus));
         }
@@ -37,11 +39,13 @@ public class Controller {
             logger.log(INFO, future.get());
         }
         executorService.shutdown();
+
         passengers.forEach(p -> logger.log(INFO, p + " is arrived: " + p.isArrivedAtDestination()));
+
         List<Passenger> notArrivedPassengers = passengers.stream().filter(p -> !p.isArrivedAtDestination()).toList();
         notArrivedPassengers.forEach(p -> logger.log(ERROR, p + " Current stop" + p.getCurrentStop()
-                + "\nCurrent bus: " + p.getCurrentBus()
                 + "\nDestination: " + p.getDestination()));
+
         buses.forEach(bus -> logger.log(INFO, bus + " passengers " + bus.getPassengers()));
         stops.forEach(stop -> logger.log(INFO, stop + " " + stop.getPassengerLine()));
     }

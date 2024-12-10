@@ -6,13 +6,12 @@ import org.multi.routes.service.BusRouteService;
 import org.multi.routes.service.impl.BusRouteServiceImpl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class LogisticUtils {
     private static BusRouteService busRouteService = new BusRouteServiceImpl();
 
-    public static void createMap(List<BusRoute> routes) {
+    public static List<BusRoute> createMap(List<BusRoute> routes) {
         for (int i = 0; i < routes.size(); i++) {
             BusRoute currentRoute = routes.get(i);
             for (int j = 0; j < routes.size(); j++) {
@@ -26,10 +25,7 @@ public class LogisticUtils {
                 }
             }
         }
-    }
-
-    public static List<BusStop> getMergedStops(BusStop... busStops) {
-        return new ArrayList<>(Arrays.asList(busStops));
+        return routes;
     }
 
     public static List<BusRoute> getPotentialDesireRoutes(BusStop stop, List<BusRoute> routes) {
@@ -51,7 +47,22 @@ public class LogisticUtils {
                 .toList().getLast();
     }
 
-    public static BusStop findBusStopByName(List<BusStop> stops, String name) {
-        return stops.stream().filter(stop -> stop.getStopName().equals(name)).findFirst().get();
+    public static BusStop findBusStopByName(String name, List<BusStop> stops) {
+        return stops.stream()
+                .filter(stop -> stop.getStopName().equals(name))
+                .findFirst().get();
+    }
+
+    public static List<BusStop> findBusesByNames(List<BusStop> stops, String... names) {
+        List<BusStop> result = new ArrayList<>();
+        for (String name : names) {
+            result.add(findBusStopByName(name, stops));
+        }
+        return result;
+    }
+
+    public static BusRoute findRouteByNumber(int routeNumber, List<BusRoute> routes) {
+        return routes.stream().filter(route -> route.getRouteNumber() == routeNumber)
+                .findFirst().get();
     }
 }

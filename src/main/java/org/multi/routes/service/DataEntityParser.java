@@ -6,11 +6,10 @@ import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
 
 import java.util.List;
-import java.util.Map;
 
 public interface DataEntityParser {
-    List<Bus> getBusesFromData();
     List<BusStop> getBusStopsFromData();
-    List<BusRoute> getBusRoutesFromData();
-    Map<Passenger, List<String>> getPassengersFromData();
+    List<BusRoute> getBusRoutesFromData(List<BusStop> busStops);
+    List<Bus> getBusesFromData(List<BusRoute> routes);
+    List<Passenger> getPassengersFromData(List<BusStop> stops, List<BusRoute> routes);
 }

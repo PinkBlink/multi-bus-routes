@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class NavigatorImplTests {
@@ -40,11 +41,11 @@ public class NavigatorImplTests {
         BusStop stop9 = new BusStop("9", 2);
         BusStop stop10 = new BusStop("10", 3);
 
-        BusRoute route1 = new BusRoute(1, Arrays.asList(stop1, stop2, stop3));
-        BusRoute route2 = new BusRoute(2, Arrays.asList(stop3, stop4, stop5));
-        BusRoute route3 = new BusRoute(3, Arrays.asList(stop5, stop6, stop7));
-        BusRoute route4 = new BusRoute(4, Arrays.asList(stop7, stop8, stop9));
-        BusRoute route5 = new BusRoute(5, Arrays.asList(stop9, stop10));
+        BusRoute route1 = new BusRoute(1, Arrays.asList(stop1, stop2, stop3), new HashMap<>());
+        BusRoute route2 = new BusRoute(2, Arrays.asList(stop3, stop4, stop5), new HashMap<>());
+        BusRoute route3 = new BusRoute(3, Arrays.asList(stop5, stop6, stop7), new HashMap<>());
+        BusRoute route4 = new BusRoute(4, Arrays.asList(stop7, stop8, stop9), new HashMap<>());
+        BusRoute route5 = new BusRoute(5, Arrays.asList(stop9, stop10), new HashMap<>());
         routeList.addAll(Arrays.asList(route1, route2, route3, route4, route5));
         LogisticUtils.createMap(routeList);
         navigateManager = new NavigatorImpl(routeList);

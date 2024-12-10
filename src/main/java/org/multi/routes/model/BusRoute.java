@@ -20,6 +20,10 @@ public class BusRoute {
         this.id = IdGenerator.getNewId();
     }
 
+    public int getRouteNumber() {
+        return routeNumber;
+    }
+
     public Map<BusRoute, BusStop> getNextAccessibleRoutes() {
         return nextAccessibleRoutes;
     }
@@ -54,8 +58,7 @@ public class BusRoute {
             return false;
         }
         return routeNumber == route1.routeNumber
-                && Objects.equals(route, route1.route)
-                && id == route1.getId();
+                && Objects.equals(route, route1.route);
     }
 
     @Override

@@ -19,6 +19,8 @@ public class DataFileReaderTests {
 
     private List<String> expectedBusStopsList;
 
+    private List<String> expectedBusRouteList;
+
     private final Logger logger = (Logger) LogManager.getLogger(DataFileReaderTests.class);
 
     @BeforeTest
@@ -34,13 +36,14 @@ public class DataFileReaderTests {
                 "passenger: Benjamin Wright start: 3 destination: 6",
                 "passenger: Amelia Collins start: 4 destination: 10");
 
-        expectedBusesList = Arrays.asList("bus_number: 1 max_passengers: 2",
-                "bus_number: 2 max_passengers: 4",
-                "bus_number: 3 max_passengers: 2",
-                "bus_number: 4 max_passengers: 2",
-                "bus_number: 5 max_passengers: 2");
+        expectedBusesList = Arrays.asList("bus_number: 1 max_passengers: 2 bus_route: 1",
+                "bus_number: 2 max_passengers: 4 bus_route: 2",
+                "bus_number: 3 max_passengers: 2 bus_route: 3",
+                "bus_number: 4 max_passengers: 2 bus_route: 4",
+                "bus_number: 5 max_passengers: 2 bus_route: 5");
 
-        expectedBusStopsList = Arrays.asList("bus_stop: 1 max_buses: 2",
+        expectedBusStopsList = Arrays.asList(
+                "bus_stop: 1 max_buses: 2",
                 "bus_stop: 2 max_buses: 3",
                 "bus_stop: 3 max_buses: 1",
                 "bus_stop: 4 max_buses: 1",
@@ -50,6 +53,14 @@ public class DataFileReaderTests {
                 "bus_stop: 8 max_buses: 4",
                 "bus_stop: 9 max_buses: 2",
                 "bus_stop: 10 max_buses: 2");
+
+        expectedBusRouteList = Arrays.asList(
+                "bus_route: 1 stops: 1, 2, 3"
+                , "bus_route: 2 stops: 3, 5"
+                , "bus_route: 3 stops: 4, 5, 6"
+                , "bus_route: 4 stops: 6, 7, 8"
+                , "bus_route: 5 stops: 6, 9, 10");
+
     }
 
     @Test
@@ -73,7 +84,17 @@ public class DataFileReaderTests {
     }
 
     @Test
-    public void getBusStopsTest() {
+    public void getBusRoutesListTest() {
+        try {
+            List<String> actual = DataFileReader.getBusRoutesList();
+            Assert.assertEquals(actual, expectedBusRouteList);
+        } catch (NoFileException e) {
+            logger.log(Level.ERROR, e.getMessage());
+        }
+    }
+
+    @Test
+    public void getBusStopsListTest() {
         try {
             List<String> actual = DataFileReader.getBusStopsList();
             Assert.assertEquals(actual, expectedBusStopsList);

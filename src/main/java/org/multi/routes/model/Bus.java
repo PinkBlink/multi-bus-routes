@@ -119,8 +119,7 @@ public class Bus implements Callable<String> {
             return false;
         }
         return number == bus.number
-                && maximumPassengerCapacity == bus.maximumPassengerCapacity
-                && id == bus.getId();
+                && maximumPassengerCapacity == bus.maximumPassengerCapacity;
     }
 
     @Override

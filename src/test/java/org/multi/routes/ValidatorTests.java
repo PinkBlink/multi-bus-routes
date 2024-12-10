@@ -41,7 +41,7 @@ public class ValidatorTests {
         invalidPassenger = "passenger:Eee";
         validBusStop = "bus_stop: 1 max_buses: 2";
         invalidBusStop = "stop 1 max 4";
-        validBus = "bus_number: 3 max_passengers: 1";
+        validBus = "bus_number: 3 max_passengers: 1 bus_route: 2";
         invalidBus = "1 14";
         stop1 = new BusStop("1", 2);
         stop2 = new BusStop("2", 2);

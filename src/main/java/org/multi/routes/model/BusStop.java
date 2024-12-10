@@ -77,13 +77,12 @@ public class BusStop {
             return false;
         }
         return maxBusesCapacity == busStop.maxBusesCapacity
-                && Objects.equals(stopName, busStop.stopName)
-                && id == busStop.getId();
+                && Objects.equals(stopName, busStop.stopName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(stopName, maxBusesCapacity, id);
+        return Objects.hash(stopName, maxBusesCapacity);
     }
 
     @Override

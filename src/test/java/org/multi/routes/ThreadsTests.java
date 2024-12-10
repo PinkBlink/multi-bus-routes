@@ -2,19 +2,23 @@ package org.multi.routes;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.multi.routes.service.impl.NavigatorImpl;
-import org.multi.routes.service.impl.DataPassengerBuilder;
-import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
+import org.multi.routes.repository.FileDataRepository;
+import org.multi.routes.model.Bus;
+
 import org.multi.routes.model.Passenger;
+import org.multi.routes.service.BusStopService;
+import org.multi.routes.service.DataEntityParser;
+import org.multi.routes.service.Navigator;
+import org.multi.routes.service.impl.BusStopServiceImpl;
+import org.multi.routes.service.impl.DataEntityParserImpl;
+import org.multi.routes.service.impl.NavigatorImpl;
 import org.multi.routes.ulils.LogisticUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.*;
 
 import static org.apache.logging.log4j.Level.INFO;
@@ -25,10 +29,10 @@ public class ThreadsTests {
     @Test
     public void threadsFromFilesTest() throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
-        LogisticManager logisticManager = LogisticManager.getInstance();
-        DataPassengerBuilder dataPassengerBuilder = new DataPassengerBuilder();
-        List<Passenger> passengers = dataPassengerBuilder.getPassengersMap();
-        List<Bus> buses = logisticManager.getBuses();
+        DataEntityParser dataEntityParser = new DataEntityParserImpl();
+        FileDataRepository fileDataRepository = FileDataRepository.getInstance(dataEntityParser);
+        List<Passenger> passengers = fileDataRepository.getPassengersFromData();
+        List<Bus> buses = fileDataRepository.getBusesFromData();
         List<Future<String>> futures = new ArrayList<>();
 
         for (Bus bus : buses) {
@@ -59,18 +63,18 @@ public class ThreadsTests {
         BusStop stopH = new BusStop("H", 2);
         BusRoute route1 = new BusRoute(1, Arrays.asList(
                 stopA, stopB, stopC, stopD, stopE
-        ));
+        ), new HashMap<>());
         BusRoute route2 = new BusRoute(2, Arrays.asList(
                 stopE, stopF, stopG, stopH
-        ));
+        ), new HashMap<>());
         LogisticUtils.createMap(Arrays.asList(route1, route2));
-        NavigatorImpl navigateManager = new NavigatorImpl(Arrays.asList(route1, route2));
-        Bus bus1 = new Bus(1, 2);
-        Bus bus2 = new Bus(2, 2);
-        Bus bus3 = new Bus(3, 2);
-        Bus bus4 = new Bus(4, 2);
-        Bus bus5 = new Bus(5, 2);
-        Bus bus6 = new Bus(6, 2);
+        Navigator navigateManager = new NavigatorImpl(Arrays.asList(route1, route2));
+        Bus bus1 = new Bus(1, 2, 6, new HashSet<>());
+        Bus bus2 = new Bus(2, 2, 6, new HashSet<>());
+        Bus bus3 = new Bus(3, 2, 6, new HashSet<>());
+        Bus bus4 = new Bus(4, 2, 6, new HashSet<>());
+        Bus bus5 = new Bus(5, 2, 6, new HashSet<>());
+        Bus bus6 = new Bus(6, 2, 6, new HashSet<>());
         bus1.setRoute(route1);
         bus2.setRoute(route1);
         bus3.setRoute(route1);
@@ -109,10 +113,11 @@ public class ThreadsTests {
     }
 
     private void fillPassengersTrip(Passenger passenger, BusStop currentStop, BusStop destination
-            , NavigatorImpl navigateManager) {
+            , Navigator navigateManager) {
+        BusStopService busStopService = new BusStopServiceImpl();
         passenger.setDestination(destination);
         passenger.setCurrentStop(currentStop);
-        currentStop.addPassengerToLine(passenger);
+        busStopService.addPassengerToLine(currentStop, passenger);
         List<BusStop> transitStops = navigateManager.getTransitStops(passenger);
         passenger.setTransitStops(transitStops);
     }

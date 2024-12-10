@@ -17,12 +17,15 @@ public class Passenger {
     private BusStop destination;
     private BusStop currentStop;
     private List<BusStop> transitStops = new ArrayList<>();
-    private Bus currentBus;
     private boolean isArrivedAtDestination;
 
     public Passenger(String name) {
         this.name = name;
         this.id = IdGenerator.getNewId();
+    }
+
+    public String getName() {
+        return name;
     }
 
     public List<BusStop> getTransitStops() {
@@ -35,10 +38,6 @@ public class Passenger {
 
     public BusStop getCurrentStop() {
         return currentStop;
-    }
-
-    public Bus getCurrentBus() {
-        return currentBus;
     }
 
     public int getId() {
@@ -69,6 +68,10 @@ public class Passenger {
         this.id = id;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -78,8 +81,7 @@ public class Passenger {
             return false;
         }
         return Objects.equals(name, passenger.name)
-                && Objects.equals(destination, passenger.destination)
-                && id == passenger.getId();
+                && Objects.equals(destination, passenger.destination);
     }
 
     @Override

@@ -44,12 +44,12 @@ public class Validator {
         return Pattern.matches(TextConstants.PASSENGER_REGEX, input);
     }
 
-    public static boolean isValidBusRouteInput(String input){
-        return Pattern.matches(TextConstants.BUS_ROUTE_REGEX,input);
+    public static boolean isValidBusRouteInput(String input) {
+        return Pattern.matches(TextConstants.BUS_ROUTE_REGEX, input);
     }
 
     public static boolean isBusFull(Bus bus) {
-        return bus.getPassengers().size() == bus.getMaximumPassengerCapacity();
+        return bus.getPassengers().size() >= bus.getMaximumPassengerCapacity();
     }
 
     public static boolean isStopFull(BusStop busStop) {
