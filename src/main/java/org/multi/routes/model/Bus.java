@@ -4,17 +4,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.multi.routes.service.BusState;
 import org.multi.routes.service.impl.StopStateImpl;
-import org.multi.routes.ulils.IdGenerator;
 
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Bus implements Callable<String> {
+public class Bus extends EntityBase implements Callable<String> {
     private final Logger logger = LogManager.getLogger(this);
     private final ReentrantLock lock = new ReentrantLock();
-    private int id;
     private int number;
     private int maximumPassengerCapacity;
     private Set<Passenger> passengers;
@@ -29,7 +27,6 @@ public class Bus implements Callable<String> {
         this.maximumPassengerCapacity = maximumPassengerCapacity;
         this.iterationCounter = iterationCounter;
         this.passengers = passengers;
-        this.id = IdGenerator.getNewId();
     }
 
     public Logger getLogger() {
@@ -60,10 +57,6 @@ public class Bus implements Callable<String> {
         return route;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void setMaximumPassengerCapacity(int maximumPassengerCapacity) {
         this.maximumPassengerCapacity = maximumPassengerCapacity;
     }
@@ -89,10 +82,6 @@ public class Bus implements Callable<String> {
 
     public void setNumber(int number) {
         this.number = number;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     @Override
@@ -124,7 +113,7 @@ public class Bus implements Callable<String> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, maximumPassengerCapacity);
+        return Objects.hash(number, maximumPassengerCapacity);
     }
 
     @Override

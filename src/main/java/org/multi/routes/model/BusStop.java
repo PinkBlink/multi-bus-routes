@@ -1,16 +1,13 @@
 package org.multi.routes.model;
 
-import org.multi.routes.ulils.IdGenerator;
-
 import java.util.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class BusStop {
+public class BusStop extends EntityBase{
     private final ReentrantLock lock = new ReentrantLock();
     private final Condition condition = lock.newCondition();
-    private int id;
     private String stopName;
     private int maxBusesCapacity;
     private Set<Bus> stoppedBuses;
@@ -21,7 +18,6 @@ public class BusStop {
         this.stopName = stopName;
         this.maxBusesCapacity = maxBusesCapacity;
         this.stoppedBuses = new HashSet<>(maxBusesCapacity);
-        this.id = IdGenerator.getNewId();
     }
 
     public Lock getLock() {
@@ -48,10 +44,6 @@ public class BusStop {
         return condition;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void setStopName(String stopName) {
         this.stopName = stopName;
     }
@@ -62,10 +54,6 @@ public class BusStop {
 
     public void setStoppedBuses(Set<Bus> stoppedBuses) {
         this.stoppedBuses = stoppedBuses;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     @Override

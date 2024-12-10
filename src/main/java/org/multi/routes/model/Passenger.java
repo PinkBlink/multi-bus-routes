@@ -3,16 +3,13 @@ package org.multi.routes.model;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.multi.routes.ulils.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Passenger {
+public class Passenger extends EntityBase {
     private final Logger logger = LogManager.getLogger(this);
-
-    private int id;
     private String name;
     private BusStop destination;
     private BusStop currentStop;
@@ -21,7 +18,6 @@ public class Passenger {
 
     public Passenger(String name) {
         this.name = name;
-        this.id = IdGenerator.getNewId();
     }
 
     public String getName() {
@@ -39,11 +35,6 @@ public class Passenger {
     public BusStop getCurrentStop() {
         return currentStop;
     }
-
-    public int getId() {
-        return id;
-    }
-
     public boolean isArrivedAtDestination() {
         return isArrivedAtDestination;
     }
@@ -63,11 +54,6 @@ public class Passenger {
     public void setDestination(BusStop destination) {
         this.destination = destination;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public void setName(String name) {
         this.name = name;
     }

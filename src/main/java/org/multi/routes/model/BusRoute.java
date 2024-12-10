@@ -1,13 +1,10 @@
 package org.multi.routes.model;
 
-import org.multi.routes.ulils.IdGenerator;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class BusRoute {
-    private int id;
+public class BusRoute extends EntityBase {
     private int routeNumber;
     private List<BusStop> route;
 
@@ -17,7 +14,6 @@ public class BusRoute {
         this.routeNumber = routeNumber;
         this.route = route;
         this.nextAccessibleRoutes = nextAccessibleRoutes;
-        this.id = IdGenerator.getNewId();
     }
 
     public int getRouteNumber() {
@@ -33,20 +29,12 @@ public class BusRoute {
         return route;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void setRouteNumber(int routeNumber) {
         this.routeNumber = routeNumber;
     }
 
     public void setRoute(List<BusStop> route) {
         this.route = route;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     @Override
@@ -63,7 +51,7 @@ public class BusRoute {
 
     @Override
     public int hashCode() {
-        return Objects.hash(routeNumber, route, id);
+        return Objects.hash(routeNumber, route);
     }
 
     @Override
