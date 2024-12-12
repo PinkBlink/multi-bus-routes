@@ -5,6 +5,7 @@ import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
 import org.multi.routes.service.DataEntityParser;
+import org.multi.routes.service.impl.DataEntityInitializer;
 import org.multi.routes.service.impl.DataEntityParserImpl;
 import org.multi.routes.ulils.LogisticUtils;
 import org.testng.Assert;
@@ -13,16 +14,17 @@ import org.testng.annotations.Test;
 
 import java.util.*;
 
-public class DataEntityParserImplTests {
+public class DataEntityParserInitializerTests {
     private DataEntityParser dataEntityParser = new DataEntityParserImpl();
+    private DataEntityInitializer dataEntityInitializer = new DataEntityInitializer(dataEntityParser);
     private List<BusStop> expectedBusStopList;
     private List<Bus> expectedBusList;
     private List<BusRoute> expectedBusRouteList;
     private List<Passenger> expectedPassengers;
-    private List<BusStop> actualBusStops = dataEntityParser.getBusStopsFromData();
-    private List<BusRoute> actualBusRoutes = dataEntityParser.getBusRoutesFromData(actualBusStops);
-    private List<Bus> actualBuses = dataEntityParser.getBusesFromData(actualBusRoutes);
-    private List<Passenger> actualPassengers = dataEntityParser.getPassengersFromData(actualBusStops, actualBusRoutes);
+    private List<BusStop> actualBusStops = dataEntityInitializer.getBusStops();
+    private List<BusRoute> actualBusRoutes = dataEntityInitializer.getBusRoutes();
+    private List<Bus> actualBuses = dataEntityInitializer.getBuses();
+    private List<Passenger> actualPassengers = dataEntityInitializer.getPassengers();
 
     @BeforeTest
     public void setUp() {
@@ -96,13 +98,13 @@ public class DataEntityParserImplTests {
 
     @Test
     public void testGetBusStopsFromData() {
-        Assert.assertEquals(dataEntityParser.getBusStopsFromData(), expectedBusStopList);
+        Assert.assertEquals(actualBusStops, expectedBusStopList);
     }
 
     @Test
     public void testGetPassengersFromData() {
-        Assert.assertEquals(actualPassengers.stream().map(p -> p.getName()).toList()
-                , expectedPassengers.stream().map(p -> p.getName()).toList());
+        Assert.assertEquals(actualPassengers.stream().map(Passenger::getName).toList()
+                , expectedPassengers.stream().map(Passenger::getName).toList());
     }
 
     @Test

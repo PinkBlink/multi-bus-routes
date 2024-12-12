@@ -4,8 +4,7 @@ import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.Passenger;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
-import org.multi.routes.service.DataEntityParser;
-import org.multi.routes.ulils.LogisticUtils;
+import org.multi.routes.service.impl.DataEntityInitializer;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -14,27 +13,19 @@ import java.util.concurrent.locks.ReentrantLock;
 public class FileDataRepository {
     private final static ReentrantLock lock = new ReentrantLock();
     private static FileDataRepository instance;
-    private List<Bus> busesFromData;
-    private List<BusStop> busStopsFromData;
-
-    private List<BusRoute> busRoutesFromData;
-    private List<Passenger> passengersFromData;
+    private DataEntityInitializer dataEntityInitializer;
     private static AtomicBoolean isInstanceCreated = new AtomicBoolean(false);
 
-    private FileDataRepository(DataEntityParser dataEntityParser) {
-        busStopsFromData = dataEntityParser.getBusStopsFromData();
-        busRoutesFromData = dataEntityParser.getBusRoutesFromData(busStopsFromData);
-        LogisticUtils.createMap(busRoutesFromData);
-        busesFromData = dataEntityParser.getBusesFromData(busRoutesFromData);
-        passengersFromData = dataEntityParser.getPassengersFromData(busStopsFromData, busRoutesFromData);
+    private FileDataRepository(DataEntityInitializer dataEntityInitializer) {
+        this.dataEntityInitializer = dataEntityInitializer;
     }
 
-    public static FileDataRepository getInstance(DataEntityParser dataEntityParser) {
+    public static FileDataRepository getInstance(DataEntityInitializer dataEntityInitializer) {
         if (!isInstanceCreated.get()) {
             lock.lock();
             try {
                 if (!isInstanceCreated.get()) {
-                    instance = new FileDataRepository(dataEntityParser);
+                    instance = new FileDataRepository(dataEntityInitializer);
                     isInstanceCreated.set(true);
                 }
             } finally {
@@ -45,18 +36,18 @@ public class FileDataRepository {
     }
 
     public List<Bus> getBusesFromData() {
-        return busesFromData;
+        return dataEntityInitializer.getBuses();
     }
 
     public List<BusStop> getBusStopsFromData() {
-        return busStopsFromData;
+        return dataEntityInitializer.getBusStops();
     }
 
     public List<BusRoute> getBusRoutesFromData() {
-        return busRoutesFromData;
+        return dataEntityInitializer.getBusRoutes();
     }
 
     public List<Passenger> getPassengersFromData() {
-        return passengersFromData;
+        return dataEntityInitializer.getPassengers();
     }
 }

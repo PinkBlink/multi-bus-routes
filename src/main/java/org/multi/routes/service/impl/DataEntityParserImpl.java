@@ -51,33 +51,33 @@ public class DataEntityParserImpl implements DataEntityParser {
         } catch (NoFileException e) {
             logger.log(Level.ERROR, e.getMessage());
         }
-        return busRoutes;
+        return LogisticUtils.createMap(busRoutes);
     }
 
     @Override
-    public List<Passenger> getPassengersFromData(List<BusStop> stops, List<BusRoute> routes) {
+    public List<Passenger> getPassengersFromData(List<BusStop> busStops, List<BusRoute> busRoutes) {
         List<Passenger> passengers = new ArrayList<>();
         try {
             List<String> passengerStringList = DataFileReader.getPassengersList();
             for (String passengerString : passengerStringList) {
-                Passenger passenger = getPassengerFromString(passengerString, stops);
+                Passenger passenger = getPassengerFromString(passengerString, busStops);
                 passengers.add(passenger);
 
             }
         } catch (NoFileException e) {
             logger.log(Level.ERROR, e.getMessage());
         }
-        passengers = addTransitStopsToPassengers(passengers, routes);
+        passengers = addTransitStopsToPassengers(passengers, busRoutes);
         return addPassengersToStop(passengers);
     }
 
     @Override
-    public List<Bus> getBusesFromData(List<BusRoute> routes) {
+    public List<Bus> getBusesFromData(List<BusStop> busStops,List<BusRoute> busRoutes) {
         List<Bus> buses = new ArrayList<>();
         try {
             List<String> busesString = DataFileReader.getBusesList();
             for (String busString : busesString) {
-                Bus bus = getBusFromString(busString, routes);
+                Bus bus = getBusFromString(busString, busRoutes);
                 buses.add(bus);
             }
         } catch (NoFileException e) {
@@ -143,12 +143,8 @@ public class DataEntityParserImpl implements DataEntityParser {
                 , MAX_BUSES_CAPACITY_STRING)
                 .split(SEPARATOR);
         String busStopName = separatedBusStopString[0];
-        if (Validator.isValidNumberString(separatedBusStopString[1])) {
-            int maxBusesCapacity = Integer.parseInt(separatedBusStopString[1]);
-            return new BusStop(busStopName, maxBusesCapacity);
-        } else {
-            throw new IllegalStringException(separatedBusStopString[1] + " is not a number");
-        }
+        int maxBusesCapacity = Integer.parseInt(separatedBusStopString[1]);
+        return new BusStop(busStopName, maxBusesCapacity);
     }
 
     private String getCleanString(String string, String... regex) {

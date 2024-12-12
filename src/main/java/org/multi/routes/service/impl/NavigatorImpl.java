@@ -31,16 +31,16 @@ public class NavigatorImpl implements Navigator {
             return new ArrayList<>();
         }
         Queue<BusRoute> routeQueue = new ArrayDeque<>();
-        Queue<List<BusStop>> transitStops = new ArrayDeque<>();
+        Queue<List<BusStop>> transitStopsQueue = new ArrayDeque<>();
         Set<BusRoute> visitedRoutes = new HashSet<>();
 
         routeQueue.add(start);
-        transitStops.add(new ArrayList<>());
+        transitStopsQueue.add(new ArrayList<>());
         visitedRoutes.add(start);
 
         while (!routeQueue.isEmpty()) {
             BusRoute currentRoute = routeQueue.poll();
-            List<BusStop> currentTransit = transitStops.poll();
+            List<BusStop> currentTransit = transitStopsQueue.poll();
 
             for (Map.Entry<BusRoute, BusStop> nextAccessibleRoute : currentRoute.getNextAccessibleRoutes().entrySet()) {
                 BusRoute nextRoute = nextAccessibleRoute.getKey();
@@ -54,7 +54,7 @@ public class NavigatorImpl implements Navigator {
                     return newStops;
                 }
                 routeQueue.add(nextRoute);
-                transitStops.add(newStops);
+                transitStopsQueue.add(newStops);
                 visitedRoutes.add(nextRoute);
             }
         }

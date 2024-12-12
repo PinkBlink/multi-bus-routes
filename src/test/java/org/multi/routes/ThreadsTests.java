@@ -12,6 +12,7 @@ import org.multi.routes.service.BusStopService;
 import org.multi.routes.service.DataEntityParser;
 import org.multi.routes.service.Navigator;
 import org.multi.routes.service.impl.BusStopServiceImpl;
+import org.multi.routes.service.impl.DataEntityInitializer;
 import org.multi.routes.service.impl.DataEntityParserImpl;
 import org.multi.routes.service.impl.NavigatorImpl;
 import org.multi.routes.ulils.LogisticUtils;
@@ -30,7 +31,8 @@ public class ThreadsTests {
     public void threadsFromFilesTest() throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         DataEntityParser dataEntityParser = new DataEntityParserImpl();
-        FileDataRepository fileDataRepository = FileDataRepository.getInstance(dataEntityParser);
+        DataEntityInitializer dataEntityInitializer = new DataEntityInitializer(dataEntityParser);
+        FileDataRepository fileDataRepository = FileDataRepository.getInstance(dataEntityInitializer);
         List<Passenger> passengers = fileDataRepository.getPassengersFromData();
         List<Bus> buses = fileDataRepository.getBusesFromData();
         List<Future<String>> futures = new ArrayList<>();
