@@ -5,7 +5,7 @@ import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
 import org.multi.routes.service.DataEntityParser;
-import org.multi.routes.service.impl.DataEntityInitializer;
+import org.multi.routes.service.impl.DataEntityInitializerImpl;
 import org.multi.routes.service.impl.DataEntityParserImpl;
 import org.multi.routes.ulils.LogisticUtils;
 import org.testng.Assert;
@@ -16,15 +16,15 @@ import java.util.*;
 
 public class DataEntityParserInitializerTests {
     private DataEntityParser dataEntityParser = new DataEntityParserImpl();
-    private DataEntityInitializer dataEntityInitializer = new DataEntityInitializer(dataEntityParser);
+    private DataEntityInitializerImpl dataEntityInitializerImpl = new DataEntityInitializerImpl(dataEntityParser);
     private List<BusStop> expectedBusStopList;
     private List<Bus> expectedBusList;
     private List<BusRoute> expectedBusRouteList;
     private List<Passenger> expectedPassengers;
-    private List<BusStop> actualBusStops = dataEntityInitializer.getBusStops();
-    private List<BusRoute> actualBusRoutes = dataEntityInitializer.getBusRoutes();
-    private List<Bus> actualBuses = dataEntityInitializer.getBuses();
-    private List<Passenger> actualPassengers = dataEntityInitializer.getPassengers();
+    private List<BusStop> actualBusStops = dataEntityInitializerImpl.getBusStops();
+    private List<BusRoute> actualBusRoutes = dataEntityInitializerImpl.getBusRoutes();
+    private List<Bus> actualBuses = dataEntityInitializerImpl.getBuses();
+    private List<Passenger> actualPassengers = dataEntityInitializerImpl.getPassengers();
 
     @BeforeTest
     public void setUp() {

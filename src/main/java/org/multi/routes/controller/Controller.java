@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.multi.routes.model.*;
 import org.multi.routes.repository.FileDataRepository;
 import org.multi.routes.service.DataEntityParser;
-import org.multi.routes.service.impl.DataEntityInitializer;
+import org.multi.routes.service.impl.DataEntityInitializerImpl;
 import org.multi.routes.service.impl.DataEntityParserImpl;
 
 import java.util.ArrayList;
@@ -23,8 +23,8 @@ public class Controller {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         DataEntityParser dataEntityParser = new DataEntityParserImpl();
-        DataEntityInitializer dataEntityInitializer = new DataEntityInitializer(dataEntityParser);
-        FileDataRepository fileDataRepository = FileDataRepository.getInstance(dataEntityInitializer);
+        DataEntityInitializerImpl dataEntityInitializerImpl = new DataEntityInitializerImpl(dataEntityParser);
+        FileDataRepository fileDataRepository = FileDataRepository.getInstance(dataEntityInitializerImpl);
 
         List<Bus> buses = fileDataRepository.getBusesFromData();
         List<Passenger> passengers = fileDataRepository.getPassengersFromData();

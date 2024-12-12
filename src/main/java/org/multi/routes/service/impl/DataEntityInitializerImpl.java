@@ -4,19 +4,20 @@ import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.Passenger;
+import org.multi.routes.service.DataEntityInitializer;
 import org.multi.routes.service.DataEntityParser;
 import org.multi.routes.ulils.LogisticUtils;
 
 import java.util.List;
 
-public class DataEntityInitializer {
+public class DataEntityInitializerImpl implements DataEntityInitializer {
     private List<BusStop> busStops;
     private List<BusRoute> busRoutes;
     private List<Bus> buses;
     private List<Passenger> passengers;
     private DataEntityParser dataEntityParser;
 
-    public DataEntityInitializer(DataEntityParser dataEntityParser) {
+    public DataEntityInitializerImpl(DataEntityParser dataEntityParser) {
         this.dataEntityParser = dataEntityParser;
         setUp();
     }

@@ -4,7 +4,7 @@ import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.Passenger;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
-import org.multi.routes.service.impl.DataEntityInitializer;
+import org.multi.routes.service.impl.DataEntityInitializerImpl;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -13,19 +13,19 @@ import java.util.concurrent.locks.ReentrantLock;
 public class FileDataRepository {
     private final static ReentrantLock lock = new ReentrantLock();
     private static FileDataRepository instance;
-    private DataEntityInitializer dataEntityInitializer;
+    private DataEntityInitializerImpl dataEntityInitializerImpl;
     private static AtomicBoolean isInstanceCreated = new AtomicBoolean(false);
 
-    private FileDataRepository(DataEntityInitializer dataEntityInitializer) {
-        this.dataEntityInitializer = dataEntityInitializer;
+    private FileDataRepository(DataEntityInitializerImpl dataEntityInitializerImpl) {
+        this.dataEntityInitializerImpl = dataEntityInitializerImpl;
     }
 
-    public static FileDataRepository getInstance(DataEntityInitializer dataEntityInitializer) {
+    public static FileDataRepository getInstance(DataEntityInitializerImpl dataEntityInitializerImpl) {
         if (!isInstanceCreated.get()) {
             lock.lock();
             try {
                 if (!isInstanceCreated.get()) {
-                    instance = new FileDataRepository(dataEntityInitializer);
+                    instance = new FileDataRepository(dataEntityInitializerImpl);
                     isInstanceCreated.set(true);
                 }
             } finally {
@@ -36,18 +36,18 @@ public class FileDataRepository {
     }
 
     public List<Bus> getBusesFromData() {
-        return dataEntityInitializer.getBuses();
+        return dataEntityInitializerImpl.getBuses();
     }
 
     public List<BusStop> getBusStopsFromData() {
-        return dataEntityInitializer.getBusStops();
+        return dataEntityInitializerImpl.getBusStops();
     }
 
     public List<BusRoute> getBusRoutesFromData() {
-        return dataEntityInitializer.getBusRoutes();
+        return dataEntityInitializerImpl.getBusRoutes();
     }
 
     public List<Passenger> getPassengersFromData() {
-        return dataEntityInitializer.getPassengers();
+        return dataEntityInitializerImpl.getPassengers();
     }
 }
