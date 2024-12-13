@@ -57,6 +57,9 @@ public class Passenger extends EntityBase {
     public void setName(String name) {
         this.name = name;
     }
+    public void setArrivedAtDestination(boolean isArrivedAtDestination){
+        this.isArrivedAtDestination = isArrivedAtDestination;
+    }
 
     @Override
     public boolean equals(Object o) {

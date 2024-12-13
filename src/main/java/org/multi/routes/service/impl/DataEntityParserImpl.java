@@ -11,7 +11,7 @@ import org.multi.routes.exception.IllegalStringException;
 import org.multi.routes.exception.NoFileException;
 import org.multi.routes.service.BusStopService;
 import org.multi.routes.service.DataEntityParser;
-import org.multi.routes.service.Navigator;
+import org.multi.routes.service.NavigatorService;
 import org.multi.routes.ulils.DataFileReader;
 import org.multi.routes.ulils.LogisticUtils;
 import org.multi.routes.ulils.Validator;
@@ -168,9 +168,9 @@ public class DataEntityParserImpl implements DataEntityParser {
     }
 
     private List<Passenger> addTransitStopsToPassengers(List<Passenger> passengers, List<BusRoute> routes) {
-        Navigator navigator = new NavigatorImpl(routes);
+        NavigatorService navigatorService = new NavigatorServiceImpl(routes);
         for (Passenger passenger : passengers) {
-            List<BusStop> transitStops = navigator.getTransitStops(passenger);
+            List<BusStop> transitStops = navigatorService.getTransitStops(passenger);
             passenger.setTransitStops(transitStops);
         }
         return passengers;

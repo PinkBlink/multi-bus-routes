@@ -41,7 +41,7 @@ public class LogisticUtils {
                         && !nextStops.getLast().equals(s)).toList();
     }
 
-    public static BusRoute getCurrentPassengerRoute(BusStop stop, List<BusRoute> routes) {
+    public static BusRoute getCurrentPassengerRoute(BusRouteService busRouteService, BusStop stop, List<BusRoute> routes) {
         return routes.stream()
                 .filter(route -> busRouteService.containsStop(route, stop) && !route.getStops().getLast().equals(stop))
                 .toList().getLast();

@@ -4,17 +4,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
-import org.multi.routes.repository.FileDataRepository;
 import org.multi.routes.model.Bus;
 
 import org.multi.routes.model.Passenger;
 import org.multi.routes.service.BusStopService;
 import org.multi.routes.service.DataEntityParser;
-import org.multi.routes.service.Navigator;
+import org.multi.routes.service.NavigatorService;
 import org.multi.routes.service.impl.BusStopServiceImpl;
 import org.multi.routes.service.impl.DataEntityInitializerImpl;
 import org.multi.routes.service.impl.DataEntityParserImpl;
-import org.multi.routes.service.impl.NavigatorImpl;
+import org.multi.routes.service.impl.NavigatorServiceImpl;
 import org.multi.routes.ulils.LogisticUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -70,7 +69,7 @@ public class ThreadsTests {
                 stopE, stopF, stopG, stopH
         ), new HashMap<>());
         LogisticUtils.createMap(Arrays.asList(route1, route2));
-        Navigator navigateManager = new NavigatorImpl(Arrays.asList(route1, route2));
+        NavigatorService navigateManager = new NavigatorServiceImpl(Arrays.asList(route1, route2));
         Bus bus1 = new Bus(1, 2, 6, new HashSet<>());
         Bus bus2 = new Bus(2, 2, 6, new HashSet<>());
         Bus bus3 = new Bus(3, 2, 6, new HashSet<>());
@@ -115,7 +114,7 @@ public class ThreadsTests {
     }
 
     private void fillPassengersTrip(Passenger passenger, BusStop currentStop, BusStop destination
-            , Navigator navigateManager) {
+            , NavigatorService navigateManager) {
         BusStopService busStopService = new BusStopServiceImpl();
         passenger.setDestination(destination);
         passenger.setCurrentStop(currentStop);

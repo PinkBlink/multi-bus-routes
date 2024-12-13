@@ -3,16 +3,16 @@ package org.multi.routes.service.impl;
 import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
-import org.multi.routes.service.Navigator;
+import org.multi.routes.service.NavigatorService;
 import org.multi.routes.ulils.LogisticUtils;
 import org.multi.routes.ulils.Validator;
 
 import java.util.*;
 
-public class NavigatorImpl implements Navigator {
+public class NavigatorServiceImpl implements NavigatorService {
     private final List<BusRoute> routes;
 
-    public NavigatorImpl(List<BusRoute> routes) {
+    public NavigatorServiceImpl(List<BusRoute> routes) {
         this.routes = routes;
     }
 

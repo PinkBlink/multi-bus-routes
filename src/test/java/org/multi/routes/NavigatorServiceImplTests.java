@@ -1,6 +1,6 @@
 package org.multi.routes;
 
-import org.multi.routes.service.impl.NavigatorImpl;
+import org.multi.routes.service.impl.NavigatorServiceImpl;
 import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
@@ -14,8 +14,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class NavigatorImplTests {
-    NavigatorImpl navigateManager;
+public class NavigatorServiceImplTests {
+    NavigatorServiceImpl navigateManager;
     List<BusRoute> routeList = new ArrayList<>();
     Passenger passenger1;
     Passenger passenger2;
@@ -48,7 +48,7 @@ public class NavigatorImplTests {
         BusRoute route5 = new BusRoute(5, Arrays.asList(stop9, stop10), new HashMap<>());
         routeList.addAll(Arrays.asList(route1, route2, route3, route4, route5));
         LogisticUtils.createMap(routeList);
-        navigateManager = new NavigatorImpl(routeList);
+        navigateManager = new NavigatorServiceImpl(routeList);
 
 
         passenger1 = new Passenger("1");

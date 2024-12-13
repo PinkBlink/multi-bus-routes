@@ -5,6 +5,6 @@ import org.multi.routes.model.Passenger;
 
 import java.util.List;
 
-public interface Navigator {
+public interface NavigatorService {
     List<BusStop> getTransitStops(Passenger passenger);
 }

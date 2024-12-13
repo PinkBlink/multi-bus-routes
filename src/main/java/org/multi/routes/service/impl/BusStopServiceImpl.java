@@ -15,7 +15,7 @@ import static org.apache.logging.log4j.Level.ERROR;
 import static org.apache.logging.log4j.Level.INFO;
 
 public class BusStopServiceImpl implements BusStopService {
-    private final Logger logger = LogManager.getLogger(this);
+    private final Logger logger = LogManager.getLogger(BusStopServiceImpl.class);
 
     @Override
     public BusStop addBusToStop(BusStop stop, Bus bus) {

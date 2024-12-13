@@ -1,5 +1,7 @@
 package org.multi.routes.service.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
@@ -16,8 +18,9 @@ import java.util.Set;
 import static org.apache.logging.log4j.Level.INFO;
 
 public class StopStateImpl implements BusState {
+    Logger logger = LogManager.getLogger(StopStateImpl.class);
     private BusStopService busStopService = new BusStopServiceImpl();
-    private BusService busService = new BusServiceImpl();
+    private BusService busService = new BusServiceImpl(FileDataRepository.getInstance());
     private PassengerService passengerService = new PassengerServiceImpl();
     private Bus bus;
     private List<BusStop> stops;
@@ -26,7 +29,6 @@ public class StopStateImpl implements BusState {
     public StopStateImpl(Bus bus) {
         this.bus = bus;
         stops = bus.getRoute().getStops();
-
     }
 
     @Override
@@ -46,7 +48,7 @@ public class StopStateImpl implements BusState {
     private void disembarkationPassengers() {
         bus.getLock().lock();
         try {
-            bus.getLogger().log(INFO, bus + " began disembarking passengers;");
+            logger.log(INFO, bus + " began disembarking passengers;");
             Set<Passenger> passengerCopy = new HashSet<>(bus.getPassengers());
             for (Passenger passenger : passengerCopy) {
                 if (Validator.hasTransitStops(passenger)
@@ -65,8 +67,12 @@ public class StopStateImpl implements BusState {
     private void movePassengerToStop(Passenger passenger) {
         busService.removePassengerFromBus(bus, passenger);
         busStopService.addPassengerToLine(currentStop, passenger);
-        bus.getLogger().log(INFO, passenger + " removed from " + bus + " to " + currentStop);
+        logger.log(INFO, passenger + " removed from " + bus + " to " + currentStop);
         passenger.setCurrentStop(currentStop);
+        if (passenger.getDestination().equals(currentStop)) {
+            passenger.setArrivedAtDestination(true);
+            logger.log(INFO, passenger + " IS ARRIVED TO DESTINATION");
+        }
         passengerService.removeTransitStop(passenger, currentStop);
     }
 
@@ -96,7 +102,7 @@ public class StopStateImpl implements BusState {
                     if (currentStop.getPassengerLine().contains(passenger)) {
                         busStopService.removePassengerFromLine(currentStop, passenger);
                         busService.addPassengerToBus(bus, passenger);
-                        bus.getLogger().log(INFO, passenger + " added to " + bus);
+                        logger.log(INFO, passenger + " added to " + bus);
                     }
                 } finally {
                     currentStop.getLock().unlock();

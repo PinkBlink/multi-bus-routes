@@ -11,7 +11,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Bus extends EntityBase implements Callable<String> {
-    private final Logger logger = LogManager.getLogger(this);
     private final ReentrantLock lock = new ReentrantLock();
     private int number;
     private int maximumPassengerCapacity;
@@ -27,10 +26,6 @@ public class Bus extends EntityBase implements Callable<String> {
         this.maximumPassengerCapacity = maximumPassengerCapacity;
         this.iterationCounter = iterationCounter;
         this.passengers = passengers;
-    }
-
-    public Logger getLogger() {
-        return logger;
     }
 
     public Lock getLock() {

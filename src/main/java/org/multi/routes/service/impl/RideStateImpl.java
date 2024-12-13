@@ -1,5 +1,7 @@
 package org.multi.routes.service.impl;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.service.BusState;
@@ -8,6 +10,7 @@ import org.multi.routes.service.BusStopService;
 import static org.apache.logging.log4j.Level.INFO;
 
 public class RideStateImpl implements BusState {
+    Logger logger = LogManager.getLogger(RideStateImpl.class);
     private BusStopService busStopService = new BusStopServiceImpl();
     private Bus bus;
     private BusStop currentStop;
@@ -26,8 +29,8 @@ public class RideStateImpl implements BusState {
     private void ride() {
         currentStop.getLock().lock();
         try {
-            busStopService.removeBusFromStop(currentStop,bus);
-            bus.getLogger().log(INFO, bus + " going from " + currentStop);
+            busStopService.removeBusFromStop(currentStop, bus);
+            logger.log(INFO, bus + " going from " + currentStop);
             bus.setStopIndex(bus.getStopIndex() + 1);
         } finally {
             currentStop.getLock().unlock();
