@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class BusRoute extends EntityBase {
+public class BusRoute extends BaseEntity {
     private int routeNumber;
     private List<BusStop> route;
 

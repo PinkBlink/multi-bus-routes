@@ -2,7 +2,7 @@ package org.multi.routes.service.impl;
 
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.Passenger;
-import org.multi.routes.repository.BusRepository;
+import org.multi.routes.repository.EntityRepository;
 import org.multi.routes.service.BusService;
 import org.multi.routes.ulils.Validator;
 
@@ -11,9 +11,9 @@ import java.util.Set;
 
 public class BusServiceImpl implements BusService {
 
-    private BusRepository busRepository;
+    private EntityRepository<Bus> busRepository;
 
-    public BusServiceImpl(BusRepository busRepository) {
+    public BusServiceImpl(EntityRepository<Bus> busRepository) {
         this.busRepository = busRepository;
     }
 
@@ -46,6 +46,6 @@ public class BusServiceImpl implements BusService {
 
     @Override
     public List<Bus> getBuses() {
-        return busRepository.getBuses();
+        return busRepository.getAll();
     }
 }

@@ -2,16 +2,16 @@ package org.multi.routes.service.impl;
 
 import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
-import org.multi.routes.repository.BusRouteRepository;
+import org.multi.routes.repository.EntityRepository;
 import org.multi.routes.service.BusRouteService;
 
 import java.util.List;
 import java.util.Map;
 
 public class BusRouteServiceImpl implements BusRouteService {
-    private BusRouteRepository busRouteRepository;
+    private EntityRepository<BusRoute> busRouteRepository;
 
-    public BusRouteServiceImpl(BusRouteRepository busRouteRepository) {
+    public BusRouteServiceImpl(EntityRepository<BusRoute> busRouteRepository) {
         this.busRouteRepository = busRouteRepository;
     }
 
@@ -29,6 +29,6 @@ public class BusRouteServiceImpl implements BusRouteService {
 
     @Override
     public List<BusRoute> getBusRoutes() {
-        return busRouteRepository.getBusRoutes();
+        return busRouteRepository.getAll();
     }
 }

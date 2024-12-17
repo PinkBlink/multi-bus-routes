@@ -1,10 +1,10 @@
 package org.multi.routes.model;
 
-public abstract class EntityBase {
+public abstract class BaseEntity {
     private static int idCounter = 21231;
     private int id;
 
-    public EntityBase() {
+    public BaseEntity() {
         this.id = idCounter++;
     }
 

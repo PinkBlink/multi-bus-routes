@@ -1,7 +1,5 @@
 package org.multi.routes.model;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.multi.routes.service.BusState;
 import org.multi.routes.service.impl.StopStateImpl;
 
@@ -10,7 +8,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Bus extends EntityBase implements Callable<String> {
+public class Bus extends BaseEntity implements Callable<String> {
     private final ReentrantLock lock = new ReentrantLock();
     private int number;
     private int maximumPassengerCapacity;

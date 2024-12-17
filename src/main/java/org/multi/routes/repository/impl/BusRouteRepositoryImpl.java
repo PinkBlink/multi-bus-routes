@@ -1,13 +1,12 @@
 package org.multi.routes.repository.impl;
 
 import org.multi.routes.model.BusRoute;
-import org.multi.routes.repository.BusRouteRepository;
+import org.multi.routes.repository.EntityRepository;
 import org.multi.routes.service.DataEntityInitializer;
-import org.multi.routes.service.impl.DataEntityInitializerImpl;
 
 import java.util.List;
 
-public class BusRouteRepositoryImpl implements BusRouteRepository {
+public class BusRouteRepositoryImpl implements EntityRepository<BusRoute> {
     private DataEntityInitializer dataEntityInitializer;
 
     public BusRouteRepositoryImpl(DataEntityInitializer dataEntityInitializer) {
@@ -15,7 +14,7 @@ public class BusRouteRepositoryImpl implements BusRouteRepository {
     }
 
     @Override
-    public List<BusRoute> getBusRoutes() {
+    public List<BusRoute> getAll() {
         return dataEntityInitializer.getBusRoutes();
     }
 }

@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
+import org.multi.routes.repository.EntityRepository;
 import org.multi.routes.service.BusStopService;
 import org.multi.routes.ulils.Validator;
 
@@ -16,6 +17,11 @@ import static org.apache.logging.log4j.Level.INFO;
 
 public class BusStopServiceImpl implements BusStopService {
     private final Logger logger = LogManager.getLogger(BusStopServiceImpl.class);
+    private EntityRepository<BusStop> busStopRepository;
+
+    public BusStopServiceImpl(EntityRepository<BusStop> busStopRepository) {
+        this.busStopRepository = busStopRepository;
+    }
 
     @Override
     public BusStop addBusToStop(BusStop stop, Bus bus) {

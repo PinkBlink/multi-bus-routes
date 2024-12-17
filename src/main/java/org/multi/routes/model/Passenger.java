@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Passenger extends EntityBase {
+public class Passenger extends BaseEntity {
     private final Logger logger = LogManager.getLogger(this);
     private String name;
     private BusStop destination;
