@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
+import org.multi.routes.repository.impl.BusStopsRepositoryImpl;
 import org.multi.routes.service.BusState;
 import org.multi.routes.service.BusStopService;
 

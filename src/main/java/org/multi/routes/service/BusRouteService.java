@@ -6,7 +6,6 @@ import org.multi.routes.model.BusStop;
 import java.util.List;
 
 public interface BusRouteService {
-    void addNextRoute(BusRoute currentRoute, BusRoute nextRoute, BusStop transitStop);
 
     boolean containsStop(BusRoute route, BusStop stop);
 

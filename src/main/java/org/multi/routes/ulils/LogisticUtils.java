@@ -2,11 +2,15 @@ package org.multi.routes.ulils;
 
 import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
+import org.multi.routes.repository.impl.BusRouteRepositoryImpl;
 import org.multi.routes.service.BusRouteService;
+import org.multi.routes.service.DataEntityInitializer;
 import org.multi.routes.service.impl.BusRouteServiceImpl;
+import org.multi.routes.service.impl.DataEntityInitializerImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class LogisticUtils {
     private static BusRouteService busRouteService = new BusRouteServiceImpl();
@@ -21,7 +25,7 @@ public class LogisticUtils {
                 BusRoute nextRoute = routes.get(j);
                 List<BusStop> possibleTransitStops = getTransitStopForNextRoute(currentRoute, nextRoute);
                 if (!possibleTransitStops.isEmpty()) {
-                    busRouteService.addNextRoute(currentRoute, nextRoute, possibleTransitStops.getFirst());
+                    addNextRouteToRoute(currentRoute, nextRoute, possibleTransitStops.getFirst());
                 }
             }
         }
@@ -41,7 +45,7 @@ public class LogisticUtils {
                         && !nextStops.getLast().equals(s)).toList();
     }
 
-    public static BusRoute getCurrentPassengerRoute(BusRouteService busRouteService, BusStop stop, List<BusRoute> routes) {
+    public static BusRoute getCurrentPassengerRoute(BusStop stop, List<BusRoute> routes) {
         return routes.stream()
                 .filter(route -> busRouteService.containsStop(route, stop) && !route.getStops().getLast().equals(stop))
                 .toList().getLast();
@@ -64,5 +68,9 @@ public class LogisticUtils {
     public static BusRoute findRouteByNumber(int routeNumber, List<BusRoute> routes) {
         return routes.stream().filter(route -> route.getRouteNumber() == routeNumber)
                 .findFirst().get();
+    }
+    private static void addNextRouteToRoute(BusRoute currentRoute, BusRoute nextRoute, BusStop transitStop) {
+        Map<BusRoute, BusStop> nextAccessibleRoute = currentRoute.getNextAccessibleRoutes();
+        nextAccessibleRoute.put(nextRoute, transitStop);
     }
 }

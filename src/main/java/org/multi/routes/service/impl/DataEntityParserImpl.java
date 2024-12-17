@@ -72,7 +72,7 @@ public class DataEntityParserImpl implements DataEntityParser {
     }
 
     @Override
-    public List<Bus> getBusesFromData(List<BusStop> busStops,List<BusRoute> busRoutes) {
+    public List<Bus> getBusesFromData(List<BusStop> busStops, List<BusRoute> busRoutes) {
         List<Bus> buses = new ArrayList<>();
         try {
             List<String> busesString = DataFileReader.getBusesList();

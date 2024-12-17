@@ -5,10 +5,10 @@ import org.apache.logging.log4j.Logger;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
-import org.multi.routes.service.BusService;
-import org.multi.routes.service.BusState;
-import org.multi.routes.service.BusStopService;
-import org.multi.routes.service.PassengerService;
+import org.multi.routes.repository.impl.BusRepositoryImpl;
+import org.multi.routes.repository.impl.BusStopsRepositoryImpl;
+import org.multi.routes.repository.impl.PassengerRepositoryImpl;
+import org.multi.routes.service.*;
 import org.multi.routes.ulils.Validator;
 
 import java.util.HashSet;
@@ -20,7 +20,7 @@ import static org.apache.logging.log4j.Level.INFO;
 public class StopStateImpl implements BusState {
     Logger logger = LogManager.getLogger(StopStateImpl.class);
     private BusStopService busStopService = new BusStopServiceImpl();
-    private BusService busService = new BusServiceImpl(FileDataRepository.getInstance());
+    private BusService busService = new BusServiceImpl();
     private PassengerService passengerService = new PassengerServiceImpl();
     private Bus bus;
     private List<BusStop> stops;

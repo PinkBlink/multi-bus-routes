@@ -58,16 +58,6 @@ public class Validator {
         return amountStoppedBuses == maxBusesCapacity;
     }
 
-    public static boolean isValidNumberString(String string) {
-        for (int i = 0; i < string.length(); i++) {
-            char currentChar = string.charAt(i);
-            if (!Character.isDigit(currentChar)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public static boolean isNeedTransition(Passenger passenger, List<BusRoute> routes) {
         BusStop current = passenger.getCurrentStop();
         BusStop destination = passenger.getDestination();

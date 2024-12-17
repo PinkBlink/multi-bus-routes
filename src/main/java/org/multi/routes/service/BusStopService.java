@@ -4,6 +4,8 @@ import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
 
+import java.util.List;
+
 public interface BusStopService {
     public BusStop addBusToStop(BusStop stop, Bus bus);
 
@@ -12,4 +14,5 @@ public interface BusStopService {
     public BusStop addPassengerToLine(BusStop stop, Passenger passenger);
 
     public BusStop removePassengerFromLine(BusStop stop, Passenger passenger);
+    public List<BusStop> getBusStops();
 }

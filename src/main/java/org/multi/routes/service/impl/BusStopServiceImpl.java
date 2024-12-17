@@ -6,6 +6,7 @@ import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
 import org.multi.routes.repository.EntityRepository;
+import org.multi.routes.repository.impl.BusStopsRepositoryImpl;
 import org.multi.routes.service.BusStopService;
 import org.multi.routes.ulils.Validator;
 
@@ -19,9 +20,10 @@ public class BusStopServiceImpl implements BusStopService {
     private final Logger logger = LogManager.getLogger(BusStopServiceImpl.class);
     private EntityRepository<BusStop> busStopRepository;
 
-    public BusStopServiceImpl(EntityRepository<BusStop> busStopRepository) {
+    public BusStopServiceImpl(BusStopsRepositoryImpl busStopRepository) {
         this.busStopRepository = busStopRepository;
     }
+    public BusStopServiceImpl(){}
 
     @Override
     public BusStop addBusToStop(BusStop stop, Bus bus) {
@@ -82,5 +84,10 @@ public class BusStopServiceImpl implements BusStopService {
         } finally {
             stop.getLock().unlock();
         }
+    }
+
+    @Override
+    public List<BusStop> getBusStops() {
+        return busStopRepository.getAll();
     }
 }

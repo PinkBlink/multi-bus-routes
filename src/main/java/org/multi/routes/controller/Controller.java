@@ -3,9 +3,12 @@ package org.multi.routes.controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.multi.routes.model.*;
-import org.multi.routes.service.DataEntityParser;
-import org.multi.routes.service.impl.DataEntityInitializerImpl;
-import org.multi.routes.service.impl.DataEntityParserImpl;
+import org.multi.routes.repository.impl.BusRepositoryImpl;
+import org.multi.routes.repository.impl.BusRouteRepositoryImpl;
+import org.multi.routes.repository.impl.BusStopsRepositoryImpl;
+import org.multi.routes.repository.impl.PassengerRepositoryImpl;
+import org.multi.routes.service.*;
+import org.multi.routes.service.impl.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +24,16 @@ public class Controller {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
-        DataEntityParser dataEntityParser = new DataEntityParserImpl();
-        DataEntityInitializerImpl dataEntityInitializerImpl = new DataEntityInitializerImpl(dataEntityParser);
-        FileDataRepository fileDataRepository = FileDataRepository.getInstance(dataEntityInitializerImpl);
+        DataEntityInitializerImpl dataEntityInitializerImpl = DataEntityInitializerImpl.getInstance();
+        BusStopService busStopService = new BusStopServiceImpl(new BusStopsRepositoryImpl(dataEntityInitializerImpl));
+        BusService busService = new BusServiceImpl(new BusRepositoryImpl(dataEntityInitializerImpl));
+        BusRouteService busRouteService = new BusRouteServiceImpl(new BusRouteRepositoryImpl(dataEntityInitializerImpl));
+        PassengerService passengerService = new PassengerServiceImpl(new PassengerRepositoryImpl(dataEntityInitializerImpl));
 
-        List<Bus> buses = fileDataRepository.getBusesFromData();
-        List<Passenger> passengers = fileDataRepository.getPassengersFromData();
-        List<BusStop> stops = fileDataRepository.getBusStopsFromData();
-        List<BusRoute> busRoutes = fileDataRepository.getBusRoutesFromData();
+        List<Bus> buses = busService.getBuses();
+        List<Passenger> passengers = passengerService.getPassengers();
+        List<BusStop> stops = busStopService.getBusStops();
+        List<BusRoute> busRoutes = busRouteService.getBusRoutes();
         busRoutes.forEach(r -> logger.log(INFO, r));
         List<Future<String>> futures = new ArrayList<>();
         for (Bus bus : buses) {
@@ -47,9 +52,9 @@ public class Controller {
 
         buses.forEach(bus -> logger.log(INFO, bus + " passengers " + bus.getPassengers()));
         stops.forEach(stop -> logger.log(INFO, stop + " " + stop.getPassengerLine()));
-        fileDataRepository.getBusesFromData().forEach(entity -> logger.log(INFO, entity.getId()));
-        fileDataRepository.getBusStopsFromData().forEach(entity -> logger.log(INFO, entity.getId()));
-        fileDataRepository.getBusRoutesFromData().forEach(entity -> logger.log(INFO, entity.getId()));
-        fileDataRepository.getPassengersFromData().forEach(entity -> logger.log(INFO, entity.getId()));
+        busService.getBuses().forEach(entity -> logger.log(INFO, entity.getId()));
+        busStopService.getBusStops().forEach(entity -> logger.log(INFO, entity.getId()));
+        busRouteService.getBusRoutes().forEach(entity -> logger.log(INFO, entity.getId()));
+        passengerService.getPassengers().forEach(entity -> logger.log(INFO, entity.getId()));
     }
 }

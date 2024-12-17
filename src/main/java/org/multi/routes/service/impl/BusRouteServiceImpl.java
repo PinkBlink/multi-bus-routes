@@ -14,11 +14,7 @@ public class BusRouteServiceImpl implements BusRouteService {
     public BusRouteServiceImpl(EntityRepository<BusRoute> busRouteRepository) {
         this.busRouteRepository = busRouteRepository;
     }
-
-    @Override
-    public void addNextRoute(BusRoute currentRoute, BusRoute nextRoute, BusStop transitStop) {
-        Map<BusRoute, BusStop> nextAccessibleRoute = currentRoute.getNextAccessibleRoutes();
-        nextAccessibleRoute.put(nextRoute, transitStop);
+    public BusRouteServiceImpl(){
     }
 
     @Override
