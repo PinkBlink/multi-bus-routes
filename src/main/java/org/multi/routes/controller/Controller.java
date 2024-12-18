@@ -25,10 +25,15 @@ public class Controller {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         DataEntityInitializerImpl dataEntityInitializerImpl = DataEntityInitializerImpl.getInstance();
-        BusStopService busStopService = new BusStopServiceImpl(new BusStopsRepositoryImpl(dataEntityInitializerImpl));
-        BusService busService = new BusServiceImpl(new BusRepositoryImpl(dataEntityInitializerImpl));
-        BusRouteService busRouteService = new BusRouteServiceImpl(new BusRouteRepositoryImpl(dataEntityInitializerImpl));
-        PassengerService passengerService = new PassengerServiceImpl(new PassengerRepositoryImpl(dataEntityInitializerImpl));
+        BusStopService busStopService = new BusStopServiceImpl();
+        BusService busService = new BusServiceImpl();
+        BusRouteService busRouteService = new BusRouteServiceImpl();
+        PassengerService passengerService = new PassengerServiceImpl();
+
+        busStopService.setBusStopRepository(new BusStopsRepositoryImpl(dataEntityInitializerImpl));
+        busService.setBusRepository(new BusRepositoryImpl(dataEntityInitializerImpl));
+        busRouteService.setBusRouteRepository(new BusRouteRepositoryImpl(dataEntityInitializerImpl));
+        passengerService.setPassengerRepository(new PassengerRepositoryImpl(dataEntityInitializerImpl));
 
         List<Bus> buses = busService.getBuses();
         List<Passenger> passengers = passengerService.getPassengers();

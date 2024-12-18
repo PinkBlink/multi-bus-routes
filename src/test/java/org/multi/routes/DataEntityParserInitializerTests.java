@@ -16,7 +16,7 @@ import java.util.*;
 
 public class DataEntityParserInitializerTests {
     private DataEntityParser dataEntityParser = new DataEntityParserImpl();
-    private DataEntityInitializerImpl dataEntityInitializerImpl = new DataEntityInitializerImpl(dataEntityParser);
+    private DataEntityInitializerImpl dataEntityInitializerImpl = DataEntityInitializerImpl.getInstance();
     private List<BusStop> expectedBusStopList;
     private List<Bus> expectedBusList;
     private List<BusRoute> expectedBusRouteList;

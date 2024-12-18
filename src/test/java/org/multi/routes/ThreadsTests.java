@@ -7,13 +7,12 @@ import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Bus;
 
 import org.multi.routes.model.Passenger;
-import org.multi.routes.service.BusStopService;
-import org.multi.routes.service.DataEntityParser;
-import org.multi.routes.service.NavigatorService;
-import org.multi.routes.service.impl.BusStopServiceImpl;
-import org.multi.routes.service.impl.DataEntityInitializerImpl;
-import org.multi.routes.service.impl.DataEntityParserImpl;
-import org.multi.routes.service.impl.NavigatorServiceImpl;
+import org.multi.routes.repository.impl.BusRepositoryImpl;
+import org.multi.routes.repository.impl.BusRouteRepositoryImpl;
+import org.multi.routes.repository.impl.BusStopsRepositoryImpl;
+import org.multi.routes.repository.impl.PassengerRepositoryImpl;
+import org.multi.routes.service.*;
+import org.multi.routes.service.impl.*;
 import org.multi.routes.ulils.LogisticUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -29,11 +28,22 @@ public class ThreadsTests {
     @Test
     public void threadsFromFilesTest() throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
-        DataEntityParser dataEntityParser = new DataEntityParserImpl();
-        DataEntityInitializerImpl dataEntityInitializerImpl = new DataEntityInitializerImpl(dataEntityParser);
-        FileDataRepository fileDataRepository = FileDataRepository.getInstance(dataEntityInitializerImpl);
-        List<Passenger> passengers = fileDataRepository.getPassengersFromData();
-        List<Bus> buses = fileDataRepository.getBusesFromData();
+        DataEntityInitializerImpl dataEntityInitializerImpl = DataEntityInitializerImpl.getInstance();
+
+        BusService busService = new BusServiceImpl();
+        busService.setBusRepository(new BusRepositoryImpl(dataEntityInitializerImpl));
+
+        BusStopService busStopService = new BusStopServiceImpl();
+        busStopService.setBusStopRepository(new BusStopsRepositoryImpl(dataEntityInitializerImpl));
+
+        BusRouteService busRouteService = new BusRouteServiceImpl();
+        busRouteService.setBusRouteRepository(new BusRouteRepositoryImpl(dataEntityInitializerImpl));
+
+        PassengerService passengerService = new PassengerServiceImpl();
+        passengerService.setPassengerRepository(new PassengerRepositoryImpl(dataEntityInitializerImpl));
+
+        List<Passenger> passengers = passengerService.getPassengers();
+        List<Bus> buses = busService.getBuses();
         List<Future<String>> futures = new ArrayList<>();
 
         for (Bus bus : buses) {

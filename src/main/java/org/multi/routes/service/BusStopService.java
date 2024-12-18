@@ -3,16 +3,20 @@ package org.multi.routes.service;
 import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
+import org.multi.routes.repository.impl.BusStopsRepositoryImpl;
 
 import java.util.List;
 
 public interface BusStopService {
-    public BusStop addBusToStop(BusStop stop, Bus bus);
+    BusStop addBusToStop(BusStop stop, Bus bus);
 
-    public BusStop removeBusFromStop(BusStop stop, Bus bus);
+    BusStop removeBusFromStop(BusStop stop, Bus bus);
 
-    public BusStop addPassengerToLine(BusStop stop, Passenger passenger);
+    BusStop addPassengerToLine(BusStop stop, Passenger passenger);
 
-    public BusStop removePassengerFromLine(BusStop stop, Passenger passenger);
-    public List<BusStop> getBusStops();
+    BusStop removePassengerFromLine(BusStop stop, Passenger passenger);
+
+    void setBusStopRepository(BusStopsRepositoryImpl busStopRepository);
+    BusStopsRepositoryImpl getBusStopRepository();
+    List<BusStop> getBusStops();
 }

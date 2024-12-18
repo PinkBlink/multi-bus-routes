@@ -10,10 +10,12 @@ import java.util.List;
 public class PassengerServiceImpl implements PassengerService {
     private PassengerRepositoryImpl passengerRepository;
 
-    public PassengerServiceImpl(PassengerRepositoryImpl passengerRepository) {
-        this.passengerRepository = passengerRepository;
+    public PassengerRepositoryImpl getPassengerRepository() {
+        return passengerRepository;
     }
-    public PassengerServiceImpl(){
+
+    public void setPassengerRepository(PassengerRepositoryImpl passengerRepository) {
+        this.passengerRepository = passengerRepository;
     }
 
     @Override
