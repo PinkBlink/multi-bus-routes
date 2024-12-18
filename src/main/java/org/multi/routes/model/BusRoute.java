@@ -7,7 +7,6 @@ import java.util.Objects;
 public class BusRoute extends BaseEntity {
     private int routeNumber;
     private List<BusStop> route;
-
     private final Map<BusRoute, BusStop> nextAccessibleRoutes;
 
     public BusRoute(int routeNumber, List<BusStop> route, Map<BusRoute, BusStop> nextAccessibleRoutes) {

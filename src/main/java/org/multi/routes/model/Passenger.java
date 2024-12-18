@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Passenger extends BaseEntity {
-    private final Logger logger = LogManager.getLogger(this);
     private String name;
     private BusStop destination;
     private BusStop currentStop;
@@ -45,10 +44,6 @@ public class Passenger extends BaseEntity {
 
     public void setCurrentStop(BusStop currentStop) {
         this.currentStop = currentStop;
-        isArrivedAtDestination = currentStop.equals(destination);
-        if (isArrivedAtDestination) {
-            logger.log(Level.INFO, this + " ARRIVED TO DESTINATION");
-        }
     }
 
     public void setDestination(BusStop destination) {
