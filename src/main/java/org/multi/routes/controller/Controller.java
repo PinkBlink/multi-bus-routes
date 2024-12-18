@@ -25,6 +25,7 @@ public class Controller {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(3);
         DataEntityInitializerImpl dataEntityInitializerImpl = DataEntityInitializerImpl.getInstance();
+
         BusStopService busStopService = new BusStopServiceImpl();
         BusService busService = new BusServiceImpl();
         BusRouteService busRouteService = new BusRouteServiceImpl();
@@ -39,8 +40,11 @@ public class Controller {
         List<Passenger> passengers = passengerService.getPassengers();
         List<BusStop> stops = busStopService.getBusStops();
         List<BusRoute> busRoutes = busRouteService.getBusRoutes();
+
+
         busRoutes.forEach(r -> logger.log(INFO, r));
         List<Future<String>> futures = new ArrayList<>();
+
         for (Bus bus : buses) {
             futures.add(executorService.submit(bus));
         }
@@ -57,6 +61,7 @@ public class Controller {
 
         buses.forEach(bus -> logger.log(INFO, bus + " passengers " + bus.getPassengers()));
         stops.forEach(stop -> logger.log(INFO, stop + " " + stop.getPassengerLine()));
+
         busService.getBuses().forEach(entity -> logger.log(INFO, entity.getId()));
         busStopService.getBusStops().forEach(entity -> logger.log(INFO, entity.getId()));
         busRouteService.getBusRoutes().forEach(entity -> logger.log(INFO, entity.getId()));
