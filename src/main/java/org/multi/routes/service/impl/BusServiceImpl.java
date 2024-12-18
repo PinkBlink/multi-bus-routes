@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 public class BusServiceImpl implements BusService {
-
     private BusRepositoryImpl busRepository;
 
     @Override

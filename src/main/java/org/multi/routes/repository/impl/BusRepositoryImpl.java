@@ -3,7 +3,6 @@ package org.multi.routes.repository.impl;
 import org.multi.routes.model.Bus;
 import org.multi.routes.repository.EntityRepository;
 import org.multi.routes.service.DataEntityInitializer;
-import org.multi.routes.service.impl.DataEntityInitializerImpl;
 
 import java.util.List;
 

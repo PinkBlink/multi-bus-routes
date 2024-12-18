@@ -20,7 +20,6 @@ import java.util.HashSet;
 public class ValidatorTests {
     private BusService busService = new BusServiceImpl();
     private BusStopService busStopService = new BusStopServiceImpl();
-
     private String validPassenger;
     private String invalidPassenger;
     private String validBusStop;
@@ -33,7 +32,6 @@ public class ValidatorTests {
     private Bus fullBus;
     private Passenger passenger1;
     private Passenger passenger2;
-
 
     @BeforeTest
     public void setUp() {

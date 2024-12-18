@@ -4,9 +4,7 @@ import org.multi.routes.model.Bus;
 import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
 import org.multi.routes.model.Passenger;
-import org.multi.routes.service.DataEntityParser;
 import org.multi.routes.service.impl.DataEntityInitializerImpl;
-import org.multi.routes.service.impl.DataEntityParserImpl;
 import org.multi.routes.ulils.LogisticUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
@@ -15,7 +13,6 @@ import org.testng.annotations.Test;
 import java.util.*;
 
 public class DataEntityParserInitializerTests {
-    private DataEntityParser dataEntityParser = new DataEntityParserImpl();
     private DataEntityInitializerImpl dataEntityInitializerImpl = DataEntityInitializerImpl.getInstance();
     private List<BusStop> expectedBusStopList;
     private List<Bus> expectedBusList;
@@ -109,6 +106,6 @@ public class DataEntityParserInitializerTests {
 
     @Test
     public void testGetRoutesFromData() {
-        Assert.assertEquals(actualBusRoutes,expectedBusRouteList);
+        Assert.assertEquals(actualBusRoutes, expectedBusRouteList);
     }
 }

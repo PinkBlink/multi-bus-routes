@@ -6,10 +6,14 @@ import org.multi.routes.repository.impl.BusRepositoryImpl;
 
 import java.util.List;
 
-public interface BusService{
+public interface BusService {
     Bus addPassengerToBus(Bus bus, Passenger passenger);
+
     Passenger removePassengerFromBus(Bus bus, Passenger passenger);
+
     void setBusRepository(BusRepositoryImpl busRepository);
+
     BusRepositoryImpl getBusRepository();
+
     List<Bus> getBuses();
 }

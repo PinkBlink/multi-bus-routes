@@ -11,7 +11,6 @@ public class BusStop extends BaseEntity {
     private String stopName;
     private int maxBusesCapacity;
     private Set<Bus> stoppedBuses;
-
     private final Set<Passenger> passengerLine = new HashSet<>();
 
     public BusStop(String stopName, int maxBusesCapacity) {

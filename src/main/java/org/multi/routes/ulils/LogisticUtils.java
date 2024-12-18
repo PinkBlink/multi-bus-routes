@@ -2,11 +2,8 @@ package org.multi.routes.ulils;
 
 import org.multi.routes.model.BusRoute;
 import org.multi.routes.model.BusStop;
-import org.multi.routes.repository.impl.BusRouteRepositoryImpl;
 import org.multi.routes.service.BusRouteService;
-import org.multi.routes.service.DataEntityInitializer;
 import org.multi.routes.service.impl.BusRouteServiceImpl;
-import org.multi.routes.service.impl.DataEntityInitializerImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +66,7 @@ public class LogisticUtils {
         return routes.stream().filter(route -> route.getRouteNumber() == routeNumber)
                 .findFirst().get();
     }
+
     private static void addNextRouteToRoute(BusRoute currentRoute, BusRoute nextRoute, BusStop transitStop) {
         Map<BusRoute, BusStop> nextAccessibleRoute = currentRoute.getNextAccessibleRoutes();
         nextAccessibleRoute.put(nextRoute, transitStop);

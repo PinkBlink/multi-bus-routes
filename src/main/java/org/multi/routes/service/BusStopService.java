@@ -17,6 +17,8 @@ public interface BusStopService {
     BusStop removePassengerFromLine(BusStop stop, Passenger passenger);
 
     void setBusStopRepository(BusStopsRepositoryImpl busStopRepository);
+
     BusStopsRepositoryImpl getBusStopRepository();
+
     List<BusStop> getBusStops();
 }

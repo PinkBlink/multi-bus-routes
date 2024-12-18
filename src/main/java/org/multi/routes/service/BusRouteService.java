@@ -7,7 +7,6 @@ import org.multi.routes.repository.impl.BusRouteRepositoryImpl;
 import java.util.List;
 
 public interface BusRouteService {
-
     boolean containsStop(BusRoute route, BusStop stop);
 
     void setBusRouteRepository(BusRouteRepositoryImpl busRouteRepository);

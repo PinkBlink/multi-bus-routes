@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface DataEntityParser {
     List<BusStop> getBusStopsFromData();
+
     List<BusRoute> getBusRoutesFromData(List<BusStop> busStops);
-    List<Bus> getBusesFromData(List<BusStop> busStops,List<BusRoute> busRoutes);
-    List<Passenger> getPassengersFromData(List<BusStop> busStops,List<BusRoute> busRoutes);
+
+    List<Bus> getBusesFromData(List<BusStop> busStops, List<BusRoute> busRoutes);
+
+    List<Passenger> getPassengersFromData(List<BusStop> busStops, List<BusRoute> busRoutes);
 }

@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface DataEntityInitializer {
     List<BusStop> getBusStops();
+
     List<BusRoute> getBusRoutes();
+
     List<Bus> getBuses();
+
     List<Passenger> getPassengers();
 }

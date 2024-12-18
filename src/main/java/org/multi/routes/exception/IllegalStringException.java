@@ -1,6 +1,6 @@
 package org.multi.routes.exception;
 
-public class IllegalStringException extends IllegalArgumentException{
+public class IllegalStringException extends IllegalArgumentException {
     public IllegalStringException() {
         super();
     }

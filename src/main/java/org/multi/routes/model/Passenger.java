@@ -1,9 +1,5 @@
 package org.multi.routes.model;
 
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -34,6 +30,7 @@ public class Passenger extends BaseEntity {
     public BusStop getCurrentStop() {
         return currentStop;
     }
+
     public boolean isArrivedAtDestination() {
         return isArrivedAtDestination;
     }
@@ -49,10 +46,12 @@ public class Passenger extends BaseEntity {
     public void setDestination(BusStop destination) {
         this.destination = destination;
     }
+
     public void setName(String name) {
         this.name = name;
     }
-    public void setArrivedAtDestination(boolean isArrivedAtDestination){
+
+    public void setArrivedAtDestination(boolean isArrivedAtDestination) {
         this.isArrivedAtDestination = isArrivedAtDestination;
     }
 
