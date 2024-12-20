@@ -55,17 +55,28 @@ public class Controller {
 
         passengers.forEach(p -> logger.log(INFO, p + " is arrived: " + p.isArrivedAtDestination()));
 
-        List<Passenger> notArrivedPassengers = passengers.stream().filter(p -> !p.isArrivedAtDestination()).toList();
+        List<Passenger> notArrivedPassengers = passengers.stream()
+                .filter(p -> !p.isArrivedAtDestination())
+                .toList();
 
 
         buses.forEach(bus -> logger.log(INFO, bus + " passengers " + bus.getPassengers()));
         stops.forEach(stop -> logger.log(INFO, stop + " " + stop.getPassengerLine()));
 
-        busService.getBuses().forEach(entity -> logger.log(INFO, entity.getId()));
-        busStopService.getBusStops().forEach(entity -> logger.log(INFO, entity.getId()));
-        busRouteService.getBusRoutes().forEach(entity -> logger.log(INFO, entity.getId()));
-        passengerService.getPassengers().forEach(entity -> logger.log(INFO, entity.getId()));
+        busService.getBuses()
+                .forEach(entity -> logger.log(INFO, entity.getId()));
+
+        busStopService.getBusStops()
+                .forEach(entity -> logger.log(INFO, entity.getId()));
+
+        busRouteService.getBusRoutes()
+                .forEach(entity -> logger.log(INFO, entity.getId()));
+
+        passengerService.getPassengers()
+                .forEach(entity -> logger.log(INFO, entity.getId()));
+
         passengers.forEach(p -> logger.log(INFO, p + " is arrived: " + p.isArrivedAtDestination()));
+
         notArrivedPassengers.forEach(p -> logger.log(ERROR, p + " Current stop" + p.getCurrentStop()
                 + "\nDestination: " + p.getDestination()));
     }
